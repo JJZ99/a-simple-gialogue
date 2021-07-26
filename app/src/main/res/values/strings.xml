@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ABCdialogue</string>
+    <string name="login_info">"@首次登录:输入账号后直接点击注册"</string>
+
 </resources>
