@@ -1,10 +1,19 @@
 package com.example.abcdialogue.Util
 
 import android.content.Context
+import android.util.Xml
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserException
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 import java.util.Objects
 
-object ToastUtil {
+object Util {
     /**
      * 显示短时间
      */

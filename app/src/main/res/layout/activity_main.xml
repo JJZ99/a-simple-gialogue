@@ -88,6 +88,8 @@
         android:textSize="22sp"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/username_input"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.342"
@@ -103,9 +105,8 @@
         android:background="@drawable/button_circle_shape"
         android:freezesText="false"
         android:hint="请输入您的账号"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:textSize="20sp"
-        android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.815"
@@ -129,12 +130,12 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textIsSelectable="false"
         android:textSize="22sp"
-
-        android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/password_input"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.439"
+        app:layout_constraintVertical_bias="0.44"
         tools:targetApi="q" />
 
     <EditText
@@ -147,7 +148,6 @@
         android:hint="请输入您的密码"
         android:inputType="textPassword"
         android:textSize="20sp"
-        android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.815"
@@ -156,6 +156,42 @@
         app:layout_constraintVertical_bias="0.44" />
 
 
+    <EditText
+        android:id="@+id/tell"
+        style="@android:style/Widget.AutoCompleteTextView"
+        android:layout_width="230dp"
+        android:layout_height="38dp"
+        android:alpha="0.7"
+        android:autofillHints=""
+        android:background="@drawable/button_circle_shape"
+        android:freezesText="false"
+        android:hint="请输入您的电话"
+        android:textSize="20sp"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.817"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_input"
+        app:layout_constraintVertical_bias="0.091" />
+
+    <EditText
+        android:id="@+id/school"
+        style="@android:style/Widget.AutoCompleteTextView"
+        android:layout_width="230dp"
+        android:layout_height="38dp"
+        android:alpha="0.7"
+        android:autofillHints=""
+        android:background="@drawable/button_circle_shape"
+        android:freezesText="false"
+        android:hint="请输入您的school"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.817"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tell"
+        app:layout_constraintVertical_bias="0.121" />
 
     <TextView
         android:id="@+id/textView4"

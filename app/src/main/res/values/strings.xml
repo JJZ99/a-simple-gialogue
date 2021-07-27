@@ -2,5 +2,6 @@
     <string name="app_name">ABCdialogue</string>
     <string name="login_info">"@首次登录:输入账号后直接点击注册"</string>
     <string name="hello_world">Hello World</string>
+    <string name="preference_file_key">com.example.abcdialogue.module.PREFERENCE_FILE_KEY</string>
 
 </resources>
