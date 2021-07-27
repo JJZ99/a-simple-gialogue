@@ -1,4 +1,4 @@
-package com.example.abcdialogue.Bean
+package com.example.abcdialogue.Model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -6,11 +6,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "users")
 data class User(
-    @ColumnInfo(name = "username")
+    @ColumnInfo(name = "user_name")
     val userName: String?,
-    @ColumnInfo(name = "password")
+    @ColumnInfo(name = "pass_word")
     val passWord: String?
 ){
-    @PrimaryKey
-    var id = 0
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0L
 }
