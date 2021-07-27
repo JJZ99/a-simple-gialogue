@@ -1,5 +1,6 @@
 package com.example.abcdialogue.Module
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.abcdialogue.R
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
 
         login_btn.setOnClickListener {
+            var intent = Intent(this, MainActivity2().javaClass)
+            startActivity(intent)
 
         }
         register_btn.setOnClickListener {

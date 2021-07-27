@@ -9,12 +9,13 @@ android {
 
     defaultConfig {
         applicationId "com.example.abcdialogue"
-        minSdkVersion 19
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -38,11 +39,11 @@ dependencies {
     def room_version = "2.3.0"
 
     implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$room_version")
+    // To use Kotlin Symbolic Processing (KSP)
+    annotationProcessor "androidx.room:room-compiler:$room_version" // use kapt for Kotlin
 
-
-
-    // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
 
     // optional - RxJava2 support for Room
@@ -53,7 +54,6 @@ dependencies {
 
     // optional - Guava support for Room, including Optional and ListenableFuture
     implementation "androidx.room:room-guava:$room_version"
-
 
     // optional - Test helpers
     testImplementation("androidx.room:room-testing:$room_version")
