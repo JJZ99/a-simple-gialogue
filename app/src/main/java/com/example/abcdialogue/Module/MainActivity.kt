@@ -33,9 +33,6 @@ class MainActivity : AppCompatActivity() {
         val sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE)
 
-
-
-
         login_btn.setOnClickListener {
 
             val username = username_input.text.toString()
