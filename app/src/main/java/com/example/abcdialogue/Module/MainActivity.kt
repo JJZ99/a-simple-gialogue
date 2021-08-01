@@ -10,10 +10,10 @@ import com.example.abcdialogue.Util.Util.toast
 import com.example.abcdialogue.Util.Util.toastShort
 import kotlinx.android.synthetic.main.activity_main.login_btn
 import kotlinx.android.synthetic.main.activity_main.password_input
-import kotlinx.android.synthetic.main.activity_main.register_btn
 import kotlinx.android.synthetic.main.activity_main.school
 import kotlinx.android.synthetic.main.activity_main.tell
 import kotlinx.android.synthetic.main.activity_main.username_input
+import kotlinx.android.synthetic.main.activity_main.wei_bo_btn
 import java.util.regex.Pattern
 
 class MainActivity : AppCompatActivity() {
@@ -63,8 +63,9 @@ class MainActivity : AppCompatActivity() {
 
 
         }
-        register_btn.setOnClickListener {
-
+        wei_bo_btn.setOnClickListener {
+            var intent = Intent(this, WeiBoActivity().javaClass)
+            startActivity(intent)
         }
 
 
