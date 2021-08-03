@@ -12,8 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Weibo.WeiBoActivity"></activity>
+        <activity android:name=".Module.MainActivity"></activity>
         <activity android:name=".Module.MainActivity2" />
-        <activity android:name=".Module.MainActivity">
+        <activity android:name=".Weibo.InitSDK">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

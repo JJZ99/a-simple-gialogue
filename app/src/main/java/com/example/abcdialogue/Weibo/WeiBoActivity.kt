@@ -20,7 +20,7 @@ class WeiBoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_wei_bo)
+        setContentView(R.layout.login)
         initData()
         initView()
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -57,7 +57,7 @@ class WeiBoActivity : AppCompatActivity() {
     }
 
     private fun initData() {
-        mTitles?.add("新闻")
+        this.intent.getStringExtra("token")?.let { mTitles?.add(it) }
         mTitles?.add("视频")
         mTitles?.add("商品")
         mFragments?.add(NewFragment())
