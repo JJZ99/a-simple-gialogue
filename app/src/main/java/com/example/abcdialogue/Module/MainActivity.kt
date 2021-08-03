@@ -8,6 +8,7 @@ import android.util.Log
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Util.Util.toast
 import com.example.abcdialogue.Util.Util.toastShort
+import com.example.abcdialogue.Weibo.WeiBoActivity
 import kotlinx.android.synthetic.main.activity_main.login_btn
 import kotlinx.android.synthetic.main.activity_main.password_input
 import kotlinx.android.synthetic.main.activity_main.school

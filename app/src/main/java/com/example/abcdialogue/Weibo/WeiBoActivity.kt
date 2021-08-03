@@ -1,4 +1,4 @@
-package com.example.abcdialogue.Module
+package com.example.abcdialogue.Weibo
 
 import android.os.Bundle
 import android.util.Log
