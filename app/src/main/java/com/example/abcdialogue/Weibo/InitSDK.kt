@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.abcdialogue.Util.Util.toastShort
 import com.sina.weibo.sdk.auth.AuthInfo
 import com.sina.weibo.sdk.auth.Oauth2AccessToken
@@ -18,7 +19,7 @@ import com.sina.weibo.sdk.openapi.WBAPIFactory
 
 class InitSDK : AppCompatActivity(),WbAuthListener{
     private lateinit var mWBAPI: IWBAPI
-    var token = LiveData<String>()
+    var token = MutableLiveData<String>()
 
     companion object {
         const val APP_KY:String = "3595354204"
@@ -26,10 +27,18 @@ class InitSDK : AppCompatActivity(),WbAuthListener{
         const val SCOPE : String = "all"
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initSdk()
         startAuth()
+        token.observe(this,{
+            it.toastShort(this)
+            var intent = Intent(this, WeiBoActivity().javaClass)
+        intent.putExtra("token", token.value)
+        startActivity(intent)
+        })
+
 
     }
 
@@ -49,13 +58,8 @@ class InitSDK : AppCompatActivity(),WbAuthListener{
         p0?.accessToken?.let {
             Log.i("ZJJ", it)
             it.toastShort(this)
-            token = it
+            token.value = it
         }
-
-        /*var intent = Intent(this, WeiBoActivity().javaClass)
-        intent.putExtra("token", p0?.accessToken)
-        intent.putExtra("refreshToken", p0?.refreshToken)
-        startActivity(intent)*/
     }
 
     override fun onError(p0: UiError?) {

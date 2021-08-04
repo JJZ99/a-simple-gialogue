@@ -10,7 +10,8 @@ import com.example.abcdialogue.Module.Fragment.GoodFragment
 import com.example.abcdialogue.Module.Fragment.NewFragment
 import com.example.abcdialogue.Module.Fragment.VideoFragment
 import com.example.abcdialogue.R
-import kotlinx.android.synthetic.main.activity_wei_bo.tablayout
+import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_button
+import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_top
 import kotlinx.android.synthetic.main.activity_wei_bo.viewPager
 
 class WeiBoActivity : AppCompatActivity() {
@@ -20,9 +21,10 @@ class WeiBoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login)
+        setContentView(R.layout.activity_wei_bo)
         initData()
         initView()
+
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             //如果页面滑动了
             override fun onPageScrolled(
@@ -42,26 +44,32 @@ class WeiBoActivity : AppCompatActivity() {
             override fun onPageScrollStateChanged(state: Int) {
                 Log.i("PagerListener", "ScrollState $state")
             }
-
         })
-
     }
     private fun initView() {
+        Log.i(TAG,"=======into initView=======")
         viewPager.adapter = MyViewPageAdapter(
             supportFragmentManager,
             this,
             mFragments!!,
             mTitles!!
         )
-        tablayout.setupWithViewPager(viewPager)
+        tablayout_button.setupWithViewPager(viewPager)
+        tablayout_top.setupWithViewPager(viewPager)
     }
 
     private fun initData() {
+        Log.i(TAG,"=======into initData=======")
+
         this.intent.getStringExtra("token")?.let { mTitles?.add(it) }
         mTitles?.add("视频")
         mTitles?.add("商品")
         mFragments?.add(NewFragment())
         mFragments?.add(VideoFragment())
         mFragments?.add(GoodFragment())
+    }
+
+    companion object {
+        const val TAG = "========WeiBoActivity==========="
     }
 }
