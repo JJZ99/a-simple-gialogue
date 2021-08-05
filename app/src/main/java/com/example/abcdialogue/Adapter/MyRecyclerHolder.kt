@@ -3,6 +3,7 @@ package com.example.abcdialogue.Adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ class MyRecyclerHolder(private val itemView: View): RecyclerView.ViewHolder(item
         fun create(parent: ViewGroup): MyRecyclerHolder {
             val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.new_item, parent, false)
+
             return MyRecyclerHolder(itemView)
         }
     }

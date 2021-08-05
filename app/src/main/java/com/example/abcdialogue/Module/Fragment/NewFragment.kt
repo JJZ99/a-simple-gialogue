@@ -1,6 +1,5 @@
 package com.example.abcdialogue.Module.Fragment
 
-import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,8 +28,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -48,7 +45,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         super.onDetach()
     }
 
-
     class MyDecoration() : RecyclerView.ItemDecoration(){
         override fun getItemOffsets(
             outRect: Rect,
@@ -60,8 +56,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
             //画了一个矩形，就是有点扁
             outRect.set(0,0,0,view.resources.getDimensionPixelOffset(R.dimen.dividerHeight))
         }
-
-
     }
 
 }

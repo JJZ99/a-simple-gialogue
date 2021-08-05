@@ -25,6 +25,7 @@ class WeiBoActivity : AppCompatActivity() {
         initData()
         initView()
 
+
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             //如果页面滑动了
             override fun onPageScrolled(
@@ -39,6 +40,7 @@ class WeiBoActivity : AppCompatActivity() {
                 // Toast.makeText(this,"PageSelected $position",Toast.LENGTH_SHORT).show()
                 Log.i("PagerListener", " PageSelected $position")
             }
+
 
             //页面滑动状态的改变，0表示空闲稳定的状态，1表示正在被拖动 2表示定位到最终位置
             override fun onPageScrollStateChanged(state: Int) {
