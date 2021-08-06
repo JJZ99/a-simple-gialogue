@@ -1,4 +1,4 @@
-package com.example.abcdialogue.Module.Fragment
+package com.example.abcdialogue.Weibo.View.Fragment
 
 import android.graphics.Rect
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.abcdialogue.Adapter.MyRecyclerAdapter
+import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
 import com.example.abcdialogue.R
 import kotlinx.android.synthetic.main.fragment_liner_recycler.new_rv
 

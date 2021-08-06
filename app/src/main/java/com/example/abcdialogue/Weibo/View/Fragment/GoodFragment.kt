@@ -1,4 +1,4 @@
-package com.example.abcdialogue.Module.Fragment
+package com.example.abcdialogue.Weibo.View.Fragment
 
 import android.content.Context
 import android.os.Bundle

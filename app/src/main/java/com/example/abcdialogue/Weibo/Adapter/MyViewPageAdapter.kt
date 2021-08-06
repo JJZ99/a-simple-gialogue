@@ -1,4 +1,4 @@
-package com.example.abcdialogue.Adapter
+package com.example.abcdialogue.Weibo.Adapter
 
 import android.content.Context
 import androidx.fragment.app.Fragment

@@ -1,9 +1,7 @@
-package com.example.abcdialogue.Adapter
+package com.example.abcdialogue.Weibo.Adapter
 
-import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.abcdialogue.R
 
 class MyRecyclerAdapter : RecyclerView.Adapter<MyRecyclerHolder>() {
     var count = 0

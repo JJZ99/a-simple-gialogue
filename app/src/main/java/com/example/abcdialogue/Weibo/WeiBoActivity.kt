@@ -5,10 +5,10 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.example.abcdialogue.Adapter.MyViewPageAdapter
-import com.example.abcdialogue.Module.Fragment.GoodFragment
-import com.example.abcdialogue.Module.Fragment.NewFragment
-import com.example.abcdialogue.Module.Fragment.VideoFragment
+import com.example.abcdialogue.Weibo.Adapter.MyViewPageAdapter
+import com.example.abcdialogue.Weibo.View.Fragment.GoodFragment
+import com.example.abcdialogue.Weibo.View.Fragment.NewFragment
+import com.example.abcdialogue.Weibo.View.Fragment.VideoFragment
 import com.example.abcdialogue.R
 import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_button
 import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_top
@@ -64,11 +64,17 @@ class WeiBoActivity : AppCompatActivity() {
         Log.i(TAG,"=======into initData=======")
 
         this.intent.getStringExtra("token")?.let { mTitles?.add(it) }
-        mTitles?.add("视频")
+        mTitles?.add(mTitles!![0])
         mTitles?.add("商品")
         mFragments?.add(NewFragment())
-        mFragments?.add(VideoFragment())
+        mFragments?.add(VideoFragment(mTitles!![0]))
         mFragments?.add(GoodFragment())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mTitles?.clear()
+        mFragments?.clear()
     }
 
     companion object {
