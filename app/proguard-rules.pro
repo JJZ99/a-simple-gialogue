@@ -21,3 +21,5 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class com.sina.weibo.sdk.** { *; }
+-keep class com.facebook.drawee.backends.pipeline.Fresco { *; }
+-keep class com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilderSupplier { *; }

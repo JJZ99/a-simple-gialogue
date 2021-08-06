@@ -26,6 +26,10 @@ class GoodFragment: Fragment(R.layout.fragment_liner_recycler3) {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
+    override fun onPause() {
+        super.onPause()
+    }
+    
     override fun onDestroy() {
         super.onDestroy()
     }

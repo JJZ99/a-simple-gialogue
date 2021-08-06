@@ -3,18 +3,31 @@ package com.example.abcdialogue.Module
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.abcdialogue.R
 import com.example.abcdialogue.Util.Util.toastShort
+import com.facebook.drawee.backends.pipeline.Fresco
 import kotlinx.android.synthetic.main.activity_main2.helloWorld
+import kotlinx.android.synthetic.main.activity_main2.image_btn
 import kotlinx.android.synthetic.main.activity_main2.read_btn
+import android.net.Uri
+import com.example.abcdialogue.R
+import com.facebook.drawee.view.SimpleDraweeView
+import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory
+import okhttp3.OkHttpClient
+
 
 class MainActivity2 : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        val config =
+//            OkHttpImagePipelineConfigFactory.newBuilder(baseContext, OkHttpClient()).build()
+        Fresco.initialize(this)
+
         setContentView(R.layout.activity_main2)
         read_btn.setOnClickListener {
             val sharedPref = this.getSharedPreferences(
-                getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                getString(com.example.abcdialogue.R.string.preference_file_key), Context.MODE_PRIVATE)
             val edit = sharedPref.edit()
             val username = sharedPref.getString("username","JJZ")
             val password = sharedPref.getString("password","123456")
@@ -22,6 +35,16 @@ class MainActivity2 : AppCompatActivity() {
             val school = sharedPref.getString("school","希望小学")
             helloWorld.text = "$username\n$password\n$age\n$school"
             "$username\n$password\n$age\n$school".toastShort(this)
+        }
+        image_btn.setOnClickListener {
+            val uri: Uri =
+                Uri.parse("https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png")
+
+            var controller = Fresco.newDraweeControllerBuilder()
+                .setUri(uri)
+                .setAutoPlayAnimations(true)
+                .build()
+            findViewById<SimpleDraweeView>(R.id.net_image).controller = controller;
         }
     }
 }

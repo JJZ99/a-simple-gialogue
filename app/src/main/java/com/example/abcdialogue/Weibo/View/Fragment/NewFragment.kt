@@ -22,19 +22,24 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        new_rv.layoutManager = LinearLayoutManager(this.context)
+        new_rv.addItemDecoration(MyDecoration())
+        new_rv.adapter = MyRecyclerAdapter()
+        new_rv.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->  }
+    }
+
+    override fun onPause() {
+        super.onPause()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        new_rv.layoutManager = LinearLayoutManager(this.context)
-        new_rv.addItemDecoration(MyDecoration())
-        new_rv.adapter = MyRecyclerAdapter()
+
     }
 
     override fun onDestroy() {

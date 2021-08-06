@@ -8,7 +8,6 @@ import com.example.abcdialogue.R
 
 class MyRecyclerHolder(private val itemView: View): RecyclerView.ViewHolder(itemView) {
 
-
     companion object {
         fun create(parent: ViewGroup): MyRecyclerHolder {
             val itemView = LayoutInflater.from(parent.context)

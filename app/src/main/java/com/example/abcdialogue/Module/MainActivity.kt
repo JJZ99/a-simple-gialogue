@@ -8,6 +8,7 @@ import android.util.Log
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Util.Util.toast
 import com.example.abcdialogue.Util.Util.toastShort
+import com.example.abcdialogue.Weibo.InitSDK
 import com.example.abcdialogue.Weibo.WeiBoActivity
 import kotlinx.android.synthetic.main.activity_main.login_btn
 import kotlinx.android.synthetic.main.activity_main.password_input
@@ -36,28 +37,28 @@ class MainActivity : AppCompatActivity() {
 
         login_btn.setOnClickListener {
 
-            val username = username_input.text.toString()
-            val password = password_input.text.toString()
-            val tell = tell.text.toString()
-            val school = school.text.toString()
-            Log.i("info","$username+$password+$tell+$school")
-            if (username.isEmpty() || password.isEmpty() || school.isEmpty() || tell.isEmpty()
-            ) {
-                "你能不能输入了再点啊！".toastShort(this)
-                return@setOnClickListener;
-            }
-            if (!checkPhoneNum(tell)){
-                "你能不能输入电话啊！".toastShort(this)
-
-                return@setOnClickListener
-            }
-
-            var edit = sharedPref.edit()
-            edit.putString("username",username)
-            edit.putString("password",password)
-            edit.putLong("tell", tell.toLong())
-            edit.putString("school",school)
-            edit.commit()
+//            val username = username_input.text.toString()
+//            val password = password_input.text.toString()
+//            val tell = tell.text.toString()
+//            val school = school.text.toString()
+//            Log.i("info","$username+$password+$tell+$school")
+////            if (username.isEmpty() || password.isEmpty() || school.isEmpty() || tell.isEmpty()
+////            ) {
+////                "你能不能输入了再点啊！".toastShort(this)
+////                return@setOnClickListener;
+////            }
+////            if (!checkPhoneNum(tell)){
+////                "你能不能输入电话啊！".toastShort(this)
+////
+////                return@setOnClickListener
+////            }
+//
+//            var edit = sharedPref.edit()
+//            edit.putString("username",username)
+//            edit.putString("password",password)
+//            edit.putLong("tell", tell.toLong())
+//            edit.putString("school",school)
+//            edit.commit()
             var intent = Intent(this, MainActivity2().javaClass)
             startActivity(intent)
             "jump！jump！".toastShort(this)
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         wei_bo_btn.setOnClickListener {
-            var intent = Intent(this, WeiBoActivity().javaClass)
+            var intent = Intent(this, InitSDK().javaClass)
             startActivity(intent)
         }
 
