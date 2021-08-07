@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
 import com.example.abcdialogue.R
+import com.example.abcdialogue.Util.Util.toastShort
+import kotlinx.android.synthetic.main.fragment_liner_recycler.add_btn
 import kotlinx.android.synthetic.main.fragment_liner_recycler.new_rv
+import kotlinx.android.synthetic.main.fragment_liner_recycler.remove_btn
 
 class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
 
@@ -27,20 +30,30 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var adapter = MyRecyclerAdapter()
         new_rv.layoutManager = LinearLayoutManager(this.context)
-        new_rv.addItemDecoration(MyDecoration())
-        new_rv.adapter = MyRecyclerAdapter()
-        new_rv.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->  }
+        //new_rv.addItemDecoration(MyDecoration())
+        new_rv.adapter = adapter
+        adapter.onItemClickListener = object : MyRecyclerAdapter.OnItemClickListener {
+            override fun onItemClick(view: View,pos:Int) {
+                "你点击了第${pos}Item".toastShort(view.context)
+            }
+        }
+        add_btn.setOnClickListener{
+            adapter.addItem(0)
+        }
+        remove_btn.setOnClickListener{
+            adapter.removeItem(adapter.itemCount-1)
+        }
+        //设置每一项的动画
+        //new_rv.itemAnimator
+    //new_rv.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->  }
     }
 
     override fun onPause() {
         super.onPause()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-    }
 
     override fun onDestroy() {
         super.onDestroy()
