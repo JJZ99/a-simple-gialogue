@@ -29,7 +29,6 @@ class VideoFragment(): Fragment(R.layout.fragment_liner_recycler2) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        RetrofitHelper.init()
     }
 
     override fun onCreateView(

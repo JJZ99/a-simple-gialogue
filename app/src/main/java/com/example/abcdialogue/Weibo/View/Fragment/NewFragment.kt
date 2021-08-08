@@ -8,10 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.example.abcdialogue.Module.MainActivity2
 import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
@@ -19,16 +17,28 @@ import com.example.abcdialogue.R
 import com.example.abcdialogue.Util.Util.toastShort
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder
-import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_END
 import kotlinx.android.synthetic.main.fragment_liner_recycler.add_btn
 import kotlinx.android.synthetic.main.fragment_liner_recycler.new_rv
 import kotlinx.android.synthetic.main.fragment_liner_recycler.refresh_layout
 import kotlinx.android.synthetic.main.fragment_liner_recycler.remove_btn
-import kotlinx.android.synthetic.main.fragment_liner_recycler2.country
+import android.os.Looper
+import androidx.core.os.HandlerCompat.postDelayed
+import androidx.lifecycle.ViewModelProvider
+import com.example.abcdialogue.Weibo.InitSDK
+import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
+import com.example.abcdialogue.Weibo.VM.CountryViewModel
+import com.example.abcdialogue.Weibo.VM.CountryViewModelFactory
+import java.util.concurrent.Delayed
+
 
 class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
 
-    var adapter = MyRecyclerAdapter()
+    private val viewModel by lazy{
+        ViewModelProvider(this, CountryViewModelFactory()).get(CountryViewModel::class.java)
+    }
+
+    lateinit var adapter: MyRecyclerAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,17 +53,20 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initData()
         //初始化监听事件
         initListener()
-        //初始化recycler
-        initRecycler()
         //初始化下啦刷新控件
         handlerDownPullUpdate(adapter as RecyclerView.Adapter<RecyclerView.ViewHolder>)
-
-
-
-
+        //初始化recycler
+        initRecycler()
     }
+
+    private fun initData() {
+        TOKEN?.let { it1 -> viewModel.getProvinceList(it1) }
+        adapter= MyRecyclerAdapter(this,viewModel)
+    }
+
 
     private fun initRecycler() {
         new_rv.layoutManager = LinearLayoutManager(this.context)
@@ -75,16 +88,11 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
             override fun onLoadMore(view: MyFooterViewHolder) {
                 "你调用了onLoadMore".toastShort(MyApplication.context)
                 //在这里去执行刷新数据的操作，使用retrofit
-                Handler().postDelayed(Runnable {
-                    adapter.addItem(adapter.itemCount-1)
-                    adapter.addItem(adapter.itemCount-1)
-                    adapter.addItem(adapter.itemCount-1)
-                    adapter.addItem(adapter.itemCount-1)
-                    adapter.addItem(adapter.itemCount-1)
-                    MyRecyclerAdapter.currStatus = LoadStatus.LoadMoreEnd
-                    view.update(LOADER_STATE_END)
-                    //取消动画
-                },5000)
+                Handler(Looper.getMainLooper()).post{
+                    for (i in 1..adapter.pageSize){
+                        adapter.addItem(adapter.itemCount-1)
+                    }
+                }
             }
         }
 
@@ -93,7 +101,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         }
 
         remove_btn.setOnClickListener{
-            adapter.removeItem(adapter.itemCount-2)
+            adapter.removeItem(adapter?.itemCount-2)
         }
 
         refresh_layout.setOnRefreshListener {

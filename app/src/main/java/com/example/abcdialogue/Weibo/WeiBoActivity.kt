@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.abcdialogue.Weibo.Adapter.MyViewPageAdapter
 import com.example.abcdialogue.R
+import com.example.abcdialogue.Weibo.Util.Net.RetrofitHelper
 import com.example.abcdialogue.Weibo.View.Fragment.FragmentFactory
 import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_button
 import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_top
@@ -20,6 +21,7 @@ class WeiBoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wei_bo)
+
         initData()
         initView()
 
@@ -61,8 +63,8 @@ class WeiBoActivity : AppCompatActivity() {
     private fun initData() {
         Log.i(TAG,"=======into initData=======")
 
-        this.intent.getStringExtra("token")?.let { mTitles?.add(it) }
-        mTitles?.add(mTitles!![0])
+        mTitles?.add("新闻")
+        mTitles?.add("视频")
         mTitles?.add("商品")
         mFragments?.add(FragmentFactory.getInstance(1))
         mFragments?.add(FragmentFactory.getInstance(2))

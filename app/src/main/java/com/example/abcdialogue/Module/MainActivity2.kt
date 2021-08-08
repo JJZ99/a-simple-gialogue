@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_main2.image_btn
 import kotlinx.android.synthetic.main.activity_main2.read_btn
 import android.net.Uri
 import com.example.abcdialogue.R
+import com.example.abcdialogue.Weibo.Util.FrescoUtil
 import com.facebook.drawee.view.SimpleDraweeView
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory
 import okhttp3.OkHttpClient
@@ -22,7 +23,7 @@ class MainActivity2 : AppCompatActivity() {
 
 //        val config =
 //            OkHttpImagePipelineConfigFactory.newBuilder(baseContext, OkHttpClient()).build()
-        Fresco.initialize(this)
+
 
         setContentView(R.layout.activity_main2)
         read_btn.setOnClickListener {
@@ -37,14 +38,8 @@ class MainActivity2 : AppCompatActivity() {
             "$username\n$password\n$age\n$school".toastShort(this)
         }
         image_btn.setOnClickListener {
-            val uri: Uri =
-                Uri.parse("https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png")
-
-            var controller = Fresco.newDraweeControllerBuilder()
-                .setUri(uri)
-                .setAutoPlayAnimations(true)
-                .build()
-            findViewById<SimpleDraweeView>(R.id.net_image).controller = controller;
+            val url="https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"
+            FrescoUtil.loadImage(findViewById(R.id.net_image),url)
         }
     }
 }

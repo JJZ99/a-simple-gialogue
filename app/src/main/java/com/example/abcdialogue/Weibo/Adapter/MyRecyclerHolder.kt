@@ -9,15 +9,19 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Util.Util.toastShort
+import com.facebook.drawee.view.SimpleDraweeView
 
 class MyRecyclerHolder(private val itemView: View): RecyclerView.ViewHolder(itemView) {
     var textView :TextView = itemView.findViewById(R.id.header_name)
     var textView2 :TextView = itemView.findViewById(R.id.header_time)
+    var imageView :SimpleDraweeView = itemView.findViewById(R.id.item_iv)
+    var headerImage :SimpleDraweeView = itemView.findViewById(R.id.header_image)
+
 
 
 
     companion object {
-        fun create(parent: ViewGroup,onItemClickListener: MyRecyclerAdapter.OnItemClickListener?,time:Int): MyRecyclerHolder {
+        fun create(parent: ViewGroup,onItemClickListener: MyRecyclerAdapter.OnItemClickListener?): MyRecyclerHolder {
             val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.new_item, parent, false)
             val viewHolder = MyRecyclerHolder(itemView)
@@ -26,7 +30,6 @@ class MyRecyclerHolder(private val itemView: View): RecyclerView.ViewHolder(item
                     it.onItemClick(parent,viewHolder.layoutPosition)
                 }
             }
-            viewHolder.textView.text = time.toString()
             return viewHolder
         }
     }

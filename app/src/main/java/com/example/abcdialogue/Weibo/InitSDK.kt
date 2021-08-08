@@ -33,11 +33,11 @@ class InitSDK : AppCompatActivity(),WbAuthListener{
         super.onCreate(savedInstanceState)
         initSdk()
         startAuth()
-        token.observe(this,{
+        token.observe(this, {
             it.toastShort(this)
             var intent = Intent(this, WeiBoActivity().javaClass)
-        intent.putExtra("token", token.value)
-        startActivity(intent)
+            //intent.putExtra("token", token.value)
+            startActivity(intent)
         })
 
 

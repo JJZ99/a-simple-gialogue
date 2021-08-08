@@ -3,24 +3,49 @@ package com.example.abcdialogue.Weibo.Adapter
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_END
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_ING
+import com.example.abcdialogue.Weibo.Util.FrescoUtil
+import com.example.abcdialogue.Weibo.VM.CountryViewModel
 
 
-class MyRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onItemClickListener : OnItemClickListener?= null
     var onLoadMoreListener : OnLoadMoreListener?= null
 
-    var count = 16
-    var lastLoadDataItemPosition = count-1
-    var pageSize = 10
-    var pageCount = 1
+    var listCountry = viewModel.countryList.value
+
+
+    //这里多一项是因为footer
+    private var total = (listCountry?.size?:0)+1
+
+
+    var pageSize = 30
+    var pageCount = 0
+    var remainder = 1
+    init {
+        viewModel.countryList.observe(fragment.viewLifecycleOwner,{
+            total = it.size+1
+            notifyDataSetChanged()
+        })
+        if (total==1){
+            remainder = 1
+        }
+
+        if (total in 2..29) {
+            pageCount = 0
+        }
+        if (total>=30){
+            pageCount = 1
+        }
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TYPE_NORMAL)
-            MyRecyclerHolder.create(parent, onItemClickListener, ++time)
+            MyRecyclerHolder.create(parent, onItemClickListener)
         else{
             MyFooterViewHolder.create(parent,onLoadMoreListener)
         }
@@ -30,26 +55,27 @@ class MyRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      * 这里的bind和下面的注释部分不同，因为这里是父类，那意味着只要是他的子类hold都ok
      */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (position!=(itemCount-1))
-            (holder as MyRecyclerHolder).textView2.text = position.toString()
-        else{
+        if (position!=(itemCount-1)){
+            (holder as MyRecyclerHolder).apply{
+                textView.text = viewModel.countryList.value!![position].statusMsg
+                textView2.text = viewModel.countryList.value!![position].statusCode
+                FrescoUtil.loadImage(imageView,"")
+                FrescoUtil.loadImage(headerImage,"")
+            }
+        } else{
             if (currStatus == LoadStatus.LoadMoreIn){
                 (holder as MyFooterViewHolder).update(LOADER_STATE_ING)
             }
+            if (currStatus == LoadStatus.LoadMoreEnd){
+                (holder as MyFooterViewHolder).update(LOADER_STATE_END)
+            }
+            (holder as MyFooterViewHolder).update(LOADER_STATE_END)
         }
     }
 
-    /**
-     * 这个方法一般是用来绑定holder的，一般用来设置数据
-     */
-//    override fun onBindViewHolder(holder: MyRecyclerHolder, position: Int) {
-//        if (position!=(itemCount-1))
-//            holder.textView2.text = position.toString()
-//
-//    }
 
     override fun getItemCount(): Int {
-        return count
+        return (pageCount*pageSize)+remainder
     }
 
     /**
@@ -67,18 +93,36 @@ class MyRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      * 添加数据
      */
      fun addItem(pos:Int){
-        ++count
+        if ((pageCount*pageSize)+remainder==total-1){
+            currStatus = LoadStatus.LoadMoreEnd
+            return
+        }
+
+        ++remainder
         //刷新适配器
         notifyItemInserted(pos)
         notifyItemRangeChanged(pos,1)
-
+        if (remainder==30){
+            remainder=0
+            pageCount++
+        }
     }
 
     fun removeItem(pos:Int){
+        if ((pageCount*pageSize)+remainder==0)
+            return
         notifyItemRemoved(pos)
-        --count
+        --remainder
         notifyItemRangeChanged(pos,1)
+        if (remainder==-1){
+            remainder=29
+            pageCount--
+        }
+        if ((pageCount * pageSize) + remainder <= total - 30) {
+            currStatus = LoadStatus.LoadMoreIn
 
+
+        }
     }
 
     //每一项的点击事件
@@ -92,21 +136,9 @@ class MyRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     companion object {
-        var time = 0
-        //最后一项
-        const val FOOTER = 1
-        //中间的
-        const val MIDDLE = 0
-        //头部
-        const val HEADER = -1
-
         const val TYPE_NORMAL = 0
         const val TYPE_LOAD_MORE = 1
         var currStatus = LoadStatus.LoadMoreIn
-
-
     }
-
-
-
 }
+
