@@ -57,8 +57,13 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (position!=(itemCount-1)){
             (holder as MyRecyclerHolder).apply{
-                textView.text = viewModel.countryList.value!![position].statusMsg
-                textView2.text = viewModel.countryList.value!![position].statusCode
+                textView.text = position.toString()
+                textView2.text = position.toString()
+                viewModel.countryList.value?.let {
+                    textView.text = it[position].statusMsg
+                    textView2.text = it[position].statusCode
+                }
+
                 FrescoUtil.loadImage(imageView,"")
                 FrescoUtil.loadImage(headerImage,"")
             }

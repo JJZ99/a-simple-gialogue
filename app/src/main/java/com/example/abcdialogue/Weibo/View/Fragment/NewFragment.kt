@@ -48,23 +48,26 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.countryList.observe(this.viewLifecycleOwner,{
+            initRecycler()
+        })
+        initData()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initData()
+        adapter = MyRecyclerAdapter(this,viewModel)
         //初始化监听事件
         initListener()
         //初始化下啦刷新控件
         handlerDownPullUpdate(adapter as RecyclerView.Adapter<RecyclerView.ViewHolder>)
         //初始化recycler
-        initRecycler()
+        //initRecycler()
     }
 
     private fun initData() {
         TOKEN?.let { it1 -> viewModel.getProvinceList(it1) }
-        adapter= MyRecyclerAdapter(this,viewModel)
     }
 
 

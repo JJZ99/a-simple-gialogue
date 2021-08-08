@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.example.abcdialogue.Weibo.Adapter.MyViewPageAdapter
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Util.Net.RetrofitHelper
+import com.example.abcdialogue.Weibo.VM.CountryViewModel
+import com.example.abcdialogue.Weibo.VM.CountryViewModelFactory
 import com.example.abcdialogue.Weibo.View.Fragment.FragmentFactory
 import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_button
 import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_top
