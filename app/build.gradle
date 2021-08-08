@@ -95,5 +95,13 @@ dependencies {
     implementation 'com.facebook.fresco:fresco:2.5.0'
     implementation "com.facebook.fresco:imagepipeline-okhttp3:1.11.0"
 
+    //下拉刷新控件
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+
+    implementation("androidx.cardview:cardview:1.0.0")
+
+
+
 
 }

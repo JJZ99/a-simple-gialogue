@@ -12,6 +12,8 @@ import com.example.abcdialogue.Util.Util.toastShort
 
 class MyRecyclerHolder(private val itemView: View): RecyclerView.ViewHolder(itemView) {
     var textView :TextView = itemView.findViewById(R.id.header_name)
+    var textView2 :TextView = itemView.findViewById(R.id.header_time)
+
 
 
     companion object {

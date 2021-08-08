@@ -6,10 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.abcdialogue.Weibo.Adapter.MyViewPageAdapter
-import com.example.abcdialogue.Weibo.View.Fragment.GoodFragment
-import com.example.abcdialogue.Weibo.View.Fragment.NewFragment
-import com.example.abcdialogue.Weibo.View.Fragment.VideoFragment
 import com.example.abcdialogue.R
+import com.example.abcdialogue.Weibo.View.Fragment.FragmentFactory
 import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_button
 import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_top
 import kotlinx.android.synthetic.main.activity_wei_bo.viewPager
@@ -66,9 +64,9 @@ class WeiBoActivity : AppCompatActivity() {
         this.intent.getStringExtra("token")?.let { mTitles?.add(it) }
         mTitles?.add(mTitles!![0])
         mTitles?.add("商品")
-        mFragments?.add(NewFragment())
-        mFragments?.add(VideoFragment(mTitles!![0]))
-        mFragments?.add(GoodFragment())
+        mFragments?.add(FragmentFactory.getInstance(1))
+        mFragments?.add(FragmentFactory.getInstance(2))
+        mFragments?.add(FragmentFactory.getInstance(3))
     }
 
     override fun onDestroy() {

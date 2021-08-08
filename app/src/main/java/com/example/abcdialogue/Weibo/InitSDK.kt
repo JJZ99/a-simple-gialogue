@@ -25,6 +25,7 @@ class InitSDK : AppCompatActivity(),WbAuthListener{
         const val APP_KY:String = "3595354204"
         const val REDIRECT_URL: String = "https://api.weibo.com/oauth2/default.html"
         const val SCOPE : String = "all"
+        var TOKEN:String? = null
     }
 
 
@@ -51,7 +52,7 @@ class InitSDK : AppCompatActivity(),WbAuthListener{
     private fun startAuth(){
         Handler(Looper.getMainLooper()).postDelayed({
             mWBAPI.authorize(this as WbAuthListener)
-        },1000)
+        },1500)
     }
 
     override fun onComplete(p0: Oauth2AccessToken?) {
@@ -59,6 +60,7 @@ class InitSDK : AppCompatActivity(),WbAuthListener{
             Log.i("ZJJ", it)
             it.toastShort(this)
             token.value = it
+            TOKEN = it
         }
     }
 
