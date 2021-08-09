@@ -94,7 +94,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
                             childView.setOnClickListener{
                                 "width${childView.width}\nheight${childView.height}\n$winWidth".toastShort()
                             }
-                            FrescoUtil.loadImageAddSize(childView,width = itemWidth)
+                            FrescoUtil.loadImageAddSize(childView)
                             line.new_image_hor.addView(childView, LinearLayout.LayoutParams(itemWidth,
                                 LinearLayout.LayoutParams.MATCH_PARENT).apply {
                                 rightMargin = itemMarginEnd
@@ -112,7 +112,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
                             childView.setOnClickListener{
                                 "width${childView.width}\nheight${childView.height}\n$winWidth".toastShort()
                             }
-                            FrescoUtil.loadImageAddSize(childView,width = itemWidth)
+                            FrescoUtil.loadImageAddSize(childView)
                             footLine.new_image_hor.addView(childView, LinearLayout.LayoutParams(itemWidth,
                                 LinearLayout.LayoutParams.MATCH_PARENT).apply {
                                 rightMargin = itemMarginEnd

@@ -17,7 +17,7 @@ import com.facebook.drawee.generic.RoundingParams
 object FrescoUtil {
 
     const val DEFAULT_URL ="https://img.sj33.cn/uploads/202009/7-200913160953c5.jpg"
-
+    const val DEFAULT_URL_BAIDU = "https://www.baidu.com/img/flexible/logo/pc/result@2.png"
     private val builder = GenericDraweeHierarchyBuilder(MyApplication.context.resources)
 
     private val hierarchy: GenericDraweeHierarchy = builder
@@ -33,8 +33,8 @@ object FrescoUtil {
     /**
      * 加载图片，这个用在xml中图片的加载
      */
-    fun loadImage(imageView: SimpleDraweeView, url: String = DEFAULT_URL) {
-        val uri =  Uri.parse(url)
+    fun loadImage(imageView: SimpleDraweeView, url: String = DEFAULT_URL_BAIDU) {
+        val uri =  if (url?.isNotEmpty()) Uri.parse(url) else Uri.parse(DEFAULT_URL_BAIDU)
         var controller = Fresco.newDraweeControllerBuilder()
             .setUri(uri)
             .setAutoPlayAnimations(true)
@@ -59,17 +59,16 @@ object FrescoUtil {
     fun loadImageAddSize(
         imageView: SimpleDraweeView,
         url: String = DEFAULT_URL,
-        width: Int,
+        width: Int =112,
         ratio: Float = 1f,
     ) {
-        val uri =  Uri.parse(url)
-        imageView.post{
-            imageView.layoutParams.apply {
-                this.width = DisplayUtil.dp2px(width)
-            }
-        }
+//        imageView.post{
+//            imageView.layoutParams.apply {
+//                this.width = DisplayUtil.dp2px(width)
+//            }
+//        }
         //imageView.aspectRatio = ratio
         imageView.hierarchy = hierarchy
-        imageView.setImageURI(uri)
+        loadImage(imageView, url)
     }
 }
