@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Xml
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.abcdialogue.MyApplication
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.File
@@ -17,13 +18,13 @@ object Util {
     /**
      * 显示短时间
      */
-    fun Any.toastShort(context: Context, duration: Int = Toast.LENGTH_SHORT): Toast {
+    fun Any.toastShort(context: Context = MyApplication.context, duration: Int = Toast.LENGTH_SHORT): Toast {
         return Toast.makeText(context, this.toString(), duration).apply { show() }
     }
     /**
      * 显示长时间
      */
-    fun Any.toastLong(context: Context, duration: Int = Toast.LENGTH_LONG): Toast {
+    fun Any.toastLong(context: Context = MyApplication.context, duration: Int = Toast.LENGTH_LONG): Toast {
         return Toast.makeText(context, this.toString(), duration).apply { show() }
     }
 

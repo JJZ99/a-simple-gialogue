@@ -104,7 +104,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         }
 
         remove_btn.setOnClickListener{
-            adapter.removeItem(adapter?.itemCount-2)
+            adapter.removeItem(adapter?.itemCount-1)
         }
 
         refresh_layout.setOnRefreshListener {
@@ -125,17 +125,11 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         refresh_layout.setColorSchemeColors(0xff0000,0x00ff00,0x0000ff)
         //refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         //refresh_layout.setProgressBackgroundColorSchemeColor(0x03DAC5);
-
-
     }
-
-
 
     override fun onPause() {
         super.onPause()
     }
-
-
     override fun onDestroy() {
         super.onDestroy()
     }

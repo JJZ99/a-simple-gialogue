@@ -4,15 +4,18 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/btn_bg_normal.xml" value="0.21737451737451738" />
+        <entry key="app/src/main/res/drawable-v24/scrollbar.xml" value="0.33046875" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.21737451737451738" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="1.5" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.2078125" />
         <entry key="app/src/main/res/layout/activity_wei_bo.xml" value="0.30833333333333335" />
         <entry key="app/src/main/res/layout/fragment_liner_recycler.xml" value="0.15859375" />
         <entry key="app/src/main/res/layout/fragment_liner_recycler2.xml" value="0.26666666666666666" />
+        <entry key="app/src/main/res/layout/fragment_liner_recycler3.xml" value="0.20078125" />
+        <entry key="app/src/main/res/layout/image_linear_hor.xml" value="0.20078125" />
         <entry key="app/src/main/res/layout/load_more_item.xml" value="0.164453125" />
         <entry key="app/src/main/res/layout/login.xml" value="0.18229166666666666" />
-        <entry key="app/src/main/res/layout/new_item.xml" value="0.176171875" />
+        <entry key="app/src/main/res/layout/new_item.xml" value="0.45877473828414134" />
         <entry key="app/src/main/res/layout/new_item2.xml" value="0.204296875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.170703125" />
       </map>

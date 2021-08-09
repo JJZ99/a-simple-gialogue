@@ -1,45 +1,56 @@
 package com.example.abcdialogue.Weibo.Adapter
 
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.abcdialogue.MyApplication.Companion.context
+import com.example.abcdialogue.R
+import com.example.abcdialogue.Util.DisplayUtil
+import com.example.abcdialogue.Util.Util.toastShort
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_END
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_ING
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
 import com.example.abcdialogue.Weibo.VM.CountryViewModel
+import com.facebook.drawee.view.SimpleDraweeView
+import kotlinx.android.synthetic.main.image_linear_hor.view.new_image_hor
+import kotlinx.coroutines.internal.artificialFrame
 
 
 class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var onItemClickListener : OnItemClickListener?= null
+    var onItemClickListener : MyRecyclerAdapter.OnItemClickListener?= null
     var onLoadMoreListener : OnLoadMoreListener?= null
 
-    var listCountry = viewModel.countryList.value
-
-
     //这里多一项是因为footer
-    private var total = (listCountry?.size?:0)+1
+    private var total = 1
 
+    private var winWidth = context.resources.displayMetrics.widthPixels
+
+    private var itemMarginEnd = DisplayUtil.dp2px(3)
+    private var itemWidth = (winWidth - itemMarginEnd * 3 - 36) / 3
+
+    /**
+     * 是否能加载更多
+     * 在初始化和增加删除某一项后会判断设置值
+     */
+    private var hasMore = false
 
     var pageSize = 30
-    var pageCount = 0
-    var remainder = 1
+    var currNumber = 1
     init {
         viewModel.countryList.observe(fragment.viewLifecycleOwner,{
             total = it.size+1
+            if (currNumber<total) {
+                hasMore = false
+                currStatus = LoadStatus.LoadMoreIn
+            }
             notifyDataSetChanged()
         })
-        if (total==1){
-            remainder = 1
-        }
-
-        if (total in 2..29) {
-            pageCount = 0
-        }
-        if (total>=30){
-            pageCount = 1
-        }
     }
 
 
@@ -63,24 +74,66 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
                     textView.text = it[position].statusMsg
                     textView2.text = it[position].statusCode
                 }
-
-                FrescoUtil.loadImage(imageView,"")
                 FrescoUtil.loadImage(headerImage,"")
+                //生成一个随机数[0,6]
+                val randoms = (0..6).random()
+                if (randoms==0){
+                    holder.imageContainer.visibility = View.GONE
+                }else{
+                    holder.imageContainer.visibility = View.VISIBLE
+                    holder.imageContainer.removeAllViews()
+                    var count = randoms/3
+                    var reminder = randoms%3
+                    for (i in  0 until count){
+                        val line = LayoutInflater.from(holder.imageContainer.context)
+                            .inflate(R.layout.image_linear_hor, holder.imageContainer, false).apply {
+                                this.layoutParams.height = itemWidth
+                            }
+                        for (j in 0 until 3){
+                            val childView = SimpleDraweeView(line.context)
+                            childView.setOnClickListener{
+                                "width${childView.width}\nheight${childView.height}\n$winWidth".toastShort()
+                            }
+                            FrescoUtil.loadImageAddSize(childView,width = itemWidth)
+                            line.new_image_hor.addView(childView, LinearLayout.LayoutParams(itemWidth,
+                                LinearLayout.LayoutParams.MATCH_PARENT).apply {
+                                rightMargin = itemMarginEnd
+                            })
+                        }
+                        holder.imageContainer.addView(line)
+                    }
+                    val footLine = LayoutInflater.from(holder.imageContainer.context)
+                        .inflate(R.layout.image_linear_hor, holder.imageContainer, false).apply {
+                            this.layoutParams.height = itemWidth
+                        }
+                    if (reminder!=0){
+                        for (i in  0 until reminder){
+                            val childView = SimpleDraweeView(footLine.context)
+                            childView.setOnClickListener{
+                                "width${childView.width}\nheight${childView.height}\n$winWidth".toastShort()
+                            }
+                            FrescoUtil.loadImageAddSize(childView,width = itemWidth)
+                            footLine.new_image_hor.addView(childView, LinearLayout.LayoutParams(itemWidth,
+                                LinearLayout.LayoutParams.MATCH_PARENT).apply {
+                                rightMargin = itemMarginEnd
+                            })
+                        }
+                        holder.imageContainer.addView(footLine)
+                    }
+                }
             }
         } else{
-            if (currStatus == LoadStatus.LoadMoreIn){
+            if (hasMore){
                 (holder as MyFooterViewHolder).update(LOADER_STATE_ING)
-            }
-            if (currStatus == LoadStatus.LoadMoreEnd){
+            }else{
                 (holder as MyFooterViewHolder).update(LOADER_STATE_END)
             }
-            (holder as MyFooterViewHolder).update(LOADER_STATE_END)
         }
     }
 
 
     override fun getItemCount(): Int {
-        return (pageCount*pageSize)+remainder
+        return total
     }
 
     /**
@@ -98,36 +151,33 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
      * 添加数据
      */
      fun addItem(pos:Int){
-        if ((pageCount*pageSize)+remainder==total-1){
+        if (currNumber==total){
             currStatus = LoadStatus.LoadMoreEnd
+            hasMore = false
             return
         }
-
-        ++remainder
+        ++currNumber
         //刷新适配器
         notifyItemInserted(pos)
         notifyItemRangeChanged(pos,1)
-        if (remainder==30){
-            remainder=0
-            pageCount++
-        }
     }
 
     fun removeItem(pos:Int){
-        if ((pageCount*pageSize)+remainder==0)
+        //剩下一个加载更多的时候就是1
+        if (currNumber==1){
+            if (total==currNumber){
+                hasMore = false
+                currStatus = LoadStatus.LoadMoreEnd
+            }else{
+                hasMore = true
+                currStatus = LoadStatus.LoadMoreIn
+            }
             return
+        }
+
         notifyItemRemoved(pos)
-        --remainder
+        --currNumber
         notifyItemRangeChanged(pos,1)
-        if (remainder==-1){
-            remainder=29
-            pageCount--
-        }
-        if ((pageCount * pageSize) + remainder <= total - 30) {
-            currStatus = LoadStatus.LoadMoreIn
-
-
-        }
     }
 
     //每一项的点击事件
@@ -143,7 +193,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
     companion object {
         const val TYPE_NORMAL = 0
         const val TYPE_LOAD_MORE = 1
-        var currStatus = LoadStatus.LoadMoreIn
+        var currStatus = LoadStatus.LoadMoreEnd
     }
 }
 

@@ -46,7 +46,7 @@ class VideoFragment(): Fragment(R.layout.fragment_liner_recycler2) {
         }
         this.activity?.let {
             viewModel.countryList.observe(it, Observer {
-                country.text = it.toString()
+                country.text = it.size.toString()
             })
         }
 

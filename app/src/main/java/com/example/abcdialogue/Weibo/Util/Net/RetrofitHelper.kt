@@ -36,7 +36,6 @@ object RetrofitHelper {
                 .client(client)
         }
         retrofit = retrofitBuilder!!.build()
-
     }
 
     fun getRetrofit():Retrofit{
