@@ -1,5 +1,6 @@
 package com.example.abcdialogue.Weibo.Util
 
+import android.graphics.Color
 import android.net.Uri
 import android.widget.ImageView
 import com.example.abcdialogue.MyApplication
@@ -17,14 +18,16 @@ import com.facebook.drawee.generic.RoundingParams
 object FrescoUtil {
 
     const val DEFAULT_URL ="https://img.sj33.cn/uploads/202009/7-200913160953c5.jpg"
-    const val DEFAULT_URL_BAIDU = "https://www.baidu.com/img/flexible/logo/pc/result@2.png"
-    private val builder = GenericDraweeHierarchyBuilder(MyApplication.context.resources)
+    const val DEFAULT_URL_BAIDU = "https://profile.csdnimg.cn/9/1/2/3_zzf0521"
+    val builder = GenericDraweeHierarchyBuilder(MyApplication.context.resources)
 
-    private val hierarchy: GenericDraweeHierarchy = builder
+
+
+     val hierarchyComm: GenericDraweeHierarchy = builder
         //淡入淡出的持续时间
-        .setFadeDuration(300)
+        //.setFadeDuration(300)
         //.setPlaceholderImage(R.drawable.loading_image, null)
-        .setFailureImage(R.drawable.reload_click)
+        //.setFailureImage(R.mipmap.reload_click)
         //设置缩放类型
         .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
         //设置圆角
@@ -34,6 +37,24 @@ object FrescoUtil {
      * 加载图片，这个用在xml中图片的加载
      */
     fun loadImage(imageView: SimpleDraweeView, url: String = DEFAULT_URL_BAIDU) {
+
+        val uri =  if (url?.isNotEmpty()) Uri.parse(url) else Uri.parse(DEFAULT_URL_BAIDU)
+        var controller = Fresco.newDraweeControllerBuilder()
+            .setUri(uri)
+            .setAutoPlayAnimations(true)
+            .build()
+        imageView.controller = controller
+    }
+    /**
+     * 加载图片，这个用在xml中图片的加载
+     */
+    fun loadImageAddCircle(imageView: SimpleDraweeView, url: String = DEFAULT_URL_BAIDU) {
+        val rp = RoundingParams()
+        //设置图像是否为圆形
+        rp.roundAsCircle = true
+        //设置圆环的颜色和粗细
+        //rp.setBorder(Color.Red,10F);
+        imageView.hierarchy = builder.setRoundingParams(rp).build()
         val uri =  if (url?.isNotEmpty()) Uri.parse(url) else Uri.parse(DEFAULT_URL_BAIDU)
         var controller = Fresco.newDraweeControllerBuilder()
             .setUri(uri)
@@ -67,8 +88,18 @@ object FrescoUtil {
 //                this.width = DisplayUtil.dp2px(width)
 //            }
 //        }
-        //imageView.aspectRatio = ratio
-        imageView.hierarchy = hierarchy
+        imageView.hierarchy = FrescoUtil.builder
+            //淡入淡出的持续时间
+            //.setFadeDuration(300)
+            //.setPlaceholderImage(R.drawable.loading_image, null)
+            //.setFailureImage(R.mipmap.reload_click)
+            //设置缩放类型
+            .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
+            //设置圆角
+            .setRoundingParams(RoundingParams.fromCornersRadius(10F))
+            .build()
+        imageView.aspectRatio = 0.5F
+
         loadImage(imageView, url)
     }
 }

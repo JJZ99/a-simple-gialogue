@@ -17,6 +17,8 @@ import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_ING
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
 import com.example.abcdialogue.Weibo.VM.CountryViewModel
+import com.facebook.drawee.drawable.ScalingUtils
+import com.facebook.drawee.generic.RoundingParams
 import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.image_linear_hor.view.new_image_hor
 import kotlinx.coroutines.internal.artificialFrame
@@ -46,7 +48,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
         viewModel.countryList.observe(fragment.viewLifecycleOwner,{
             total = it.size+1
             if (currNumber<total) {
-                hasMore = false
+                hasMore = true
                 currStatus = LoadStatus.LoadMoreIn
             }
             notifyDataSetChanged()
@@ -74,7 +76,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
                     textView.text = it[position].statusMsg
                     textView2.text = it[position].statusCode
                 }
-                FrescoUtil.loadImage(headerImage,"")
+                FrescoUtil.loadImageAddCircle(headerImage,"")
                 //生成一个随机数[0,6]
                 val randoms = (0..6).random()
                 if (randoms==0){
@@ -94,6 +96,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
                             childView.setOnClickListener{
                                 "width${childView.width}\nheight${childView.height}\n$winWidth".toastShort()
                             }
+
                             FrescoUtil.loadImageAddSize(childView)
                             line.new_image_hor.addView(childView, LinearLayout.LayoutParams(itemWidth,
                                 LinearLayout.LayoutParams.MATCH_PARENT).apply {
@@ -112,6 +115,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
                             childView.setOnClickListener{
                                 "width${childView.width}\nheight${childView.height}\n$winWidth".toastShort()
                             }
+
                             FrescoUtil.loadImageAddSize(childView)
                             footLine.new_image_hor.addView(childView, LinearLayout.LayoutParams(itemWidth,
                                 LinearLayout.LayoutParams.MATCH_PARENT).apply {

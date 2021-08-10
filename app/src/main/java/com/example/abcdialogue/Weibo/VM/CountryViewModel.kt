@@ -26,6 +26,7 @@ class CountryViewModel : ViewModel(){
     val countryList = MutableLiveData<List<CountryDTO>>()
 
 
+    //也可以参考CommentViewModel。kt 140的写法
     fun getProvinceList(token: String) {
         DataFetchModel.getProvinceList(token)
             .subscribe(object : Observer<List<Map<String, String>>> {
@@ -46,6 +47,7 @@ class CountryViewModel : ViewModel(){
                 }
             })
     }
+
 
     override fun onCleared() {
         super.onCleared()

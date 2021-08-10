@@ -111,7 +111,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
             //在这里去执行刷新数据的操作，使用retrofit
             Handler().postDelayed(Runnable {
                 //刷新列表
-                adapter.notifyDataSetChanged()
+                //adapter.notifyDataSetChanged()
                 //取消动画
                 refresh_layout.isRefreshing = false
             },5000)

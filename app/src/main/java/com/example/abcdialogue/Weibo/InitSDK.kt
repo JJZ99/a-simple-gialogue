@@ -57,7 +57,8 @@ class InitSDK : AppCompatActivity(),WbAuthListener{
 
     override fun onComplete(p0: Oauth2AccessToken?) {
         p0?.accessToken?.let {
-            Log.i("ZJJ", it)
+            //mUid:6266577633
+            //Log.i("ZJJ", p0.expiresTime.toString())
             it.toastShort(this)
             token.value = it
             TOKEN = it
