@@ -9,7 +9,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abcdialogue.R
-import com.example.abcdialogue.Util.Util.toastShort
 import com.facebook.drawee.view.SimpleDraweeView
 
 class MyRecyclerHolder(private val itemView: View): RecyclerView.ViewHolder(itemView) {

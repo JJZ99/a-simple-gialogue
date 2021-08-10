@@ -1,6 +1,7 @@
 package com.example.abcdialogue.Weibo.Model
 
 import android.util.Log
+import com.example.abcdialogue.Weibo.Bean.WBAllDTO
 import com.example.abcdialogue.Weibo.Util.Net.RetrofitHelper
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,6 +13,14 @@ object DataFetchModel {
      */
     fun getProvinceList(token: String): Observable<List<Map<String, String>>> =
         RetrofitHelper.getRetrofit().create(WeiBoApi::class.java).getProvinceList(token)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    /**
+     * 获取微博
+     */
+    fun getStatusesList(token: String): Observable<WBAllDTO> =
+        RetrofitHelper.getRetrofit().create(WeiBoApi::class.java).getStatusesList(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }

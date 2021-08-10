@@ -9,7 +9,8 @@ import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.abcdialogue.Util.Util.toastShort
+import com.example.abcdialogue.Util.Util.toastError
+import com.example.abcdialogue.Util.Util.toastInfo
 import com.sina.weibo.sdk.auth.AuthInfo
 import com.sina.weibo.sdk.auth.Oauth2AccessToken
 import com.sina.weibo.sdk.auth.WbAuthListener
@@ -34,7 +35,7 @@ class InitSDK : AppCompatActivity(),WbAuthListener{
         initSdk()
         startAuth()
         token.observe(this, {
-            it.toastShort(this)
+            it.toastInfo()
             var intent = Intent(this, WeiBoActivity().javaClass)
             //intent.putExtra("token", token.value)
             startActivity(intent)
@@ -59,18 +60,18 @@ class InitSDK : AppCompatActivity(),WbAuthListener{
         p0?.accessToken?.let {
             //mUid:6266577633
             //Log.i("ZJJ", p0.expiresTime.toString())
-            it.toastShort(this)
+            it.toastInfo()
             token.value = it
             TOKEN = it
         }
     }
 
     override fun onError(p0: UiError?) {
-        "微博授权错误".toastShort(this)
+        "微博授权错误".toastError()
     }
 
     override fun onCancel() {
-        "微博授权取消".toastShort(this)
+        "微博授权取消".toastInfo()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, @Nullable data: Intent?) {

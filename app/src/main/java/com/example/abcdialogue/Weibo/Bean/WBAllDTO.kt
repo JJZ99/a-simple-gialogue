@@ -6,17 +6,33 @@ import java.io.Serializable
 data class WBAllDTO(
 
     @SerializedName("statuses")
-    val statuses: Int,
-    @SerializedName("status_msg")
-    val statusMsg: String?,
-    @SerializedName("comments")
-    val comments: List<String>?,
-    @SerializedName("has_more")
-    val hasMore: Boolean
+    val statuses: List<WBStatusDTO>?,
+    @SerializedName("hasvisible")
+    val hasvisible: Boolean?,
+    @SerializedName("previous_cursor")
+    val previousCursor: Int?,
+    @SerializedName("next_cursor")
+    val nextCursor: Long?,
+    @SerializedName("previous_cursor_str")
+    val previousCursorStr: String?,
+    @SerializedName("next_cursor_str")
+    val nextCursorStr: String?,
+    @SerializedName("total_number")
+    val totalNumber: Int?,
+    @SerializedName("interval")
+    val interval: Int?,
+    @SerializedName("uve_blank")
+    val uveBlank: Int?,
+    @SerializedName("since_id_str")
+    val sinceIdStr: String?,
+    @SerializedName("max_id_str")
+    val maxIdStr: String?,
+    @SerializedName("has_unread")
+    val hasUnread: Int?
 
 ):Serializable
 
-data class WBStatusContent(
+data class WBStatusDTO(
     /** 微博创建时间 */
     @SerializedName("created_at")
     val createdAt: String,
@@ -61,14 +77,14 @@ data class WBStatusContent(
     val originalPic: String,
     /** 地理信息字段 详细 */
     @SerializedName("geo")
-    val geo: WbGeo,
+    val geo: WBGeo,
     /** 微博作者的用户信息字段 详细 */
     @SerializedName("user")
     val user: WBUserInfo,
 
     /** 被转发的原微博信息字段，当该微博为转发微博时返回 详细 */
     @SerializedName("retweeted_status")
-    val retweetedStatus: WBStatusContent,
+    val retweetedStatus: WBStatusDTO,
 
     /** 转发数 */
     @SerializedName("reposts_count")
@@ -110,3 +126,37 @@ data class WBAd(
     @SerializedName("mark")
     val mark: String
 ) : Serializable
+
+fun WBStatusDTO.transformToBean(): WBStatusBean = WBStatusBean(
+    createdAt = createdAt ?: "",
+    wId = id ?: 0L,
+    text = text ?: "",
+    source = source ?: "",
+    favorite = favorite ?: false,
+    thumbnailPic = thumbnailPic ?: "",
+    bmiddlePic = bmiddlePic ?: "",
+    originalPic = originalPic ?: "",
+    repostsCount = repostsCount ?: 0,
+    commentsCount = commentsCount ?: 0,
+    attitudesCount = attitudesCount ?: 0,
+    uId = user.id ?: 0L,
+    screenName = user.screenName ?: "",
+    name = user.name ?: "",
+    province = user.province ?: "",
+    city = user.city ?: "",
+    location = user.location ?: "",
+    description = user.description ?: "",
+    uCreatedAt = user.createdAt ?: "",
+    profileImageUrl = user.profileImageUrl ?: "",
+    avatarLarge = user.avatarLarge ?: "",
+    avatarHd = user.avatarHd ?: "",
+    profileUrl = user.profileUrl ?: "",
+    gender = user.gender ?: "",
+    followersCount = user.followersCount ?: 0,
+    friendsCount = user.friendsCount ?: 0,
+    statusesCount = user.statusesCount ?: 0,
+    favouritesCount = user.favouritesCount ?: 0,
+    geoEnabled = user.geoEnabled ?: false,
+    verified = user.verified ?: false,
+    onlineStatus = user.onlineStatus ?: 0
+)

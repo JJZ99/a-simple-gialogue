@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Util.Util.toast
-import com.example.abcdialogue.Util.Util.toastShort
+import com.example.abcdialogue.Util.Util.toastInfo
 import com.example.abcdialogue.Weibo.InitSDK
 import com.example.abcdialogue.Weibo.WeiBoActivity
 import kotlinx.android.synthetic.main.activity_main.login_btn
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 //            edit.commit()
             var intent = Intent(this, MainActivity2().javaClass)
             startActivity(intent)
-            "jump！jump！".toastShort(this)
+            "jump！jump！".toastInfo()
 
 
         }

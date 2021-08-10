@@ -3,13 +3,13 @@ package com.example.abcdialogue.Module
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.abcdialogue.Util.Util.toastShort
 import com.facebook.drawee.backends.pipeline.Fresco
 import kotlinx.android.synthetic.main.activity_main2.helloWorld
 import kotlinx.android.synthetic.main.activity_main2.image_btn
 import kotlinx.android.synthetic.main.activity_main2.read_btn
 import android.net.Uri
 import com.example.abcdialogue.R
+import com.example.abcdialogue.Util.Util.toastInfo
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
 import com.facebook.drawee.view.SimpleDraweeView
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory
@@ -35,7 +35,7 @@ class MainActivity2 : AppCompatActivity() {
             val age = sharedPref.getLong("tell",3)
             val school = sharedPref.getString("school","希望小学")
             helloWorld.text = "$username\n$password\n$age\n$school"
-            "$username\n$password\n$age\n$school".toastShort(this)
+            "$username\n$password\n$age\n$school".toastInfo()
         }
         image_btn.setOnClickListener {
             val url="https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"

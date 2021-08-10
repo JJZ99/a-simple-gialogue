@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.abcdialogue.MyApplication.Companion.context
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Util.DisplayUtil
-import com.example.abcdialogue.Util.Util.toastShort
+import com.example.abcdialogue.Util.Util.toastInfo
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_END
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_ING
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
@@ -45,7 +45,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
     var pageSize = 30
     var currNumber = 1
     init {
-        viewModel.countryList.observe(fragment.viewLifecycleOwner,{
+        viewModel.statusList.observe(fragment.viewLifecycleOwner,{
             total = it.size+1
             if (currNumber<total) {
                 hasMore = true
@@ -72,11 +72,12 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
             (holder as MyRecyclerHolder).apply{
                 textView.text = position.toString()
                 textView2.text = position.toString()
-                viewModel.countryList.value?.let {
-                    textView.text = it[position].statusMsg
-                    textView2.text = it[position].statusCode
+                viewModel.statusList.value?.let {
+                    textView.text = it[position].name
+                    textView2.text = it[position].createdAt
+                    FrescoUtil.loadImageAddCircle(headerImage,it[position].avatarLarge)
                 }
-                FrescoUtil.loadImageAddCircle(headerImage,"")
+
                 //生成一个随机数[0,6]
                 val randoms = (0..6).random()
                 if (randoms==0){
@@ -94,7 +95,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
                         for (j in 0 until 3){
                             val childView = SimpleDraweeView(line.context)
                             childView.setOnClickListener{
-                                "width${childView.width}\nheight${childView.height}\n$winWidth".toastShort()
+                                "width${childView.width}\nheight${childView.height}\n$winWidth".toastInfo()
                             }
 
                             FrescoUtil.loadImageAddSize(childView)
@@ -113,7 +114,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
                         for (i in  0 until reminder){
                             val childView = SimpleDraweeView(footLine.context)
                             childView.setOnClickListener{
-                                "width${childView.width}\nheight${childView.height}\n$winWidth".toastShort()
+                                "width${childView.width}\nheight${childView.height}\n$winWidth".toastInfo()
                             }
 
                             FrescoUtil.loadImageAddSize(childView)

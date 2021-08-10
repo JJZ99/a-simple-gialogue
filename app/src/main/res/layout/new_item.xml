@@ -1,79 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#AFFFFFFF"
-    xmlns:fresco="http://schemas.android.com/tools"
-    android:layout_margin="6dp">
+    android:layout_margin="5dp"
+    android:background="#AFD6D4D4">
+
+    <LinearLayout
+        android:id="@+id/image_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_content"
+        fresco:visibility="visible" />
 
     <RelativeLayout
         android:id="@+id/header_rl"
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tv_content">
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/header_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_alignParentBottom="true"
-            app:actualImageScaleType="fitCenter"
-            fresco:placeholderImage="@drawable/image4" />
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/header_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/header_image"
             android:layout_marginLeft="4dp"
-            android:text="不知道啊"
-            android:textSize="20sp"
             android:layout_marginTop="4dp"
-            />
+            android:layout_toRightOf="@id/header_image"
+            android:text="不知道啊"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/header_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/header_image"
-            android:layout_toRightOf="@id/header_image"
+            android:layout_marginBottom="2dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginBottom="4dp"
-            android:text="不知道啊"
+            android:layout_toRightOf="@id/header_image"
+            android:text="来自"
             android:textSize="16sp" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/header_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="2dp"
+            app:actualImageScaleType="fitCenter"
+            fresco:placeholderImage="@drawable/image4" />
     </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
         android:lineSpacingExtra="2dp"
         android:maxLines="2"
-        android:ellipsize="end"
-        android:layout_marginTop="4dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_rl"
+        android:text="自己交阿见佛i阿四巴斯不读阿萨德你撒面佛可能是第几i家哦氛围超级电视品牌擦拭佛我你发i哦额无法渴望四大"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/image_container"
-        android:text="自己交阿见佛i阿四巴斯不读阿萨德你撒面佛可能是第几i家哦氛围超级电视品牌擦拭佛我你发i哦额无法渴望四大"/>
-
-    <LinearLayout
-        android:id="@+id/image_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_marginTop="4dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_content"
-        fresco:visibility="visible"/>
-
-
+        app:layout_constraintTop_toBottomOf="@+id/header_rl" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

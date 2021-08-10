@@ -42,11 +42,11 @@ class VideoFragment(): Fragment(R.layout.fragment_liner_recycler2) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         get_country.setOnClickListener {
-            InitSDK.TOKEN?.let { it1 -> viewModel.getProvinceList(it1) }
+            InitSDK.TOKEN?.let { it1 -> viewModel.getStatusesList(it1) }
         }
         this.activity?.let {
-            viewModel.countryList.observe(it, Observer {
-                country.text = it.size.toString()
+            viewModel.string.observe(it,{
+                country.text = it
             })
         }
 

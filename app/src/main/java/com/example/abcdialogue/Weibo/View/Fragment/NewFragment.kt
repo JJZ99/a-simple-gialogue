@@ -14,21 +14,17 @@ import com.example.abcdialogue.Module.MainActivity2
 import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
 import com.example.abcdialogue.R
-import com.example.abcdialogue.Util.Util.toastShort
-import com.example.abcdialogue.Weibo.Adapter.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder
 import kotlinx.android.synthetic.main.fragment_liner_recycler.add_btn
 import kotlinx.android.synthetic.main.fragment_liner_recycler.new_rv
 import kotlinx.android.synthetic.main.fragment_liner_recycler.refresh_layout
 import kotlinx.android.synthetic.main.fragment_liner_recycler.remove_btn
 import android.os.Looper
-import androidx.core.os.HandlerCompat.postDelayed
 import androidx.lifecycle.ViewModelProvider
-import com.example.abcdialogue.Weibo.InitSDK
+import com.example.abcdialogue.Util.Util.toastInfo
 import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
 import com.example.abcdialogue.Weibo.VM.CountryViewModel
 import com.example.abcdialogue.Weibo.VM.CountryViewModelFactory
-import java.util.concurrent.Delayed
 
 
 class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
@@ -48,7 +44,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel.countryList.observe(this.viewLifecycleOwner,{
+        viewModel.statusList.observe(this.viewLifecycleOwner,{
             initRecycler()
         })
         initData()
@@ -67,7 +63,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
 
     private fun initData() {
-        TOKEN?.let { it1 -> viewModel.getProvinceList(it1) }
+        TOKEN?.let { it1 -> viewModel.getStatusesList(it1) }
     }
 
 
@@ -82,14 +78,14 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     private fun initListener(){
         adapter.onItemClickListener = object : MyRecyclerAdapter.OnItemClickListener {
             override fun onItemClick(view: View,pos:Int) {
-                "你点击了第${pos}Item".toastShort(view.context)
+                "你点击了第${pos}Item".toastInfo()
                 var intent = Intent(MyApplication.context, MainActivity2().javaClass)
                 startActivity(intent)
             }
         }
         adapter.onLoadMoreListener = object : MyRecyclerAdapter.OnLoadMoreListener {
             override fun onLoadMore(view: MyFooterViewHolder) {
-                "你调用了onLoadMore".toastShort(MyApplication.context)
+                "你调用了onLoadMore".toastInfo()
                 //在这里去执行刷新数据的操作，使用retrofit
                 Handler(Looper.getMainLooper()).post{
                     for (i in 1..adapter.pageSize){

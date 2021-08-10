@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abcdialogue.R
-import com.example.abcdialogue.Util.Util.toastShort
+import com.example.abcdialogue.Util.Util.toastInfo
 
 class MyFooterViewHolder(private val itemView: View,private val onLoadMoreListener: MyRecyclerAdapter.OnLoadMoreListener?): RecyclerView.ViewHolder(itemView) {
     val loading = itemView.findViewById<LinearLayout>(R.id.load_more_ing)
@@ -46,7 +46,7 @@ class MyFooterViewHolder(private val itemView: View,private val onLoadMoreListen
                 .inflate(R.layout.load_more_item, parent, false)
             val viewHolder = MyFooterViewHolder(itemView,onLoadMoreListener)
             itemView.setOnClickListener{
-                "你点到了foot".toastShort(parent.context)
+                "你点到了foot".toastInfo()
             }
             viewHolder.loadFail.setOnClickListener {
                 //加载失败后重新加载

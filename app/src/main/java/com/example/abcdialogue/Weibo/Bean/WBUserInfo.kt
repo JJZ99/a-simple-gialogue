@@ -32,13 +32,13 @@ data class WBUserInfo(
      * 用户所在省级ID
      */
     @SerializedName("province")
-    val province: Int,
+    val province: String,
 
     /**
      * 用户所在城市ID
      */
     @SerializedName("city")
-    val city: Int,
+    val city: String,
 
     /**
      * 用户所在地
@@ -158,7 +158,7 @@ data class WBUserInfo(
      * 用户的最近一条微博信息字段 详细
      */
     @SerializedName("status")
-    val status: WBStatusContent,
+    val status: WBStatusDTO,
 
     /**
      * 是否允许所有人对我的微博进行评论，true：是，false：否

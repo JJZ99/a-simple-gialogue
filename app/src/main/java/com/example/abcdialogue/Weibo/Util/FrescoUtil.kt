@@ -21,18 +21,6 @@ object FrescoUtil {
     const val DEFAULT_URL_BAIDU = "https://profile.csdnimg.cn/9/1/2/3_zzf0521"
     val builder = GenericDraweeHierarchyBuilder(MyApplication.context.resources)
 
-
-
-     val hierarchyComm: GenericDraweeHierarchy = builder
-        //淡入淡出的持续时间
-        //.setFadeDuration(300)
-        //.setPlaceholderImage(R.drawable.loading_image, null)
-        //.setFailureImage(R.mipmap.reload_click)
-        //设置缩放类型
-        .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
-        //设置圆角
-        .setRoundingParams(RoundingParams.fromCornersRadius(10F))
-        .build()
     /**
      * 加载图片，这个用在xml中图片的加载
      */
@@ -90,15 +78,15 @@ object FrescoUtil {
 //        }
         imageView.hierarchy = FrescoUtil.builder
             //淡入淡出的持续时间
-            //.setFadeDuration(300)
-            //.setPlaceholderImage(R.drawable.loading_image, null)
-            //.setFailureImage(R.mipmap.reload_click)
+            .setFadeDuration(300)
+            .setPlaceholderImage(R.drawable.loading_image, null)
+            .setFailureImage(R.mipmap.reload_click)
             //设置缩放类型
             .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
             //设置圆角
             .setRoundingParams(RoundingParams.fromCornersRadius(10F))
             .build()
-        imageView.aspectRatio = 0.5F
+
 
         loadImage(imageView, url)
     }
