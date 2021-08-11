@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Module.MainActivity">
+    tools:context=".Weibo.Login">
 
     <ImageView
         android:id="@+id/imageView"
@@ -13,14 +12,12 @@
         android:layout_height="wrap_content"
         android:alpha="0.4"
         android:background="#275940"
-        android:keepScreenOn="false"
+        android:src="@drawable/mmmm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4"
-        android:src="@drawable/mmmm" />
+         />
 
 
     <Button
@@ -92,16 +89,13 @@
         android:alpha="0.7"
         android:autofillHints=""
         android:background="@drawable/button_circle_shape"
-        android:freezesText="false"
         android:hint="请输入您的账号"
         android:inputType="numberDecimal"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.815"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.343" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/password"
@@ -153,5 +147,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

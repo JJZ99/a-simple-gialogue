@@ -21,11 +21,13 @@ import kotlinx.android.synthetic.main.fragment_liner_recycler.new_rv
 import kotlinx.android.synthetic.main.fragment_liner_recycler.refresh_layout
 import kotlinx.android.synthetic.main.fragment_liner_recycler.remove_btn
 import androidx.lifecycle.ViewModelProvider
+import com.example.ab.WBViewModel
 import com.example.abcdialogue.Util.Util.toastInfo
+import com.example.abcdialogue.Weibo.Adapter.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.PAGESIZE
+import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.currStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.page
 import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
-import com.example.abcdialogue.Weibo.Model.WBViewModel
 import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
 
 
@@ -34,11 +36,13 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     private val viewModel by lazy{
         ViewModelProvider(this, WBViewModelFactory()).get(WBViewModel::class.java)
     }
-
     lateinit var adapter: MyRecyclerAdapter
 
+    var hasFinishedRequest = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //初始化数据
+        initData()
         super.onCreate(savedInstanceState)
     }
     override fun onCreateView(
@@ -47,12 +51,13 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         savedInstanceState: Bundle?
     ): View? {
         viewModel.statusList.observe(this.viewLifecycleOwner,{
-            //设置观察者，当数据加载到了后才初始化recycler
-            initRecycler()
-            Log.i("onCreateView observe",it.toString())
+            if(!hasFinishedRequest){
+                //设置观察者，当数据加载到了后才初始化recycler
+                initRecycler()
+                Log.i("onCreateView observe",it.toString())
+                hasFinishedRequest = true
+            }
         })
-        //初始化数据
-        initData()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,6 +83,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
 
     private fun initListener(){
+
         adapter.onItemClickListener = object : MyRecyclerAdapter.OnItemClickListener {
             override fun onItemClick(view: View,pos:Int) {
                 "你点击了第${pos}Item".toastInfo()
@@ -88,10 +94,10 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         adapter.onLoadMoreListener = object : MyRecyclerAdapter.OnLoadMoreListener {
             override fun onLoadMore(view: MyFooterViewHolder) {
                 "你调用了onLoadMore".toastInfo()
-                //触发loadmore的时候去请求数据
+                currStatus = LoadStatus.LoadMoreIn
                 viewModel.getStatusesList(TOKEN, page++)
                 viewModel.statusList.observe(this@NewFragment.viewLifecycleOwner,{
-                    var hasNumber = (page-1)* PAGESIZE
+                    var hasNumber = (page-2)* PAGESIZE
                     var total = it.size
                     for (i in hasNumber until total){
                         adapter.addItem(adapter.itemCount-1,it[i])

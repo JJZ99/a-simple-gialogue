@@ -5,9 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Util.Util.toastInfo
+import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.currStatus
 
 class MyFooterViewHolder(private val itemView: View,private val onLoadMoreListener: MyRecyclerAdapter.OnLoadMoreListener?): RecyclerView.ViewHolder(itemView) {
     val loading = itemView.findViewById<LinearLayout>(R.id.load_more_ing)
@@ -40,7 +42,7 @@ class MyFooterViewHolder(private val itemView: View,private val onLoadMoreListen
     }
 
     companion object {
-        fun create(parent: ViewGroup,onLoadMoreListener: MyRecyclerAdapter.OnLoadMoreListener?): MyFooterViewHolder {
+        fun create( parent: ViewGroup, onLoadMoreListener: MyRecyclerAdapter.OnLoadMoreListener?): MyFooterViewHolder {
             val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.load_more_item, parent, false)
             val viewHolder = MyFooterViewHolder(itemView,onLoadMoreListener)
@@ -53,6 +55,7 @@ class MyFooterViewHolder(private val itemView: View,private val onLoadMoreListen
                     it.onLoadMore(viewHolder)
                 }
             }
+
             return viewHolder
         }
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ab.WBViewModel
 import com.example.abcdialogue.MyApplication.Companion.context
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Util.DisplayUtil
@@ -17,7 +18,6 @@ import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_ING
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
-import com.example.abcdialogue.Weibo.Model.WBViewModel
 
 import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.image_linear_hor.view.new_image_hor
@@ -38,22 +38,20 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
 
     var currNumber = 1
     init {
+        //这里多写一个是担心，如果在走到这里之前还没有完成第一次请求数据完成了那么
         viewModel.statusList.value?.let {
             total = it.size+1
-            if ((page - 1) * 15-it.size < 15) {
-                hasMore = true
-                currStatus = LoadStatus.LoadMoreIn
-                Log.i("init adapter",viewModel.statusList.value.toString())
-            }
+            var addCounts = (page - 1) * 15-it.size
+            //如果新增的等于15个 假设还有更多，否则就没有更多了
+            hasMore = addCounts == 15
+            Log.i("init adapter observe",viewModel.statusList.value.toString())
         }
         viewModel.statusList.observe(fragment.viewLifecycleOwner,{
             total = it.size+1
-            if ((page - 1) * 15-it.size < 15) {
-                hasMore = true
-                currStatus = LoadStatus.LoadMoreIn
-            }
+            var addCounts = (page - 1) * 15-it.size
+            hasMore = addCounts == 15
             Log.i("init adapter observe",viewModel.statusList.value.toString())
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
         })
     }
 
@@ -186,7 +184,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     companion object {
         const val TYPE_NORMAL = 0
         const val TYPE_LOAD_MORE = 1
-        //当前的状态，默认为加载完成
+        //当前的状态，默认为加载成功
         var currStatus = LoadStatus.LoadMoreEnd
         //页码，也可以理解为加载了多少次
         const val PAGESIZE = 15

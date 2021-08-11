@@ -1,9 +1,14 @@
-package com.example.abcdialogue.Weibo.Model
+package com.example.ab
+
+import com.example.abcdialogue.Weibo.Model.DataFetchModel
+
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.abcdialogue.Util.Util.toastError
+import com.example.abcdialogue.Weibo.Adapter.LoadStatus
+import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.currStatus
 import com.example.abcdialogue.Weibo.Bean.CountryBean
 import com.example.abcdialogue.Weibo.Bean.WBAllDTO
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
@@ -55,7 +60,9 @@ class WBViewModel : ViewModel(){
     fun getStatusesList(token:String,page:Int){
         DataFetchModel.getStatusesList(token,page)
             .subscribe(object : Observer<WBAllDTO> {
-                override fun onComplete() {}
+                override fun onComplete() {
+                    currStatus = LoadStatus.LoadMoreSuccess
+                }
                 override fun onSubscribe(d: Disposable) {
                     addDisposable(d)
                 }
@@ -72,12 +79,12 @@ class WBViewModel : ViewModel(){
                     }
                     statusList.value = statusList.value
 
-                    //statusList.value = statusList.v
                     //可以删除下面两行
                     Log.i("get statueslist:", statusList.value.toString())
                     string.value = statusList.value.toString()
                 }
                 override fun onError(e: Throwable) {
+                    currStatus = LoadStatus.LoadMoreError
                     "微博数据请求失败".toastError()
                     e.printStackTrace()
                 }

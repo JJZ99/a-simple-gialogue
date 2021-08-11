@@ -14,8 +14,7 @@ import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
 import com.example.abcdialogue.Weibo.WeiBoActivity
 import kotlinx.android.synthetic.main.activity_main.login_btn
 import kotlinx.android.synthetic.main.activity_main.password_input
-import kotlinx.android.synthetic.main.activity_main.school
-import kotlinx.android.synthetic.main.activity_main.tell
+
 import kotlinx.android.synthetic.main.activity_main.username_input
 import kotlinx.android.synthetic.main.activity_main.wei_bo_btn
 import java.util.regex.Pattern
