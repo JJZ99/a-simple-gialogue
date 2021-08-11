@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.util.Log
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Util.Util.toast
+import com.example.abcdialogue.Util.Util.toastError
 import com.example.abcdialogue.Util.Util.toastInfo
 import com.example.abcdialogue.Weibo.InitSDK
+import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
 import com.example.abcdialogue.Weibo.WeiBoActivity
 import kotlinx.android.synthetic.main.activity_main.login_btn
 import kotlinx.android.synthetic.main.activity_main.password_input
@@ -25,52 +27,32 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        //if (checkPhoneNum(username)){
-
-        //}
         baseContext.toast("hello",)
-        //username.toastShort(this.applicationContext)
-
-        val sharedPref = this.getSharedPreferences(
-            getString(R.string.preference_file_key), Context.MODE_PRIVATE)
 
         login_btn.setOnClickListener {
 
-//            val username = username_input.text.toString()
-//            val password = password_input.text.toString()
-//            val tell = tell.text.toString()
-//            val school = school.text.toString()
-//            Log.i("info","$username+$password+$tell+$school")
-////            if (username.isEmpty() || password.isEmpty() || school.isEmpty() || tell.isEmpty()
-////            ) {
-////                "你能不能输入了再点啊！".toastShort(this)
-////                return@setOnClickListener;
-////            }
-////            if (!checkPhoneNum(tell)){
-////                "你能不能输入电话啊！".toastShort(this)
-////
-////                return@setOnClickListener
-////            }
-//
-//            var edit = sharedPref.edit()
-//            edit.putString("username",username)
-//            edit.putString("password",password)
-//            edit.putLong("tell", tell.toLong())
-//            edit.putString("school",school)
-//            edit.commit()
             var intent = Intent(this, MainActivity2().javaClass)
             startActivity(intent)
             "jump！jump！".toastInfo()
-
-
         }
         wei_bo_btn.setOnClickListener {
-            var intent = Intent(this, InitSDK().javaClass)
-            startActivity(intent)
+            val sharedPref = this.getSharedPreferences(
+                getString(R.string.sp_access_token), Context.MODE_PRIVATE)
+            val token = sharedPref.getString(ACCESS_TOKEN,"")
+            //如果token为空就跳转登陆获取
+            if(token.isNullOrEmpty()){
+                "不存在Token：${token}跳转到登陆授权界面".toastInfo()
+                var intent = Intent(this, InitSDK().javaClass)
+                startActivity(intent)
+            }else{
+                //不为空直接跳转到微博页
+                "已经存在Token：${token}直接跳到微博".toastInfo()
+                TOKEN.value = token
+                var intent = Intent(this, WeiBoActivity().javaClass)
+                startActivity(intent)
+            }
+
         }
-
-
     }
 
     /***
@@ -81,5 +63,9 @@ class MainActivity : AppCompatActivity() {
         val p = Pattern.compile(regExp)
         val m = p.matcher(num)
         return m.matches()
+    }
+
+    companion object {
+        const val ACCESS_TOKEN = "access_token"
     }
 }

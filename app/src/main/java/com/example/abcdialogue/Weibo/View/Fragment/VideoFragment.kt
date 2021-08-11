@@ -6,20 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.abcdialogue.R
+import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.page
 import com.example.abcdialogue.Weibo.InitSDK
-import com.example.abcdialogue.Weibo.Util.Net.RetrofitHelper
-import com.example.abcdialogue.Weibo.VM.CountryViewModel
-import com.example.abcdialogue.Weibo.VM.CountryViewModelFactory
+import com.example.abcdialogue.Weibo.Model.WBViewModel
+import com.example.abcdialogue.Weibo.Model.CountryViewModelFactory
 import kotlinx.android.synthetic.main.fragment_liner_recycler2.country
 import kotlinx.android.synthetic.main.fragment_liner_recycler2.get_country
 
 class VideoFragment(): Fragment(R.layout.fragment_liner_recycler2) {
 
     private val viewModel by lazy{
-        ViewModelProvider(this, CountryViewModelFactory()).get(CountryViewModel::class.java)
+        ViewModelProvider(this, CountryViewModelFactory()).get(WBViewModel::class.java)
     }
 
 
@@ -42,11 +41,11 @@ class VideoFragment(): Fragment(R.layout.fragment_liner_recycler2) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         get_country.setOnClickListener {
-            InitSDK.TOKEN?.let { it1 -> viewModel.getStatusesList(it1) }
+            viewModel.getProvinceList(InitSDK.TOKEN.value.toString())
         }
-        this.activity?.let {
-            viewModel.string.observe(it,{
-                country.text = it
+        this.activity?.let { it ->
+            viewModel.countryList.observe(it,{
+                country.text = it.toString()
             })
         }
 

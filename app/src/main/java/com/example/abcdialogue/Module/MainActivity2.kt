@@ -21,10 +21,6 @@ class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        val config =
-//            OkHttpImagePipelineConfigFactory.newBuilder(baseContext, OkHttpClient()).build()
-
-
         setContentView(R.layout.activity_main2)
         read_btn.setOnClickListener {
             val sharedPref = this.getSharedPreferences(

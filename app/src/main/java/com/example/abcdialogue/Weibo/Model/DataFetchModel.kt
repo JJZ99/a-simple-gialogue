@@ -19,8 +19,8 @@ object DataFetchModel {
     /**
      * 获取微博
      */
-    fun getStatusesList(token: String): Observable<WBAllDTO> =
-        RetrofitHelper.getRetrofit().create(WeiBoApi::class.java).getStatusesList(token)
+    fun getStatusesList(token: String,page:Int): Observable<WBAllDTO> =
+        RetrofitHelper.getRetrofit().create(WeiBoApi::class.java).getStatusesList(token,page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }

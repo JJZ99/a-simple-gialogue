@@ -1,12 +1,12 @@
-package com.example.abcdialogue.Weibo.VM
+package com.example.abcdialogue.Weibo.Model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 class CountryViewModelFactory : ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CountryViewModel::class.java)) {
-            return CountryViewModel() as T
+        if (modelClass.isAssignableFrom(WBViewModel::class.java)) {
+            return WBViewModel() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

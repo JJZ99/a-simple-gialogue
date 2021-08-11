@@ -1,5 +1,6 @@
 package com.example.abcdialogue.Weibo
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +10,7 @@ import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.abcdialogue.Module.MainActivity.Companion.ACCESS_TOKEN
 import com.example.abcdialogue.Util.Util.toastError
 import com.example.abcdialogue.Util.Util.toastInfo
 import com.sina.weibo.sdk.auth.AuthInfo
@@ -18,26 +20,31 @@ import com.sina.weibo.sdk.common.UiError
 import com.sina.weibo.sdk.openapi.IWBAPI
 import com.sina.weibo.sdk.openapi.WBAPIFactory
 
-class InitSDK : AppCompatActivity(),WbAuthListener{
+class InitSDK : AppCompatActivity(), WbAuthListener {
     private lateinit var mWBAPI: IWBAPI
-    var token = MutableLiveData<String>()
 
     companion object {
-        const val APP_KY:String = "3595354204"
+        const val APP_KY: String = "3595354204"
         const val REDIRECT_URL: String = "https://api.weibo.com/oauth2/default.html"
-        const val SCOPE : String = "all"
-        var TOKEN:String? = null
+        const val SCOPE: String = "all"
+        var TOKEN = MutableLiveData<String>()
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPref = this.getSharedPreferences(
+            getString(com.example.abcdialogue.R.string.sp_access_token), Context.MODE_PRIVATE
+        )
         initSdk()
         startAuth()
-        token.observe(this, {
+        //设置观察者，获取后将token存到sp文件，然后跳转到微博页
+        TOKEN.observe(this, {
+            val edit = sharedPref.edit()
+            edit.putString(ACCESS_TOKEN, it)
+            edit.commit()
             it.toastInfo()
             var intent = Intent(this, WeiBoActivity().javaClass)
-            //intent.putExtra("token", token.value)
             startActivity(intent)
         })
 
@@ -50,10 +57,10 @@ class InitSDK : AppCompatActivity(),WbAuthListener{
         mWBAPI.registerApp(this, authInfo)
     }
 
-    private fun startAuth(){
+    private fun startAuth() {
         Handler(Looper.getMainLooper()).postDelayed({
             mWBAPI.authorize(this as WbAuthListener)
-        },1500)
+        }, 1500)
     }
 
     override fun onComplete(p0: Oauth2AccessToken?) {
@@ -61,8 +68,7 @@ class InitSDK : AppCompatActivity(),WbAuthListener{
             //mUid:6266577633
             //Log.i("ZJJ", p0.expiresTime.toString())
             it.toastInfo()
-            token.value = it
-            TOKEN = it
+            TOKEN.value = it
         }
     }
 

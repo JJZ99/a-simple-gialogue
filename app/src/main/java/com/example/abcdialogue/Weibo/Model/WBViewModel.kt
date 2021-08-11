@@ -1,18 +1,18 @@
-package com.example.abcdialogue.Weibo.VM
+package com.example.abcdialogue.Weibo.Model
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.abcdialogue.Util.Util.toastError
 import com.example.abcdialogue.Weibo.Bean.CountryBean
 import com.example.abcdialogue.Weibo.Bean.WBAllDTO
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.Bean.transformToBean
-import com.example.abcdialogue.Weibo.Model.DataFetchModel
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-class CountryViewModel : ViewModel(){
+class WBViewModel : ViewModel(){
 
     private val disposables: CompositeDisposable by lazy{
         CompositeDisposable()
@@ -23,7 +23,7 @@ class CountryViewModel : ViewModel(){
     }
 
     val countryList = MutableLiveData<List<CountryBean>>()
-    val statusList = MutableLiveData<List<WBStatusBean>>()
+    val statusList = MutableLiveData<MutableList<WBStatusBean>>()
     val string = MutableLiveData<String>()
 
 
@@ -45,30 +45,37 @@ class CountryViewModel : ViewModel(){
                     countryList.value = list
                 }
                 override fun onError(e: Throwable) {
+                    "城市数据请求失败".toastError()
+
                     e.printStackTrace()
                 }
             })
     }
 
-    fun getStatusesList(token:String){
-        DataFetchModel.getStatusesList(token)
+    fun getStatusesList(token:String,page:Int){
+        DataFetchModel.getStatusesList(token,page)
             .subscribe(object : Observer<WBAllDTO> {
                 override fun onComplete() {}
                 override fun onSubscribe(d: Disposable) {
                     addDisposable(d)
                 }
                 override fun onNext(resp: WBAllDTO) {
+                    //这里是分页每请求一次，就把进请求的数据追加到后面
+                    statusList.value?.addAll(resp.statuses?.map { dto ->
+                        dto.transformToBean()
+                    } ?: listOf())
 
-                    statusList.value = mutableListOf<WBStatusBean>().apply {
-                        addAll(resp.statuses?.map { dto ->
-                            dto.transformToBean()
-                        } ?: listOf())
-                    }
+//                    statusList.value = mutableListOf<WBStatusBean>().apply {
+//                        addAll(resp.statuses?.map { dto ->
+//                            dto.transformToBean()
+//                        } ?: listOf())
+//                    }
+                    //可以删除下面两行
                     Log.i("https:", resp.toString())
-                    statusList.value
                     string.value = resp.toString()
                 }
                 override fun onError(e: Throwable) {
+                    "微博数据请求失败".toastError()
                     e.printStackTrace()
                 }
             })

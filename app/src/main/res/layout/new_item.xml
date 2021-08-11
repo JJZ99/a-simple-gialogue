@@ -47,14 +47,17 @@
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@id/header_image"
             android:text="来自"
-            android:textSize="16sp" />
+            android:textSize="12sp" />
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/header_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="2dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="5dp"
             app:actualImageScaleType="fitCenter"
             fresco:placeholderImage="@drawable/image4" />
     </RelativeLayout>

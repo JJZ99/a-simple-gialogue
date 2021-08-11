@@ -22,15 +22,17 @@ import kotlinx.android.synthetic.main.fragment_liner_recycler.remove_btn
 import android.os.Looper
 import androidx.lifecycle.ViewModelProvider
 import com.example.abcdialogue.Util.Util.toastInfo
+import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.PAGESIZE
+import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.page
 import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
-import com.example.abcdialogue.Weibo.VM.CountryViewModel
-import com.example.abcdialogue.Weibo.VM.CountryViewModelFactory
+import com.example.abcdialogue.Weibo.Model.WBViewModel
+import com.example.abcdialogue.Weibo.Model.CountryViewModelFactory
 
 
 class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
 
     private val viewModel by lazy{
-        ViewModelProvider(this, CountryViewModelFactory()).get(CountryViewModel::class.java)
+        ViewModelProvider(this, CountryViewModelFactory()).get(WBViewModel::class.java)
     }
 
     lateinit var adapter: MyRecyclerAdapter
@@ -45,12 +47,13 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         savedInstanceState: Bundle?
     ): View? {
         viewModel.statusList.observe(this.viewLifecycleOwner,{
+            //设置观察者，当数据加载到了后才初始化recycler
             initRecycler()
         })
-        initData()
+        //初始化数据
+        //initData()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = MyRecyclerAdapter(this,viewModel)
@@ -58,14 +61,11 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         initListener()
         //初始化下啦刷新控件
         handlerDownPullUpdate(adapter as RecyclerView.Adapter<RecyclerView.ViewHolder>)
-        //初始化recycler
-        //initRecycler()
     }
 
     private fun initData() {
-        TOKEN?.let { it1 -> viewModel.getStatusesList(it1) }
+        viewModel.getStatusesList(TOKEN.value.toString(),++page)
     }
-
 
     private fun initRecycler() {
         new_rv.layoutManager = LinearLayoutManager(this.context)
@@ -86,21 +86,24 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         adapter.onLoadMoreListener = object : MyRecyclerAdapter.OnLoadMoreListener {
             override fun onLoadMore(view: MyFooterViewHolder) {
                 "你调用了onLoadMore".toastInfo()
-                //在这里去执行刷新数据的操作，使用retrofit
-                Handler(Looper.getMainLooper()).post{
-                    for (i in 1..adapter.pageSize){
-                        adapter.addItem(adapter.itemCount-1)
+                //触发loadmore的时候去请求数据
+                viewModel.getStatusesList(TOKEN.value.toString(), ++page)
+                viewModel.statusList.observe(this@NewFragment.viewLifecycleOwner,{
+                    var hasNumber = page* PAGESIZE
+                    var total = it.size
+                    for (i in hasNumber until total){
+                        adapter.addItem(adapter.itemCount-1,it[i])
                     }
-                }
+                })
             }
         }
 
         add_btn.setOnClickListener{
-            adapter.addItem(adapter.itemCount-1)
+            "已经退出历史舞台".toastInfo()
         }
 
         remove_btn.setOnClickListener{
-            adapter.removeItem(adapter?.itemCount-1)
+            "已经退出历史舞台".toastInfo()
         }
 
         refresh_layout.setOnRefreshListener {

@@ -4,8 +4,7 @@ package com.example.abcdialogue.Weibo.Adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ImageView
+
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -15,16 +14,15 @@ import com.example.abcdialogue.Util.DisplayUtil
 import com.example.abcdialogue.Util.Util.toastInfo
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_END
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_ING
+import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
-import com.example.abcdialogue.Weibo.VM.CountryViewModel
-import com.facebook.drawee.drawable.ScalingUtils
-import com.facebook.drawee.generic.RoundingParams
+import com.example.abcdialogue.Weibo.Model.WBViewModel
+
 import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.image_linear_hor.view.new_image_hor
-import kotlinx.coroutines.internal.artificialFrame
 
 
-class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onItemClickListener : MyRecyclerAdapter.OnItemClickListener?= null
     var onLoadMoreListener : OnLoadMoreListener?= null
 
@@ -42,9 +40,9 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
      */
     private var hasMore = false
 
-    var pageSize = 30
     var currNumber = 1
     init {
+        total = viewModel.statusList.value?.size ?:1
         viewModel.statusList.observe(fragment.viewLifecycleOwner,{
             total = it.size+1
             if (currNumber<total) {
@@ -75,6 +73,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
                 viewModel.statusList.value?.let {
                     textView.text = it[position].name
                     textView2.text = it[position].createdAt
+                    content.text = it[position].text
                     FrescoUtil.loadImageAddCircle(headerImage,it[position].avatarLarge)
                 }
 
@@ -145,17 +144,18 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
      * 获取Item的数据类型
      */
     override fun getItemViewType(position: Int): Int {
-        return if (position != (itemCount - 1)) {
-            TYPE_NORMAL
-        } else {
+        return if (position == (itemCount - 1)) {
             TYPE_LOAD_MORE
+
+        } else {
+            TYPE_NORMAL
         }
     }
 
     /**
      * 添加数据
      */
-     fun addItem(pos:Int){
+     fun addItem(pos:Int,item:WBStatusBean){
         if (currNumber==total){
             currStatus = LoadStatus.LoadMoreEnd
             hasMore = false
@@ -199,6 +199,12 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: CountryView
         const val TYPE_NORMAL = 0
         const val TYPE_LOAD_MORE = 1
         var currStatus = LoadStatus.LoadMoreEnd
+        //页码，也可以理解为加载了多少次
+        const val PAGESIZE = 15
+        const val FEATURE = 2
+
+        //初始页码为1
+        var page = 1
     }
 }
 

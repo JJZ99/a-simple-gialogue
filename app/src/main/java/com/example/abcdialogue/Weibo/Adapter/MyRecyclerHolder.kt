@@ -14,6 +14,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 class MyRecyclerHolder(private val itemView: View): RecyclerView.ViewHolder(itemView) {
     var textView :TextView = itemView.findViewById(R.id.header_name)
     var textView2 :TextView = itemView.findViewById(R.id.header_time)
+    var content :TextView = itemView.findViewById(R.id.tv_content)
     var headerImage :SimpleDraweeView = itemView.findViewById(R.id.header_image)
     var imageContainer :LinearLayout = itemView.findViewById(R.id.image_container)
 
