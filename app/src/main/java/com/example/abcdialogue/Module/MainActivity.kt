@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 //不为空直接跳转到微博页
                 "已经存在Token：${token}直接跳到微博".toastInfo()
                 Log.i("token has",token)
-                TOKEN= "2.00llrezFRMpNJDd3d5f9f262Ln9WYC"
+                TOKEN= token
                 var intent = Intent(this, WeiBoActivity().javaClass)
                 startActivity(intent)
             }

@@ -72,6 +72,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         new_rv.layoutManager = LinearLayoutManager(this.context)
         //new_rv.addItemDecoration(MyDecoration())
         new_rv.adapter = adapter
+        Log.i("进initRecycler","initRecyclerinitRecyclerinitRecycler")
         //设置每一项的动画
         //new_rv.itemAnimator
     }

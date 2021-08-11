@@ -28,6 +28,7 @@ class WBViewModel : ViewModel(){
 
 
 
+
     //也可以参考CommentViewModel。kt 140的写法
     fun getProvinceList(token: String) {
         DataFetchModel.getProvinceList(token)
@@ -46,7 +47,6 @@ class WBViewModel : ViewModel(){
                 }
                 override fun onError(e: Throwable) {
                     "城市数据请求失败".toastError()
-
                     e.printStackTrace()
                 }
             })
@@ -60,14 +60,19 @@ class WBViewModel : ViewModel(){
                     addDisposable(d)
                 }
                 override fun onNext(resp: WBAllDTO) {
-                    if (statusList.value==null){
+
+                    if (statusList.value == null){
                         statusList.value = mutableListOf()
                     }
                     //这里是分页每请求一次，就把进请求的数据追加到后面
-                    statusList.value?.addAll(resp.statuses?.map { dto ->
-                        dto.transformToBean()
-                    } ?: listOf())
+                    statusList.value = statusList.value?.apply {
+                        addAll(resp.statuses?.map { dto ->
+                            dto.transformToBean()
+                        } ?: listOf())
+                    }
+                    statusList.value = statusList.value
 
+                    //statusList.value = statusList.v
                     //可以删除下面两行
                     Log.i("get statueslist:", statusList.value.toString())
                     string.value = statusList.value.toString()
