@@ -10,7 +10,7 @@ data class WBAllDTO(
     @SerializedName("hasvisible")
     val hasvisible: Boolean?,
     @SerializedName("previous_cursor")
-    val previousCursor: Int?,
+    val previousCursor: Long?,
     @SerializedName("next_cursor")
     val nextCursor: Long?,
     @SerializedName("previous_cursor_str")

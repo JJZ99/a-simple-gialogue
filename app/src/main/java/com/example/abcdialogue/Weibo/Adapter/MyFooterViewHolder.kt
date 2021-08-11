@@ -37,7 +37,6 @@ class MyFooterViewHolder(private val itemView: View,private val onLoadMoreListen
 
     private fun startLoaderMore() {
         onLoadMoreListener?.onLoadMore(this)
-
     }
 
     companion object {
@@ -56,7 +55,6 @@ class MyFooterViewHolder(private val itemView: View,private val onLoadMoreListen
             }
             return viewHolder
         }
-
 
         const val LOADER_STATE_ING = 0   // 列表往下加载更多中
         const val LOADER_STATE_SUCCESS = 1    // 列表往下加载成功

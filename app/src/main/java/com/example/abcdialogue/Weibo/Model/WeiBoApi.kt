@@ -24,7 +24,7 @@ interface WeiBoApi {
         @Query("access_token") accessToken: String,
         @Query("page") page:Int,
         @Query("count") count: Int = PAGESIZE
-       // @Query("feature") feature: Int = FEATURE
+        //@Query("feature") feature: Int = FEATURE
     ): Observable<WBAllDTO>
 
     companion object {

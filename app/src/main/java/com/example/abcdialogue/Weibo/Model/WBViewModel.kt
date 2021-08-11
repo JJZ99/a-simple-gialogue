@@ -60,19 +60,17 @@ class WBViewModel : ViewModel(){
                     addDisposable(d)
                 }
                 override fun onNext(resp: WBAllDTO) {
+                    if (statusList.value==null){
+                        statusList.value = mutableListOf()
+                    }
                     //这里是分页每请求一次，就把进请求的数据追加到后面
                     statusList.value?.addAll(resp.statuses?.map { dto ->
                         dto.transformToBean()
                     } ?: listOf())
 
-//                    statusList.value = mutableListOf<WBStatusBean>().apply {
-//                        addAll(resp.statuses?.map { dto ->
-//                            dto.transformToBean()
-//                        } ?: listOf())
-//                    }
                     //可以删除下面两行
-                    Log.i("https:", resp.toString())
-                    string.value = resp.toString()
+                    Log.i("get statueslist:", statusList.value.toString())
+                    string.value = statusList.value.toString()
                 }
                 override fun onError(e: Throwable) {
                     "微博数据请求失败".toastError()

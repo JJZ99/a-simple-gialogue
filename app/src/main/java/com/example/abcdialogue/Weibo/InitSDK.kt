@@ -27,7 +27,7 @@ class InitSDK : AppCompatActivity(), WbAuthListener {
         const val APP_KY: String = "3595354204"
         const val REDIRECT_URL: String = "https://api.weibo.com/oauth2/default.html"
         const val SCOPE: String = "all"
-        var TOKEN = MutableLiveData<String>()
+        var TOKEN: String = ""
     }
 
 
@@ -38,17 +38,6 @@ class InitSDK : AppCompatActivity(), WbAuthListener {
         )
         initSdk()
         startAuth()
-        //设置观察者，获取后将token存到sp文件，然后跳转到微博页
-        TOKEN.observe(this, {
-            val edit = sharedPref.edit()
-            edit.putString(ACCESS_TOKEN, it)
-            edit.commit()
-            it.toastInfo()
-            var intent = Intent(this, WeiBoActivity().javaClass)
-            startActivity(intent)
-        })
-
-
     }
 
     private fun initSdk() {
@@ -64,11 +53,18 @@ class InitSDK : AppCompatActivity(), WbAuthListener {
     }
 
     override fun onComplete(p0: Oauth2AccessToken?) {
+        //获取后将token存到sp文件，然后跳转到微博页
+        val sharedPref = this.getSharedPreferences(
+            getString(com.example.abcdialogue.R.string.sp_access_token), Context.MODE_PRIVATE
+        )
         p0?.accessToken?.let {
-            //mUid:6266577633
-            //Log.i("ZJJ", p0.expiresTime.toString())
-            it.toastInfo()
-            TOKEN.value = it
+            val edit = sharedPref.edit()
+            edit.putString(ACCESS_TOKEN, it)
+            edit.commit()
+            "微博授权成功getToken".toastInfo()
+            TOKEN = it
+            var intent = Intent(this, WeiBoActivity().javaClass)
+            startActivity(intent)
         }
     }
 

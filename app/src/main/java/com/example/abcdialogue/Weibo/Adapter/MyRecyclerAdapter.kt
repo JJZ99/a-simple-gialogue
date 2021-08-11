@@ -1,6 +1,7 @@
 package com.example.abcdialogue.Weibo.Adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,27 +29,30 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
 
     //这里多一项是因为footer
     private var total = 1
-
+    //手机的宽度
     private var winWidth = context.resources.displayMetrics.widthPixels
-
+    //每一项的右边距
     private var itemMarginEnd = DisplayUtil.dp2px(3)
+    //每一项的宽度
     private var itemWidth = (winWidth - itemMarginEnd * 3 - 36) / 3
-
-    /**
-     * 是否能加载更多
-     * 在初始化和增加删除某一项后会判断设置值
-     */
-    private var hasMore = false
 
     var currNumber = 1
     init {
-        total = viewModel.statusList.value?.size ?:1
+        viewModel.statusList.value?.let {
+            total = it.size+1
+            if ((page - 1) * 15-it.size < 15) {
+                hasMore = true
+                currStatus = LoadStatus.LoadMoreIn
+                Log.i("init adapter",viewModel.statusList.value.toString())
+            }
+        }
         viewModel.statusList.observe(fragment.viewLifecycleOwner,{
             total = it.size+1
-            if (currNumber<total) {
+            if ((page - 1) * 15-it.size < 15) {
                 hasMore = true
                 currStatus = LoadStatus.LoadMoreIn
             }
+            Log.i("init adapter observe",viewModel.statusList.value.toString())
             notifyDataSetChanged()
         })
     }
@@ -63,7 +67,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     }
 
     /**
-     * 这里的bind和下面的注释部分不同，因为这里是父类，那意味着只要是他的子类hold都ok
+     * 根据position来判断是不是footer
      */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (position!=(itemCount-1)){
@@ -156,11 +160,6 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
      * 添加数据
      */
      fun addItem(pos:Int,item:WBStatusBean){
-        if (currNumber==total){
-            currStatus = LoadStatus.LoadMoreEnd
-            hasMore = false
-            return
-        }
         ++currNumber
         //刷新适配器
         notifyItemInserted(pos)
@@ -168,17 +167,6 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     }
 
     fun removeItem(pos:Int){
-        //剩下一个加载更多的时候就是1
-        if (currNumber==1){
-            if (total==currNumber){
-                hasMore = false
-                currStatus = LoadStatus.LoadMoreEnd
-            }else{
-                hasMore = true
-                currStatus = LoadStatus.LoadMoreIn
-            }
-            return
-        }
 
         notifyItemRemoved(pos)
         --currNumber
@@ -198,13 +186,21 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     companion object {
         const val TYPE_NORMAL = 0
         const val TYPE_LOAD_MORE = 1
+        //当前的状态，默认为加载完成
         var currStatus = LoadStatus.LoadMoreEnd
         //页码，也可以理解为加载了多少次
         const val PAGESIZE = 15
+        //过滤类型ID，0：全部、1：原创、2：图片、3：视频、4：音乐，默认为0
         const val FEATURE = 2
 
         //初始页码为1
         var page = 1
+
+        /**
+         * 是否能加载更多
+         * 这个值只在请求后判断是否有数据来设置，增加删除方法专注于内容的删改
+         */
+        var hasMore = false
     }
 }
 

@@ -8,9 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.example.abcdialogue.Weibo.Adapter.MyViewPageAdapter
 import com.example.abcdialogue.R
-import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
-import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.page
-import com.example.abcdialogue.Weibo.Model.CountryViewModelFactory
+import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
 import com.example.abcdialogue.Weibo.Model.WBViewModel
 import com.example.abcdialogue.Weibo.View.Fragment.FragmentFactory
 import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_button
@@ -19,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_wei_bo.viewPager
 
 class WeiBoActivity : AppCompatActivity() {
     private val viewModel by lazy{
-        ViewModelProvider(this, CountryViewModelFactory()).get(WBViewModel::class.java)
+        ViewModelProvider(this, WBViewModelFactory()).get(WBViewModel::class.java)
     }
     private var mTitles: MutableList<String>? = mutableListOf()
     private var mFragments: MutableList<Fragment>? = mutableListOf()
@@ -73,8 +71,7 @@ class WeiBoActivity : AppCompatActivity() {
         mFragments?.add(FragmentFactory.getInstance(1))
         mFragments?.add(FragmentFactory.getInstance(2))
         mFragments?.add(FragmentFactory.getInstance(3))
-        //进入weibo页的时候会预加载一页
-        viewModel.getStatusesList(InitSDK.TOKEN.value.toString(), page++)
+
     }
 
     override fun onDestroy() {
