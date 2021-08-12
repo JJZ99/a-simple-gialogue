@@ -51,17 +51,21 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         savedInstanceState: Bundle?
     ): View? {
         viewModel.statusList.observe(this.viewLifecycleOwner,{
-            if(!hasFinishedRequest){
-                //设置观察者，当数据加载到了后才初始化recycler
-                initRecycler()
-                Log.i("onCreateView observe",it.toString())
-                hasFinishedRequest = true
-            }
+            //设置观察者，当数据加载到了后才初始化recycler
+            initRecycler()
+            Log.i("onCreateView observe",it.toString())
+            hasFinishedRequest = true
         })
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+
+    override fun onActivityCreated(savedInstanceState: android.os.Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Log.i("onActivityCreated","===========================onActivityCreatedonActivity========================")
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.i("onViewCreated","============================onViewCreatedonViewCreated=============================")
         adapter = MyRecyclerAdapter(this,viewModel)
         //初始化监听事件
         initListener()

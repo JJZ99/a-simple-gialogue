@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.example.abcdialogue.Weibo.Adapter.MyViewPageAdapter
 import com.example.abcdialogue.R
-import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
 import com.example.abcdialogue.Weibo.Model.WBViewModel
+import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
 import com.example.abcdialogue.Weibo.View.Fragment.FragmentFactory
 import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_button
 import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_top
