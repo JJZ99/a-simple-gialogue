@@ -2,7 +2,6 @@ package com.example.abcdialogue.Weibo.Model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.ab.WBViewModel
 
 class WBViewModelFactory : ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

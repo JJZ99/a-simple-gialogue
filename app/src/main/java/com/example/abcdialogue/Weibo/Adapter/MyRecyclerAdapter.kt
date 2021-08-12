@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ab.WBViewModel
 import com.example.abcdialogue.MyApplication.Companion.context
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Util.DisplayUtil
@@ -17,6 +16,7 @@ import com.example.abcdialogue.Util.Util.toastInfo
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_END
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_ING
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
+import com.example.abcdialogue.Weibo.Model.WBViewModel
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
 
 import com.facebook.drawee.view.SimpleDraweeView

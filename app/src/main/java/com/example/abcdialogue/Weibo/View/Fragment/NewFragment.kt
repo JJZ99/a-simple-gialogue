@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.fragment_liner_recycler.new_rv
 import kotlinx.android.synthetic.main.fragment_liner_recycler.refresh_layout
 import kotlinx.android.synthetic.main.fragment_liner_recycler.remove_btn
 import androidx.lifecycle.ViewModelProvider
-import com.example.ab.WBViewModel
 import com.example.abcdialogue.Util.Util.toastInfo
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.PAGESIZE
@@ -29,6 +28,7 @@ import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.currSta
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.page
 import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
 import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
+import com.example.abcdialogue.Weibo.Model.WBViewModel
 
 
 class NewFragment: Fragment(R.layout.fragment_liner_recycler) {

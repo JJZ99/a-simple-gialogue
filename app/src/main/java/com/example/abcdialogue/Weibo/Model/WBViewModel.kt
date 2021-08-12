@@ -1,4 +1,4 @@
-package com.example.ab
+package com.example.abcdialogue.Weibo.Model
 
 import com.example.abcdialogue.Weibo.Model.DataFetchModel
 
