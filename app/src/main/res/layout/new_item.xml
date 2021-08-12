@@ -69,7 +69,7 @@
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:lineSpacingExtra="2dp"
-        android:maxLines="2"
+        android:maxLines="20"
         android:text="自己交阿见佛i阿四巴斯不读阿萨德你撒面佛可能是第几i家哦氛围超级电视品牌擦拭佛我你发i哦额无法渴望四大"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/image_container"

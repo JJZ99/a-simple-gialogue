@@ -43,6 +43,8 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     override fun onCreate(savedInstanceState: Bundle?) {
         //初始化数据
         initData()
+        Log.i("onCreateFragment","dasdasdasd")
+
         super.onCreate(savedInstanceState)
     }
     override fun onCreateView(
@@ -50,27 +52,30 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         viewModel.statusList.observe(this.viewLifecycleOwner,{
             //设置观察者，当数据加载到了后才初始化recycler
+            Log.i("intoonCreateViewObserve",it.toString())
             initRecycler()
-            Log.i("onCreateView observe",it.toString())
             hasFinishedRequest = true
         })
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onActivityCreated(savedInstanceState: android.os.Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.i("onActivityCreated","===========================onActivityCreatedonActivity========================")
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.i("onViewCreated","============================onViewCreatedonViewCreated=============================")
-        adapter = MyRecyclerAdapter(this,viewModel)
-        //初始化监听事件
-        initListener()
+        //if (!hasFinishedRequest){
+            adapter = MyRecyclerAdapter(this,viewModel)
+            //初始化监听事件
+            initListener()
+        //}
+        if (!hasFinishedRequest){
+
+        initRecycler()}
+
         //初始化下啦刷新控件
-        handlerDownPullUpdate(adapter as RecyclerView.Adapter<RecyclerView.ViewHolder>)
+        handlerDownPullUpdate()
     }
 
     private fun initData() {
@@ -131,7 +136,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         }
     }
 
-    private fun handlerDownPullUpdate(adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>){
+    private fun handlerDownPullUpdate(){
         //设置可用
         refresh_layout.isEnabled = true
         //加载动画三种颜色轮训
@@ -144,6 +149,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         super.onPause()
     }
     override fun onDestroy() {
+        Log.i("destory","dasdasda")
         super.onDestroy()
     }
 

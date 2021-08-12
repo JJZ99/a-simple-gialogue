@@ -5,14 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.abcdialogue.Module.MainActivity.Companion.ACCESS_TOKEN
 import com.example.abcdialogue.Util.Util.toastError
 import com.example.abcdialogue.Util.Util.toastInfo
+import com.example.abcdialogue.Weibo.Login.Companion.ACCESS_TOKEN
 import com.sina.weibo.sdk.auth.AuthInfo
 import com.sina.weibo.sdk.auth.Oauth2AccessToken
 import com.sina.weibo.sdk.auth.WbAuthListener

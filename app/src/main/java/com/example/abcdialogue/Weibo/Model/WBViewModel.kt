@@ -32,8 +32,6 @@ class WBViewModel : ViewModel(){
     val string = MutableLiveData<String>()
 
 
-
-
     //也可以参考CommentViewModel。kt 140的写法
     fun getProvinceList(token: String) {
         DataFetchModel.getProvinceList(token)
@@ -67,7 +65,6 @@ class WBViewModel : ViewModel(){
                     addDisposable(d)
                 }
                 override fun onNext(resp: WBAllDTO) {
-
                     if (statusList.value == null){
                         statusList.value = mutableListOf()
                     }
@@ -77,8 +74,6 @@ class WBViewModel : ViewModel(){
                             dto.transformToBean()
                         } ?: listOf())
                     }
-                    statusList.value = statusList.value
-
                     //可以删除下面两行
                     Log.i("get statueslist:", statusList.value.toString())
                     string.value = statusList.value.toString()
