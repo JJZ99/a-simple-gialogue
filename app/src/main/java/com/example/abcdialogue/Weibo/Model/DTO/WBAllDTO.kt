@@ -2,6 +2,7 @@ package com.example.abcdialogue.Weibo.Bean
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import java.util.Collections.addAll
 
 data class WBAllDTO(
 
@@ -29,7 +30,6 @@ data class WBAllDTO(
     val maxIdStr: String?,
     @SerializedName("has_unread")
     val hasUnread: Int?
-
 ):Serializable
 
 data class WBStatusDTO(
@@ -66,6 +66,8 @@ data class WBStatusDTO(
     /** （暂未支持）回复人昵称 */
     @SerializedName("in_reply_to_screen_name")
     val inReplyToScreenName: String,
+    @SerializedName("pic_urls")
+    val picUrls: List<PicUrlDTO>,
     /** 缩略图片地址，没有时不返回此字段 */
     @SerializedName("thumbnail_pic")
     val thumbnailPic: String,
@@ -108,8 +110,10 @@ data class WBStatusDTO(
 
     /** 微博流内的推广微博ID */
     @SerializedName("ad")
-    val ad: List<WBAd>
-
+    val ad: List<WBAd>,
+    /** 照片的数量 */
+    @SerializedName("pic_num")
+    val picNum: Int
 ) : Serializable
 
 data class WBVisible (
@@ -127,18 +131,30 @@ data class WBAd(
     val mark: String
 ) : Serializable
 
+data class PicUrlDTO(
+    @SerializedName("thumbnail_pic")
+    val thumbnailPic: String
+) : Serializable
+
+fun PicUrlDTO.transformToString(): String = thumbnailPic.replace(OLDVALUE, NEWVALUE)
 fun WBStatusDTO.transformToBean(): WBStatusBean = WBStatusBean(
     createdAt = createdAt ?: "",
     wId = id ?: 0L,
     text = text ?: "",
     source = source ?: "",
     favorite = favorite ?: false,
+    picUrls = mutableListOf<String>().apply {
+        addAll(picUrls?.map {
+            it.transformToString()
+        })
+    },
     thumbnailPic = thumbnailPic ?: "",
     bmiddlePic = bmiddlePic ?: "",
     originalPic = originalPic ?: "",
     repostsCount = repostsCount ?: 0,
     commentsCount = commentsCount ?: 0,
     attitudesCount = attitudesCount ?: 0,
+    picNum = picNum ?: 0,
     uId = user.id ?: 0L,
     screenName = user.screenName ?: "",
     name = user.name ?: "",
@@ -160,3 +176,5 @@ fun WBStatusDTO.transformToBean(): WBStatusBean = WBStatusBean(
     verified = user.verified ?: false,
     onlineStatus = user.onlineStatus ?: 0
 )
+const val OLDVALUE ="thumbnail"
+const val NEWVALUE = "large"

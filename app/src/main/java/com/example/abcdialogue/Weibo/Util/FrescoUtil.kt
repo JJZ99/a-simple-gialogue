@@ -82,7 +82,7 @@ object FrescoUtil {
             .setPlaceholderImage(R.drawable.loading_image, null)
             .setFailureImage(R.mipmap.reload_click)
             //设置缩放类型
-            .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
+            .setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
             //设置圆角
             .setRoundingParams(RoundingParams.fromCornersRadius(10F))
             .build()

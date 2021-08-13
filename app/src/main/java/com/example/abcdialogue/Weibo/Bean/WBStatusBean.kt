@@ -8,12 +8,15 @@ data class WBStatusBean(
     val text: String,//微博信息内容
     val source: String,//微博来源 "<a href=\"http://app.weibo.com/t/feed/6vtZb0\" rel=\"nofollow\">微博 weibo.com</a>"
     val favorite: Boolean,//是否已收藏，true：是，false：否
+    val picUrls: List<String>, //图片url集合
     val thumbnailPic: String,//缩略图片地址，没有时不返回此字段
     val bmiddlePic: String,//中等尺寸图片地址，没有时不返回此字段
     val originalPic: String,//原始图片地址，没有时不返回此字段
     val repostsCount: Int,//转发数
     val commentsCount: Int,//评论数
     val attitudesCount: Int,//表态数
+    val picNum: Int, //图片数量
+
 
     //下面是微博作者个人信息部分
     val uId: Long,//* 用户id

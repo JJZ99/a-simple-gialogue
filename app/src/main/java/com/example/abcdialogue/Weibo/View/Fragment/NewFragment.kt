@@ -38,12 +38,12 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
     lateinit var adapter: MyRecyclerAdapter
 
-    var hasFinishedRequest = false
+    var isRefresh = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //初始化数据
         initData()
-        Log.i("onCreateFragment","dasdasdasd")
+        Log.i("onCreateFragment","=============onCreateFragment=============")
 
         super.onCreate(savedInstanceState)
     }
@@ -52,29 +52,22 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         viewModel.statusList.observe(this.viewLifecycleOwner,{
-            //设置观察者，当数据加载到了后才初始化recycler
-            Log.i("intoonCreateViewObserve",it.toString())
-            initRecycler()
-            hasFinishedRequest = true
+            if (isRefresh||page==2){
+                initRecycler()
+                refresh_layout.isRefreshing = false
+                isRefresh=false
+            }
         })
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.i("onViewCreated","============================onViewCreatedonViewCreated=============================")
-        //if (!hasFinishedRequest){
-            adapter = MyRecyclerAdapter(this,viewModel)
-            //初始化监听事件
-            initListener()
-        //}
-        if (!hasFinishedRequest){
-
-        initRecycler()}
-
-        //初始化下啦刷新控件
+        Log.i("onViewCreated","==================onViewCreatedonViewCreated========================")
+        adapter = MyRecyclerAdapter(this,viewModel)
+        initListener()
+        initRecycler()
         handlerDownPullUpdate()
     }
 
@@ -84,11 +77,8 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
 
     private fun initRecycler() {
         new_rv.layoutManager = LinearLayoutManager(this.context)
-        //new_rv.addItemDecoration(MyDecoration())
         new_rv.adapter = adapter
         Log.i("进initRecycler","initRecyclerinitRecyclerinitRecycler")
-        //设置每一项的动画
-        //new_rv.itemAnimator
     }
 
     private fun initListener(){
@@ -113,7 +103,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
                         Log.i("loadmore observe",it[i].toString())
                     }
                 })
-
             }
         }
 
@@ -126,13 +115,11 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         }
 
         refresh_layout.setOnRefreshListener {
-            //在这里去执行刷新数据的操作，使用retrofit
-            Handler().postDelayed(Runnable {
-                //刷新列表
-                //adapter.notifyDataSetChanged()
-                //取消动画
-                refresh_layout.isRefreshing = false
-            },5000)
+            viewModel.statusList.value?.clear()
+            isRefresh = true
+            page = 1
+            viewModel.getStatusesList(TOKEN, page++)
+
         }
     }
 
@@ -149,25 +136,11 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         super.onPause()
     }
     override fun onDestroy() {
-        Log.i("destory","dasdasda")
+        Log.i("onDestroy","=====dasdasda==========")
         super.onDestroy()
     }
 
     override fun onDetach() {
         super.onDetach()
     }
-
-    class MyDecoration() : RecyclerView.ItemDecoration(){
-        override fun getItemOffsets(
-            outRect: Rect,
-            view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            super.getItemOffsets(outRect, view, parent, state)
-            //画了一个矩形，就是有点扁
-            outRect.set(0,0,0,view.resources.getDimensionPixelOffset(R.dimen.dividerHeight))
-        }
-    }
-
 }

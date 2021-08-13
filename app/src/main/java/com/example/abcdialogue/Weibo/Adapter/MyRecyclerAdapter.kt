@@ -43,13 +43,13 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             total = it.size+1
             var addCounts = (page - 1) * 15-it.size
             //如果新增的等于15个 假设还有更多，否则就没有更多了
-            hasMore = addCounts == 15
+            hasMore = addCounts >=0
             Log.i("init adapter observe",viewModel.statusList.value.toString())
         }
         viewModel.statusList.observe(fragment.viewLifecycleOwner,{
             total = it.size+1
             var addCounts = (page - 1) * 15-it.size
-            hasMore = addCounts == 15
+            hasMore = addCounts >= 0
             Log.i("init adapter observe",viewModel.statusList.value.toString())
             //notifyDataSetChanged()
         })
@@ -77,55 +77,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                     textView2.text = it[position].createdAt
                     content.text = it[position].text
                     FrescoUtil.loadImageAddCircle(headerImage,it[position].avatarLarge)
-                }
-
-                //生成一个随机数[0,6]
-                val randoms = (0..6).random()
-                if (randoms==0){
-                    holder.imageContainer.visibility = View.GONE
-                }else{
-                    holder.imageContainer.visibility = View.VISIBLE
-                    holder.imageContainer.removeAllViews()
-                    var count = randoms/3
-                    var reminder = randoms%3
-                    for (i in  0 until count){
-                        val line = LayoutInflater.from(holder.imageContainer.context)
-                            .inflate(R.layout.image_linear_hor, holder.imageContainer, false).apply {
-                                this.layoutParams.height = itemWidth
-                            }
-                        for (j in 0 until 3){
-                            val childView = SimpleDraweeView(line.context)
-                            childView.setOnClickListener{
-                                "width${childView.width}\nheight${childView.height}\n$winWidth".toastInfo()
-                            }
-
-                            FrescoUtil.loadImageAddSize(childView)
-                            line.new_image_hor.addView(childView, LinearLayout.LayoutParams(itemWidth,
-                                LinearLayout.LayoutParams.MATCH_PARENT).apply {
-                                rightMargin = itemMarginEnd
-                            })
-                        }
-                        holder.imageContainer.addView(line)
-                    }
-                    val footLine = LayoutInflater.from(holder.imageContainer.context)
-                        .inflate(R.layout.image_linear_hor, holder.imageContainer, false).apply {
-                            this.layoutParams.height = itemWidth
-                        }
-                    if (reminder!=0){
-                        for (i in  0 until reminder){
-                            val childView = SimpleDraweeView(footLine.context)
-                            childView.setOnClickListener{
-                                "width${childView.width}\nheight${childView.height}\n$winWidth".toastInfo()
-                            }
-
-                            FrescoUtil.loadImageAddSize(childView)
-                            footLine.new_image_hor.addView(childView, LinearLayout.LayoutParams(itemWidth,
-                                LinearLayout.LayoutParams.MATCH_PARENT).apply {
-                                rightMargin = itemMarginEnd
-                            })
-                        }
-                        holder.imageContainer.addView(footLine)
-                    }
+                    bindImages(it[position],holder)
                 }
             }
         } else{
@@ -135,6 +87,63 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                 (holder as MyFooterViewHolder).update(LOADER_STATE_END)
             }
         }
+    }
+
+    /**
+     * 展示图片
+     */
+    private fun bindImages(it: WBStatusBean, holder: MyRecyclerHolder) {
+        val size = it.picUrls.size
+        if (size == 0) {
+            holder.imageContainer.visibility = View.GONE
+        } else {
+            holder.imageContainer.visibility = View.VISIBLE
+            holder.imageContainer.removeAllViews()
+            var count = size / 3
+            var reminder = size % 3
+            for (i in 0 until count) {
+                val line = LayoutInflater.from(holder.imageContainer.context)
+                    .inflate(R.layout.image_linear_hor, holder.imageContainer, false).apply {
+                        this.layoutParams.height = itemWidth
+                    }
+                for (j in 0 until 3) {
+                    val childView = SimpleDraweeView(line.context)
+                    childView.setOnClickListener {
+                        "width${childView.width}\nheight${childView.height}\n$winWidth".toastInfo()
+                    }
+                    FrescoUtil.loadImageAddSize(childView, it.picUrls[i * 3 + j])
+                    line.new_image_hor.addView(childView, LinearLayout.LayoutParams(
+                        itemWidth,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                    ).apply {
+                        rightMargin = itemMarginEnd
+                    })
+                }
+                holder.imageContainer.addView(line)
+            }
+            val footLine = LayoutInflater.from(holder.imageContainer.context)
+                .inflate(R.layout.image_linear_hor, holder.imageContainer, false).apply {
+                    this.layoutParams.height = itemWidth
+                }
+            if (reminder != 0) {
+                for (i in 0 until reminder) {
+                    val childView = SimpleDraweeView(footLine.context)
+                    childView.setOnClickListener {
+                        "width${childView.width}\nheight${childView.height}\n$winWidth".toastInfo()
+                    }
+
+                    FrescoUtil.loadImageAddSize(childView, it.picUrls[count * 3 + i])
+                    footLine.new_image_hor.addView(childView, LinearLayout.LayoutParams(
+                        itemWidth,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                    ).apply {
+                        rightMargin = itemMarginEnd
+                    })
+                }
+                holder.imageContainer.addView(footLine)
+            }
+        }
+
     }
 
 
@@ -148,7 +157,6 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     override fun getItemViewType(position: Int): Int {
         return if (position == (itemCount - 1)) {
             TYPE_LOAD_MORE
-
         } else {
             TYPE_NORMAL
         }

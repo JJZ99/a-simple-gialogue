@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.abcdialogue.Util.Util.toastError
+import com.example.abcdialogue.Util.Util.toastInfo
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.currStatus
 import com.example.abcdialogue.Weibo.Bean.CountryBean
@@ -56,6 +57,8 @@ class WBViewModel : ViewModel(){
     }
 
     fun getStatusesList(token:String,page:Int){
+        Log.i("页数","===============$page===============")
+        "===============$page===============".toastInfo()
         DataFetchModel.getStatusesList(token,page)
             .subscribe(object : Observer<WBAllDTO> {
                 override fun onComplete() {

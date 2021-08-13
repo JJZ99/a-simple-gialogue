@@ -7,18 +7,6 @@
     android:layout_margin="5dp"
     android:background="#AFD6D4D4">
 
-    <LinearLayout
-        android:id="@+id/image_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_content"
-        fresco:visibility="visible" />
-
     <RelativeLayout
         android:id="@+id/header_rl"
         android:layout_width="match_parent"
@@ -34,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="4dp"
+            android:textColor="#3A01DF"
             android:layout_toRightOf="@id/header_image"
             android:text="不知道啊"
             android:textSize="20sp" />
@@ -54,11 +43,12 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="2dp"
             android:layout_marginEnd="2dp"
             android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
             app:actualImageScaleType="fitCenter"
+            fresco:progressBarAutoRotateInterval="5000"
             fresco:placeholderImage="@drawable/image4" />
     </RelativeLayout>
 
@@ -76,6 +66,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_rl" />
+
+    <LinearLayout
+        android:id="@+id/image_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_content"
+        fresco:visibility="visible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
