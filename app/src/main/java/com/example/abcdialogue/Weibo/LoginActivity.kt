@@ -7,12 +7,13 @@ import android.os.Bundle
 import android.util.Log
 import com.example.abcdialogue.Module.MainActivity2
 import com.example.abcdialogue.R
-import com.example.abcdialogue.Util.Util.toast
-import com.example.abcdialogue.Util.Util.toastInfo
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.abcdialogue.Weibo.Util.Util.toast
+import com.example.abcdialogue.Weibo.Util.Util.toastInfo
+import kotlinx.android.synthetic.main.activity_login.login_btn
+import kotlinx.android.synthetic.main.activity_login.wei_bo_btn
 import java.util.regex.Pattern
 
-class Login : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

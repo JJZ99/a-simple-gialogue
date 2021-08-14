@@ -1,6 +1,5 @@
 package com.example.abcdialogue.Weibo.Model
 
-import android.util.Log
 import com.example.abcdialogue.Weibo.Bean.WBAllDTO
 import com.example.abcdialogue.Weibo.Util.Net.RetrofitHelper
 import io.reactivex.Observable

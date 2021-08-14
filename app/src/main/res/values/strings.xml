@@ -7,6 +7,7 @@
     <string name="load_more_fail">Failed, Please Click Retry </string>
     <string name="load_more_end">你已经划到底啦～</string>
     <string name="sp_access_token">com.example.abcdialogue.weibo.PREFERENCE_FILE_KEY</string>
+    <string name="oh_captain_my_captain">Oh,Captain！My Captain！</string>
 
 
 </resources>

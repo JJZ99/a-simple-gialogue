@@ -1,15 +1,11 @@
 package com.example.abcdialogue.Weibo.Util
 
-import android.graphics.Color
 import android.net.Uri
-import android.widget.ImageView
 import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.R
-import com.example.abcdialogue.Util.DisplayUtil
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
-import com.facebook.drawee.generic.GenericDraweeHierarchy
 
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.facebook.drawee.generic.RoundingParams
@@ -34,7 +30,7 @@ object FrescoUtil {
         imageView.controller = controller
     }
     /**
-     * 加载图片，这个用在xml中图片的加载
+     * 加载用户头像专用
      */
     fun loadImageAddCircle(imageView: SimpleDraweeView, url: String = DEFAULT_URL_BAIDU) {
         val rp = RoundingParams()
@@ -69,25 +65,18 @@ object FrescoUtil {
         imageView: SimpleDraweeView,
         url: String = DEFAULT_URL,
         width: Int =112,
-        ratio: Float = 1f,
+        ratio: Float = 1f,//宽高比
     ) {
-//        imageView.post{
-//            imageView.layoutParams.apply {
-//                this.width = DisplayUtil.dp2px(width)
-//            }
-//        }
-        imageView.hierarchy = FrescoUtil.builder
-            //淡入淡出的持续时间
-            .setFadeDuration(300)
-            .setPlaceholderImage(R.drawable.loading_image, null)
+        imageView.hierarchy = builder
+            .setPlaceholderImage(R.mipmap.loading_image, ScalingUtils.ScaleType.CENTER)
             .setFailureImage(R.mipmap.reload_click)
             //设置缩放类型
             .setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+            //淡入淡出的持续时间
+            .setFadeDuration(300)
             //设置圆角
             .setRoundingParams(RoundingParams.fromCornersRadius(10F))
             .build()
-
-
         loadImage(imageView, url)
     }
 }

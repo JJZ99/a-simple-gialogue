@@ -3,17 +3,12 @@ package com.example.abcdialogue.Module
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.facebook.drawee.backends.pipeline.Fresco
 import kotlinx.android.synthetic.main.activity_main2.helloWorld
 import kotlinx.android.synthetic.main.activity_main2.image_btn
 import kotlinx.android.synthetic.main.activity_main2.read_btn
-import android.net.Uri
 import com.example.abcdialogue.R
-import com.example.abcdialogue.Util.Util.toastInfo
+import com.example.abcdialogue.Weibo.Util.Util.toastInfo
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
-import com.facebook.drawee.view.SimpleDraweeView
-import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory
-import okhttp3.OkHttpClient
 
 
 class MainActivity2 : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.example.abcdialogue.Util;
+package com.example.abcdialogue.Weibo.Util;
 
 
 import android.util.TypedValue;

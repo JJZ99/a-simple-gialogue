@@ -1,16 +1,13 @@
 package com.example.abcdialogue.Weibo.View.Fragment
 
 import android.content.Intent
-import android.graphics.Rect
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.abcdialogue.Module.MainActivity2
 import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
@@ -21,7 +18,8 @@ import kotlinx.android.synthetic.main.fragment_liner_recycler.new_rv
 import kotlinx.android.synthetic.main.fragment_liner_recycler.refresh_layout
 import kotlinx.android.synthetic.main.fragment_liner_recycler.remove_btn
 import androidx.lifecycle.ViewModelProvider
-import com.example.abcdialogue.Util.Util.toastInfo
+import com.example.abcdialogue.Weibo.Util.Util.toastInfo
+import com.example.abcdialogue.Weibo.Util.Util.toastSuccess
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.PAGESIZE
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.currStatus
@@ -56,6 +54,9 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
             if (isRefresh||page==2){
                 initRecycler()
                 refresh_layout.isRefreshing = false
+                if (isRefresh){
+                    "刷新成功".toastSuccess()
+                }
                 isRefresh=false
             }
         })
@@ -64,7 +65,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.i("onViewCreated","==================onViewCreatedonViewCreated========================")
+        Log.i("onViewCreated","==================onViewCreated onViewCreated========================")
         adapter = MyRecyclerAdapter(this,viewModel)
         initListener()
         initRecycler()
@@ -78,7 +79,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     private fun initRecycler() {
         new_rv.layoutManager = LinearLayoutManager(this.context)
         new_rv.adapter = adapter
-        Log.i("进initRecycler","initRecyclerinitRecyclerinitRecycler")
+        Log.i("进initRecycler","initRecycler initRecycler initRecycler")
     }
 
     private fun initListener(){
@@ -132,15 +133,18 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         //refresh_layout.setProgressBackgroundColorSchemeColor(0x03DAC5);
     }
 
+    override fun onDetach() {
+        Log.i("onDetach","=====onDetach==========")
+        super.onDetach()
+    }
     override fun onPause() {
+        Log.i("onPause","=====onPause==========")
         super.onPause()
     }
     override fun onDestroy() {
-        Log.i("onDestroy","=====dasdasda==========")
+        Log.i("onDestroy","=====onPause==========")
         super.onDestroy()
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
+
 }

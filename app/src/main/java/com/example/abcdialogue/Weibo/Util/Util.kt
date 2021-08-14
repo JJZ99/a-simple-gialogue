@@ -1,19 +1,9 @@
-package com.example.abcdialogue.Util
+package com.example.abcdialogue.Weibo.Util
 
 import android.content.Context
-import android.util.Xml
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.example.abcdialogue.MyApplication
 import es.dmoral.toasty.Toasty
-import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserException
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import java.util.Objects
 
 object Util {
     /**
