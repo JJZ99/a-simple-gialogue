@@ -5,7 +5,7 @@ import android.widget.Toast
 import com.example.abcdialogue.MyApplication
 import es.dmoral.toasty.Toasty
 
-object Util {
+object ToastUtil {
     /**
      * 五种toast显示，分别是错误，成功 信息 警告 和正常。短显示
      */

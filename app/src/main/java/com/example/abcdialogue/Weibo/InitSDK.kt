@@ -7,8 +7,8 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
-import com.example.abcdialogue.Weibo.Util.Util.toastError
-import com.example.abcdialogue.Weibo.Util.Util.toastInfo
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.LoginActivity.Companion.ACCESS_TOKEN
 import com.sina.weibo.sdk.auth.AuthInfo
 import com.sina.weibo.sdk.auth.Oauth2AccessToken

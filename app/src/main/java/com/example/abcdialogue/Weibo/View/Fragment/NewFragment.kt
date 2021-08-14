@@ -18,8 +18,8 @@ import kotlinx.android.synthetic.main.fragment_liner_recycler.new_rv
 import kotlinx.android.synthetic.main.fragment_liner_recycler.refresh_layout
 import kotlinx.android.synthetic.main.fragment_liner_recycler.remove_btn
 import androidx.lifecycle.ViewModelProvider
-import com.example.abcdialogue.Weibo.Util.Util.toastInfo
-import com.example.abcdialogue.Weibo.Util.Util.toastSuccess
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.PAGESIZE
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.currStatus

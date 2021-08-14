@@ -4,8 +4,8 @@ package com.example.abcdialogue.Weibo.Model
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.abcdialogue.Weibo.Util.Util.toastError
-import com.example.abcdialogue.Weibo.Util.Util.toastInfo
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.currStatus
 import com.example.abcdialogue.Weibo.Bean.CountryBean

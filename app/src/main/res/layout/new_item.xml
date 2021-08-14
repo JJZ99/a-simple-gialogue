@@ -33,13 +33,16 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/header_image"
             android:layout_alignParentRight="true"
+
             android:layout_marginBottom="2dp"
             android:layout_marginRight="5dp"
             android:text="字节跳动"
-            android:textSize="12sp" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Display4"
+            android:textSize="12sp"
+            android:textStyle="normal" />
 
         <TextView
-            android:id="@+id/source_tv"
+            android:id="@+id/source"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/header_image"
@@ -47,6 +50,17 @@
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@id/header_image"
             android:text="来自"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/source_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/header_image"
+            android:textColor="#67ABE1"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/source"
+            android:text="微博"
             android:textSize="12sp" />
 
         <com.facebook.drawee.view.SimpleDraweeView

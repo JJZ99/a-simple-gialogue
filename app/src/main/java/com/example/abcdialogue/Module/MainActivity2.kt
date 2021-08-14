@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_main2.helloWorld
 import kotlinx.android.synthetic.main.activity_main2.image_btn
 import kotlinx.android.synthetic.main.activity_main2.read_btn
 import com.example.abcdialogue.R
-import com.example.abcdialogue.Weibo.Util.Util.toastInfo
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
 
 

@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import com.example.abcdialogue.Module.MainActivity2
 import com.example.abcdialogue.R
-import com.example.abcdialogue.Weibo.Util.Util.toast
-import com.example.abcdialogue.Weibo.Util.Util.toastInfo
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toast
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import kotlinx.android.synthetic.main.activity_login.login_btn
 import kotlinx.android.synthetic.main.activity_login.wei_bo_btn
 import java.util.regex.Pattern
