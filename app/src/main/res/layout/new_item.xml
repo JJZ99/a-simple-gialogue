@@ -4,8 +4,9 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/tools"
-    android:layout_margin="5dp"
-    android:background="#AFD6D4D4">
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:background="@color/background">
 
     <RelativeLayout
         android:id="@+id/header_rl"
@@ -20,9 +21,9 @@
             android:id="@+id/header_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
-            android:textColor="#3A01DF"
+            android:textColor="@color/name"
             android:layout_toRightOf="@id/header_image"
             android:text="不知道啊"
             android:textSize="20sp" />
@@ -56,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/header_image"
-            android:textColor="#67ABE1"
+            android:textColor="@color/sourceWeibo"
             android:layout_marginBottom="2dp"
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@id/source"

@@ -25,6 +25,7 @@ import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.Model.WBViewModel
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
+import com.example.abcdialogue.Weibo.Util.ParseUtil.getFormatText
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getSource
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getTime
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getUri
@@ -98,10 +99,12 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                             sourceTextView.visibility = View.GONE
                             source.visibility = View.GONE
                         }
-                        content.text = /*getFormatText(*/it.text/*)*/
+                        content.movementMethod = LinkMovementMethod.getInstance()
+                        if (it.text.isNotEmpty()){
+                            content.text = getFormatText(it.text)
+                        }
                         FrescoUtil.loadImageAddCircle(headerImage,it.avatarLarge)
                         bindImages(it,holder)
-
                     }
                 }
             }

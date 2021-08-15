@@ -1,6 +1,8 @@
 package com.example.abcdialogue.Weibo.View.Fragment
 
+import android.animation.ObjectAnimator
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,10 +15,8 @@ import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder
-import kotlinx.android.synthetic.main.fragment_liner_recycler.add_btn
 import kotlinx.android.synthetic.main.fragment_liner_recycler.new_rv
 import kotlinx.android.synthetic.main.fragment_liner_recycler.refresh_layout
-import kotlinx.android.synthetic.main.fragment_liner_recycler.remove_btn
 import androidx.lifecycle.ViewModelProvider
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
@@ -27,6 +27,8 @@ import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.page
 import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
 import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
 import com.example.abcdialogue.Weibo.Model.WBViewModel
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_liner_recycler.fab
 
 
 class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
@@ -66,24 +68,14 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.i("onViewCreated","==================onViewCreated onViewCreated========================")
-        adapter = MyRecyclerAdapter(this,viewModel)
-        initListener()
+        initAdapter()
         initRecycler()
-        handlerDownPullUpdate()
+        initFloating()
+        initRefresh()
     }
 
-    private fun initData() {
-        viewModel.getStatusesList(TOKEN,page++)
-    }
-
-    private fun initRecycler() {
-        new_rv.layoutManager = LinearLayoutManager(this.context)
-        new_rv.adapter = adapter
-        Log.i("进initRecycler","initRecycler initRecycler initRecycler")
-    }
-
-    private fun initListener(){
-
+    private fun initAdapter() {
+        adapter = MyRecyclerAdapter(this,viewModel)
         adapter.onItemClickListener = object : MyRecyclerAdapter.OnItemClickListener {
             override fun onItemClick(view: View,pos:Int) {
                 "你点击了第${pos}Item".toastInfo()
@@ -106,32 +98,52 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
                 })
             }
         }
+    }
 
-        add_btn.setOnClickListener{
-            "已经退出历史舞台,不用再改了".toastInfo()
-        }
+    private fun initData() {
+        viewModel.getStatusesList(TOKEN,page++)
+    }
 
-        remove_btn.setOnClickListener{
-            "已经退出历史舞台，不用再改了".toastInfo()
-        }
+    private fun initRecycler() {
+        new_rv.layoutManager = LinearLayoutManager(this.context)
+        new_rv.adapter = adapter
+        Log.i("进initRecycler","initRecycler initRecycler initRecycler")
+    }
 
-        refresh_layout.setOnRefreshListener {
-            viewModel.statusList.value?.clear()
-            isRefresh = true
-            page = 1
-            viewModel.getStatusesList(TOKEN, page++)
-
+    private fun initFloating(){
+        fab.setRippleColor(resources.getColor(R.color.floatingClicked,null))
+        fab.setOnClickListener {
+            refresh_layout.isRefreshing = true
+            refresh()
+            //设置动画
+            var  objectAnim : ObjectAnimator = ObjectAnimator.ofFloat(it,"rotation", 0f, 360f)
+            //持续1.5秒
+            objectAnim.duration = 1500
+            //开始
+            objectAnim.start()
         }
     }
 
-    private fun handlerDownPullUpdate(){
+    private fun initRefresh(){
         //设置可用
         refresh_layout.isEnabled = true
         //加载动画三种颜色轮训
         refresh_layout.setColorSchemeColors(0xff0000,0x00ff00,0x0000ff)
         //refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         //refresh_layout.setProgressBackgroundColorSchemeColor(0x03DAC5);
+        refresh_layout.setOnRefreshListener {
+            refresh()
+        }
     }
+
+    private fun refresh(){
+        viewModel.statusList.value?.clear()
+        isRefresh = true
+        page = 1
+        viewModel.getStatusesList(TOKEN, page++)
+    }
+
+
 
     override fun onDetach() {
         Log.i("onDetach","=====onDetach==========")

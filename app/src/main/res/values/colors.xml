@@ -4,5 +4,18 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="Red">#ffff0000</color>
+    <!--    刷新悬浮按钮被按下去的颜色-->
+    <color name="floatingClicked">#FF973EA6</color>
+    <!--    微博超话字体的颜色-->
+    <color name="topicColor">#4D8EC1</color>
+    <color name="name">#3A01DF</color>
+    <color name="sourceWeibo">#2E64FE</color>
+    <color name="background">#FFFFFF</color>
+<!--    刷新悬浮按钮颜色-->
+    <color name="floatingNormal">#B156C1</color>
+<!--    底部背景颜色-->
+    <color name="bottomBackground">#90F2FFE2</color>
+    <color name="textColor">#CC000000</color>
+
 
 </resources>

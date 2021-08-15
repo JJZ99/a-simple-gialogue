@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.widget.EditText
 import com.example.abcdialogue.Module.MainActivity2
 import com.example.abcdialogue.R
+import com.example.abcdialogue.Weibo.Util.ParseUtil.getFormatText
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getUri
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toast
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
@@ -26,9 +28,12 @@ class LoginActivity : AppCompatActivity() {
         baseContext.toast("Hello",)
 
         login_btn.setOnClickListener {
-            var intent = Intent(this, MainActivity2().javaClass)
-            startActivity(intent)
-            "jump！jump！".toastInfo()
+            username_input.text = getFormatText("#行测# #国考# #省考#")
+            username_input.movementMethod = LinkMovementMethod.getInstance()
+
+//            var intent = Intent(this, MainActivity2().javaClass)
+//            startActivity(intent)
+//            "jump！jump！".toastInfo()
         }
         wei_bo_btn.setOnClickListener {
             val sharedPref = this.getSharedPreferences(
@@ -45,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
                 //不为空直接跳转到微博页
                 "已经存在Token：${token}直接跳到微博".toastInfo()
                 Log.i("token has",token)
-                InitSDK.TOKEN = "2.00llrezFRMpNJDd3d5f9f262Ln9WYC"
+                InitSDK.TOKEN = token
                 var intent = Intent(this, WeiBoActivity().javaClass)
                 startActivity(intent)
                 finish()

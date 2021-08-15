@@ -1,7 +1,25 @@
 package com.example.abcdialogue.Weibo.Util
 
+import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
+import android.text.style.URLSpan
 import android.util.Log
+import android.view.View
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.text.clearSpans
+import com.example.abcdialogue.MyApplication
+import com.example.abcdialogue.MyApplication.Companion.context
+import com.example.abcdialogue.R
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -22,8 +40,8 @@ object ParseUtil {
 
     /**
      * 从<a href="http://app.weibo.com/t/feed/6vtZb0" rel="nofollow">微博 weibo.com</a>获取标签中的内容
-     * @param string 微博来源的Uri
-     * @return 内容
+     * @param string 微博来源
+     * @return Uri
      */
     fun getUri(string: String): Uri {
         var beginIndex = string.indexOf("href=") + 6
@@ -43,15 +61,9 @@ object ParseUtil {
         //获取已经发表了多少分钟
         var time = (System.currentTimeMillis()-simpleDateFormat.time)/60000
         when {
-            time < 1 -> {
-                return TYPE_NOW
-            }
-            time<60 -> {
-                return time.toString()+TYPE_MIN
-            }
-            time>=60 -> {
-                return (time/60).toString()+TYPE_HOUR
-            }
+            time < 1 -> return TYPE_NOW
+            time<60 -> return time.toString()+TYPE_MIN
+            time>=60 -> return (time/60).toString()+TYPE_HOUR
         }
         return (time/60).toString()+TYPE_HOUR
     }
@@ -59,131 +71,98 @@ object ParseUtil {
     /**
      * 从text中获取超话信息
      */
-//    fun getFormatText(string: String): Spanned {
-//        string.indexOf("https//")
-//        val spannedStringBuilder = SpannableStringBuilder()
-//
-//        // 前缀
-//        if (priceBuilder.prefixText?.isNotEmpty() == true) {
-//            val prefixTextSpanned = SpannableString(priceBuilder.prefixText)
-//            prefixTextSpanned.setSpan(ForegroundColorSpan(priceBuilder.prefixTextColor), 0, prefixTextSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-//            prefixTextSpanned.setSpan(RelativeSizeSpan(priceBuilder.prefixTextSizeRatio), 0, prefixTextSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-//            //前缀是否设置为粗体
-//            if (priceBuilder.prefixTextBold) {
-//                prefixTextSpanned.setSpan(StyleSpan(Typeface.BOLD), 0, prefixTextSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-//            }
-//            spannedStringBuilder.append(prefixTextSpanned)
-//
-//            val prefixTextSpaceSpanned = SpannableString(" ")
-//            prefixTextSpaceSpanned.setSpan(SpaceSpan(priceBuilder.prefixMarginRight), 0, prefixTextSpaceSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-//            spannedStringBuilder.append(prefixTextSpaceSpanned)
-//        }
-//
-//        // ￥ 符号
-//        if (!priceBuilder.hideYuanSymbol) {
-//            val yuanSymbolSpanned = SpannableString("¥")
-//            yuanSymbolSpanned.setSpan(ForegroundColorSpan(priceBuilder.priceTextColor), 0, yuanSymbolSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-//            yuanSymbolSpanned.setSpan(
-//                RelativeSizeSpan(priceBuilder.yuanSymbolTextSizeRatio),
-//                0,
-//                yuanSymbolSpanned.length,
-//                Spanned.SPAN_INCLUSIVE_EXCLUSIVE
-//            )
-//            if (priceBuilder.yuanSymbolBold) {
-//                yuanSymbolSpanned.setSpan(
-//                    StyleSpan(Typeface.BOLD),
-//                    0,
-//                    yuanSymbolSpanned.length,
-//                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE
-//                )
-//            }
-//            spannedStringBuilder.append(yuanSymbolSpanned)
-//
-//            val yuanSpaceSpanned = SpannableString(" ")
-//            yuanSpaceSpanned.setSpan(
-//                SpaceSpan(priceBuilder.yuanSymbolMarginRight),
-//                0,
-//                yuanSpaceSpanned.length,
-//                Spanned.SPAN_INCLUSIVE_EXCLUSIVE
-//            )
-//            spannedStringBuilder.append(yuanSpaceSpanned)
-//        }
-//
-//        // 价格
-//        val priceInString = convertPriceFromLongToString(
-//            priceBuilder.priceInFen,
-//            priceBuilder.priceInFenMax
-//        )
-//        val priceIntegerInString = retrievePriceIntegerText(priceInString)
-//        val priceDecimalInString = retrievePriceDecimalText(priceInString)
-//
-//        val priceIntegerSpanned = SpannableString(priceIntegerInString)
-//        priceIntegerSpanned.setSpan(
-//            ForegroundColorSpan(priceBuilder.priceTextColor),
-//            0,
-//            priceIntegerSpanned.length,
-//            Spanned.SPAN_INCLUSIVE_EXCLUSIVE
-//        )
-//        priceIntegerSpanned.setSpan(
-//            RelativeSizeSpan(1F),
-//            0,
-//            priceIntegerSpanned.length,
-//            Spanned.SPAN_INCLUSIVE_EXCLUSIVE
-//        )
-//        priceBuilder.priceShadow?.let {
-//            priceIntegerSpanned.setSpan(
-//                ShadowSpan(it),
-//                0,
-//                priceIntegerSpanned.length,
-//                Spanned.SPAN_INCLUSIVE_EXCLUSIVE
-//            )
-//        }
-//        if (priceBuilder.priceBold) {
-//            priceIntegerSpanned.setSpan(
-//                StyleSpan(Typeface.BOLD),
-//                0,
-//                priceIntegerSpanned.length,
-//                Spanned.SPAN_INCLUSIVE_EXCLUSIVE
-//            )
-//        }
-//        spannedStringBuilder.append(priceIntegerSpanned)
-//
-//        if (priceDecimalInString.isNotEmpty()) {
-//            val priceDecimalSpanned = SpannableString(priceDecimalInString)
-//            priceDecimalSpanned.setSpan(ForegroundColorSpan(priceBuilder.priceTextColor), 0, priceDecimalSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-//            priceDecimalSpanned.setSpan(RelativeSizeSpan(priceBuilder.priceDecimalTextSizeRatio), 0, priceDecimalSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-//            if (priceBuilder.priceBold) {
-//                priceDecimalSpanned.setSpan(StyleSpan(Typeface.BOLD), 0, priceDecimalSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-//            }
-//            spannedStringBuilder.append(priceDecimalSpanned)
-//            priceBuilder.priceShadow?.let {
-//                priceDecimalSpanned.setSpan(
-//                    ShadowSpan(it),
-//                    0,
-//                    priceDecimalSpanned.length,
-//                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE
-//                )
-//            }
-//        }
-//
-//        // 后缀
-//        if (priceBuilder.suffixText?.isNotEmpty() == true) {
-//            val suffixTextSpaceSpanned = SpannableString(" ")
-//            suffixTextSpaceSpanned.setSpan(SpaceSpan(priceBuilder.suffixTextMarginLeft), 0, suffixTextSpaceSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-//            spannedStringBuilder.append(suffixTextSpaceSpanned)
-//
-//            val suffixTextSpanned = SpannableString(priceBuilder.suffixText)
-//            suffixTextSpanned.setSpan(ForegroundColorSpan(priceBuilder.suffixTextColor), 0, suffixTextSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-//            suffixTextSpanned.setSpan(RelativeSizeSpan(priceBuilder.suffixTextSizeRatio), 0, suffixTextSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-//            //后缀是否设置为粗体
-//            if (priceBuilder.suffixTextBold) {
-//                suffixTextSpanned.setSpan(StyleSpan(Typeface.BOLD), 0, suffixTextSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-//            }
-//            spannedStringBuilder.append(suffixTextSpanned)
-//        }
-//        return spannedStringBuilder
-//    }
+    fun getFormatText(content: String): Spanned {
+
+        val spannedStringBuilder = SpannableStringBuilder()
+        //用来标志下一个#是不是右边的
+        var isTopic = false
+        //上一个#的索引
+        //Todo 这里还可以优化
+        var left = if (content.indexOf(WELL) == 0) {
+            isTopic = true
+            0
+        } else {
+            0
+        }
+        var list = mutableListOf<Pos>().apply {
+            var left = -1
+            var right = -1
+            content.map {
+                if (it.equals(WELL)){
+                    if (!isTopic){
+                        left = content.indexOf(it)
+                        isTopic = true
+                    }else{
+                        right = content.indexOf(it)
+                        isTopic = false
+                        add(Pos(left, right))
+                    }
+                }
+            }
+        }
+
+        while (true){
+            var right = content.indexOf(WELL,left+1)
+            if (right==-1)
+                break
+            isTopic = if (isTopic){
+                val textSpanned = SpannableString(content.substring(left,right+1))
+                textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.topicColor,null)), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+                spannedStringBuilder.append(textSpanned)
+                left = right+1
+                false
+            }else{
+                val textSpanned = SpannableString(content.substring(left,right))
+                textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.textColor,null)), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+                spannedStringBuilder.append(textSpanned)
+                left = right
+                true
+            }
+
+        }
+        var allTextIndex = content.indexOf("全文： ")
+        if (allTextIndex!=-1){
+            var textSpanned = SpannableString(content.substring(if (left == -1) 0 else left,allTextIndex))
+            textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.textColor,null)), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            spannedStringBuilder.append(textSpanned)
+            //链接的结尾有个ZWSP 不能截进来
+            val url = content.substring(allTextIndex+4,content.length-1)
+            textSpanned.clearSpans()
+            textSpanned = SpannableString("全文")
+            textSpanned.setSpan(MURLSpan(url), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            textSpanned.setSpan(StyleSpan(Typeface.BOLD), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+
+            spannedStringBuilder.append(textSpanned)
+        }else{
+            var textSpanned = SpannableString(content.substring(if (left == -1) 0 else left))
+            textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.textColor,null)), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            spannedStringBuilder.append(textSpanned)
+        }
+
+        return spannedStringBuilder
+    }
+    private const val WELL ="#"
     private const val TYPE_NOW = "刚刚"
     private const val TYPE_MIN="分钟前"
     private const val TYPE_HOUR="小时前"
 }
+
+class MURLSpan(private val url: String) : URLSpan(url){
+    override fun updateDrawState(ds: TextPaint) {
+        super.updateDrawState(ds)
+        //设置超链接文本的颜色
+        ds.color = context.resources.getColor(R.color.topicColor)
+        //这里可以去除点击文本的默认的下划线
+        ds.isUnderlineText = false
+    }
+
+    override fun onClick(widget: View) {
+         super.onClick(widget)
+
+        //去除点击后字体出现的背景色
+        (widget as? TextView)?.highlightColor = Color.TRANSPARENT
+        //自定义超链接动作
+        Toast.makeText(context, "自定义超链接动作", Toast.LENGTH_SHORT).show()
+    }
+}
+data class Pos(val left:Int,val right:Int)

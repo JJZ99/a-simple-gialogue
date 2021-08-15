@@ -6,21 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Weibo.WeiBoActivity">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tablayout_top"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toTopOf="@id/viewPager"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabIndicatorHeight="3dp"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="#510202"
-        app:tabTextColor="#666666" />
-
-
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="wrap_content"
@@ -28,13 +13,13 @@
         app:layout_constraintBottom_toTopOf="@+id/tablayout_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tablayout_top">
+        app:layout_constraintTop_toTopOf="parent">
     </androidx.viewpager.widget.ViewPager>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout_button"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -42,7 +27,7 @@
         app:tabIndicatorColor="@color/colorPrimary"
         app:tabIndicatorHeight="3dp"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="#FA0000"
+        app:tabSelectedTextColor="#510202"
         app:tabTextColor="#666666"
         app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
