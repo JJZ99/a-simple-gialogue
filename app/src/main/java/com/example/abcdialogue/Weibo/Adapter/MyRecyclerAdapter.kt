@@ -1,14 +1,21 @@
 package com.example.abcdialogue.Weibo.Adapter
 
 
+import android.content.Intent
+import android.graphics.Paint
+import android.net.Uri
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.MyApplication.Companion.context
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Util.DisplayUtil
@@ -18,9 +25,10 @@ import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.Model.WBViewModel
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
-import com.example.abcdialogue.Weibo.Util.ParseUtil.getFormatText
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getSource
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getTime
+import com.example.abcdialogue.Weibo.Util.ParseUtil.getUri
+import com.example.abcdialogue.Weibo.WeiBoActivity
 
 import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.image_linear_hor.view.new_image_hor
@@ -73,22 +81,28 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (position!=(itemCount-1)){
             (holder as MyRecyclerHolder).apply{
-                textView.text = position.toString()
-                textView2.text = position.toString()
-                viewModel.statusList.value?.let {
-                    textView.text = it[position].name
-                    textView2.text = getTime(it[position].createdAt)
-                    if (it[position].source.isNotEmpty()){
-                        sourceTextView.visibility = View.VISIBLE
-                        source.visibility = View.VISIBLE
-                        sourceTextView.text = getSource(it[position].source)
-                    }else{
-                        sourceTextView.visibility = View.GONE
-                        source.visibility = View.GONE
+                viewModel.statusList.value?.let { it ->
+                    it[position].also{
+                        textView.text = it.name
+                        textView2.text = getTime(it.createdAt)
+                        if (it.source.isNotEmpty()){
+                            sourceTextView.visibility = View.VISIBLE
+                            source.visibility = View.VISIBLE
+                            sourceTextView.text = getSource(it.source)
+                            //来源文本点击后跳转
+                            sourceTextView.setOnClickListener { _ ->
+                                var intent = Intent(Intent.ACTION_VIEW, getUri(it.source))
+                                fragment.startActivity(intent)
+                            }
+                        }else{
+                            sourceTextView.visibility = View.GONE
+                            source.visibility = View.GONE
+                        }
+                        content.text = /*getFormatText(*/it.text/*)*/
+                        FrescoUtil.loadImageAddCircle(headerImage,it.avatarLarge)
+                        bindImages(it,holder)
+
                     }
-                    content.text = getFormatText(it[position].text)
-                    FrescoUtil.loadImageAddCircle(headerImage,it[position].avatarLarge)
-                    bindImages(it[position],holder)
                 }
             }
         } else{

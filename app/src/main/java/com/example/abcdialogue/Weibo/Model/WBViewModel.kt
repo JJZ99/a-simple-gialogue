@@ -56,7 +56,7 @@ class WBViewModel : ViewModel(){
 
     fun getStatusesList(token:String,page:Int){
         Log.i("页数","===============$page===============")
-        "===============第{$page}页===============".toastInfo()
+        "=======第{$page}页======".toastInfo()
         DataFetchModel.getStatusesList(token,page)
             .subscribe(object : Observer<WBAllDTO> {
                 override fun onComplete() {
@@ -69,7 +69,7 @@ class WBViewModel : ViewModel(){
                     if (statusList.value == null){
                         statusList.value = mutableListOf()
                     }
-                    //这里是分页每请求一次，就把进请求的数据追加到后面
+                    //这里是分页每请求一次，就把进请求的数据追加到后面，然后触发观察者
                     statusList.value = statusList.value?.apply {
                         addAll(resp.statuses?.map { dto ->
                             dto.transformToBean()

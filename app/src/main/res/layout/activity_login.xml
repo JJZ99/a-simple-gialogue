@@ -101,15 +101,14 @@
         app:layout_constraintVertical_bias="0.458" />
 
 
-    <EditText
+    <TextView
         android:id="@+id/username_input"
         style="@style/Widget.AppCompat.EditText"
-        android:layout_width="230dp"
+        android:layout_width="0dp"
         android:layout_height="38dp"
         android:alpha="0.7"
         android:background="@drawable/button_circle_shape"
         android:hint=" 请输入您的账号"
-        android:inputType="textPassword"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -5,11 +5,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.EditText
 import com.example.abcdialogue.Module.MainActivity2
 import com.example.abcdialogue.R
+import com.example.abcdialogue.Weibo.Util.ParseUtil.getUri
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toast
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import kotlinx.android.synthetic.main.activity_login.login_btn
+import kotlinx.android.synthetic.main.activity_login.username
+import kotlinx.android.synthetic.main.activity_login.username_input
 import kotlinx.android.synthetic.main.activity_login.wei_bo_btn
 import java.util.regex.Pattern
 
@@ -22,7 +26,6 @@ class LoginActivity : AppCompatActivity() {
         baseContext.toast("Hello",)
 
         login_btn.setOnClickListener {
-
             var intent = Intent(this, MainActivity2().javaClass)
             startActivity(intent)
             "jump！jump！".toastInfo()
@@ -36,6 +39,8 @@ class LoginActivity : AppCompatActivity() {
                 "不存在Token：${token}跳转到登陆授权界面".toastInfo()
                 var intent = Intent(this, InitSDK().javaClass)
                 startActivity(intent)
+                finish()
+
             }else{
                 //不为空直接跳转到微博页
                 "已经存在Token：${token}直接跳到微博".toastInfo()
@@ -43,6 +48,8 @@ class LoginActivity : AppCompatActivity() {
                 InitSDK.TOKEN = "2.00llrezFRMpNJDd3d5f9f262Ln9WYC"
                 var intent = Intent(this, WeiBoActivity().javaClass)
                 startActivity(intent)
+                finish()
+
             }
 
         }
