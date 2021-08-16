@@ -38,13 +38,6 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.content.res.AssetManager
 
-
-
-
-
-
-
-
 class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onItemClickListener : MyRecyclerAdapter.OnItemClickListener?= null
     var onLoadMoreListener : OnLoadMoreListener?= null
@@ -77,7 +70,6 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             //notifyDataSetChanged()
         })
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TYPE_NORMAL)
@@ -115,7 +107,9 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                             }
                         }else{
                             sourceTextView.visibility = View.GONE
-                            source.visibility = View.GONE
+                            source.visibility = View.VISIBLE
+                            source.text = it.description
+
                         }
                         content.movementMethod = LinkMovementMethod.getInstance()
                         if (it.text.isNotEmpty()){

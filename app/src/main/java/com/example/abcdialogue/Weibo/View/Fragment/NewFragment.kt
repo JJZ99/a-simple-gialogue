@@ -44,7 +44,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         //初始化数据
         initData()
         Log.i("onCreateFragment","=============onCreateFragment=============")
-
         super.onCreate(savedInstanceState)
     }
     override fun onCreateView(

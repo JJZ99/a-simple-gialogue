@@ -33,18 +33,21 @@
                 android:text="不知道啊"
                 android:textColor="@color/name"
                 android:textSize="17sp"
+                android:font="@font/siyuan_normal"
+
                 android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
                 <TextView
                     android:id="@+id/source"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
+                    android:lines="1"
+                    android:font="@font/siyuan_normal"
                     android:text="来自"
                     android:textSize="12sp" />
 
@@ -55,6 +58,8 @@
                     android:layout_marginTop="3dp"
                     android:layout_marginLeft="4dp"
                     android:text="微博"
+                    android:font="@font/siyuan_normal"
+
                     android:textColor="@color/sourceWeibo"
                     android:textSize="12sp" />
                 <LinearLayout
@@ -69,6 +74,8 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="10dp"
                         android:text="server忘发了"
+                        android:font="@font/siyuan_normal"
+
                         android:textAppearance="@style/TextAppearance.AppCompat.Display4"
                         android:textSize="12sp"
                         android:textStyle="normal" />
@@ -106,6 +113,7 @@
         android:text="自己交阿见佛i阿四巴斯不读阿萨德你撒面佛可能是第几i家哦氛围超级电视品牌擦拭佛我你发i哦额无法渴望四大"
         android:textIsSelectable="true"
         android:textSize="16sp"
+        android:font="@font/siyuan_normal"
         app:layout_constraintBottom_toTopOf="@+id/image_container"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

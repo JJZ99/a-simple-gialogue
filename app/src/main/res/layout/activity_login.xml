@@ -40,6 +40,7 @@
         android:shadowColor="#6E0000"
         android:text="登录"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:font="@font/siyuan_normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.257"

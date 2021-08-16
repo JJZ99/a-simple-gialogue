@@ -74,73 +74,46 @@ object ParseUtil {
     fun getFormatText(content: String): Spanned {
 
         val spannedStringBuilder = SpannableStringBuilder()
+        var allTextIndex = content.indexOf("全文： ")
+        var textSpanned = if (allTextIndex !=-1 )SpannableString(content.substring(0,allTextIndex+2)) else SpannableString(content)
+        textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.textColor,null)), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+
         //用来标志下一个#是不是右边的
         var isTopic = false
         //上一个#的索引
-        //Todo 这里还可以优化
-        var left = if (content.indexOf(WELL) == 0) {
-            isTopic = true
-            0
-        } else {
-            0
-        }
+        var left = 0
+        var right = 0
         var list = mutableListOf<Pos>().apply {
-            var left = -1
-            var right = -1
-            content.map {
-                if (it.equals(WELL)){
+            var index = -1
+            for( char in  content){
+                ++index
+                if (char == WELL_CHAR){
                     if (!isTopic){
-                        left = content.indexOf(it)
+                        left = index
                         isTopic = true
                     }else{
-                        right = content.indexOf(it)
+                        right = index
                         isTopic = false
                         add(Pos(left, right))
                     }
                 }
             }
         }
-
-        while (true){
-            var right = content.indexOf(WELL,left+1)
-            if (right==-1)
-                break
-            isTopic = if (isTopic){
-                val textSpanned = SpannableString(content.substring(left,right+1))
-                textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.topicColor,null)), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-                spannedStringBuilder.append(textSpanned)
-                left = right+1
-                false
-            }else{
-                val textSpanned = SpannableString(content.substring(left,right))
-                textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.textColor,null)), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-                spannedStringBuilder.append(textSpanned)
-                left = right
-                true
-            }
+        list.forEach {
+            textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.topicColor,null)), it.left, it.right+1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         }
-        var allTextIndex = content.indexOf("全文： ")
         if (allTextIndex!=-1){
-            var textSpanned = SpannableString(content.substring(if (left == -1) 0 else left,allTextIndex))
-            textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.textColor,null)), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-            spannedStringBuilder.append(textSpanned)
             //链接的结尾有个ZWSP 不能截进来
             val url = content.substring(allTextIndex+4,content.length-1)
-            textSpanned.clearSpans()
-            textSpanned = SpannableString("全文")
-            textSpanned.setSpan(MURLSpan(url), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            textSpanned.setSpan(MURLSpan(url), allTextIndex, allTextIndex+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
             textSpanned.setSpan(StyleSpan(Typeface.BOLD), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-
-            spannedStringBuilder.append(textSpanned)
-        }else{
-            var textSpanned = SpannableString(content.substring(if (left == -1) 0 else left))
-            textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.textColor,null)), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-            spannedStringBuilder.append(textSpanned)
         }
-
+        spannedStringBuilder.append(textSpanned)
         return spannedStringBuilder
     }
     private const val WELL ="#"
+    private const val WELL_CHAR ='#'
+
     private const val TYPE_NOW = "刚刚"
     private const val TYPE_MIN="分钟前"
     private const val TYPE_HOUR="小时前"

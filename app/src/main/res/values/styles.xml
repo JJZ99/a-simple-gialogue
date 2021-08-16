@@ -12,5 +12,10 @@
     <style name="NameStyle">
         <item name="android:textStyle">normal</item>
     </style>
+    <style name="TabLayout">
+        <item name="android:textSize">18sp</item>
+        <item name="android:font">@font/siyuan_normal</item>
+    </style>
+
 
 </resources>

@@ -42,17 +42,17 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout_button"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/viewPager"
-        app:tabIndicatorColor="@color/colorPrimary"
+        app:tabIndicatorColor="#881010"
         app:tabIndicatorHeight="3dp"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="#510202"
+        app:tabSelectedTextColor="#000000"
         app:tabTextColor="#666666"
-        app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        app:tabTextAppearance="@style/TabLayout"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

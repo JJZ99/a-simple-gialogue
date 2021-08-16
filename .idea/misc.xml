@@ -7,9 +7,10 @@
         <entry key="app/src/main/res/drawable-v24/button_circle_shape.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable-v24/scrollbar.xml" value="0.33046875" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.21737451737451738" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.2078125" />
+        <entry key="app/src/main/res/layout/activity_start.xml" value="0.21481481481481482" />
         <entry key="app/src/main/res/layout/activity_wei_bo.xml" value="0.30833333333333335" />
         <entry key="app/src/main/res/layout/fragment_liner_recycler.xml" value="0.15859375" />
         <entry key="app/src/main/res/layout/fragment_liner_recycler2.xml" value="0.26666666666666666" />
