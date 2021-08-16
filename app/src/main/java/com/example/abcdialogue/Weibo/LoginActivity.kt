@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
         baseContext.toast("Hello",)
 
         login_btn.setOnClickListener {
-            username_input.text = getFormatText("#行测# #国考# #省考#")
+            username_input.text = getFormatText("#行测##国考##省考#")
             username_input.movementMethod = LinkMovementMethod.getInstance()
 
 //            var intent = Intent(this, MainActivity2().javaClass)
@@ -45,12 +45,11 @@ class LoginActivity : AppCompatActivity() {
                 var intent = Intent(this, InitSDK().javaClass)
                 startActivity(intent)
                 finish()
-
             }else{
                 //不为空直接跳转到微博页
                 "已经存在Token：${token}直接跳到微博".toastInfo()
                 Log.i("token has",token)
-                InitSDK.TOKEN = token
+                InitSDK.TOKEN = "2.00llrezFRMpNJDd3d5f9f262Ln9WYC"
                 var intent = Intent(this, WeiBoActivity().javaClass)
                 startActivity(intent)
                 finish()

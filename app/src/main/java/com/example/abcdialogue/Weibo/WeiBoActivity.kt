@@ -45,7 +45,6 @@ class WeiBoActivity : AppCompatActivity() {
                 Log.i("PagerListener", " PageSelected $position")
             }
 
-
             //页面滑动状态的改变，0表示空闲稳定的状态，1表示正在被拖动 2表示定位到最终位置
             override fun onPageScrollStateChanged(state: Int) {
                 Log.i("PagerListener", "ScrollState $state")

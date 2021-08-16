@@ -8,14 +8,14 @@
     <color name="floatingClicked">#FF973EA6</color>
     <!--    微博超话字体的颜色-->
     <color name="topicColor">#4D8EC1</color>
-    <color name="name">#3A01DF</color>
-    <color name="sourceWeibo">#2E64FE</color>
+    <color name="name">#FF493A</color>
+    <color name="sourceWeibo">#33668E</color>
     <color name="background">#FFFFFF</color>
 <!--    刷新悬浮按钮颜色-->
     <color name="floatingNormal">#B156C1</color>
 <!--    底部背景颜色-->
-    <color name="bottomBackground">#90F2FFE2</color>
-    <color name="textColor">#CC000000</color>
+    <color name="bottomBackground">#33DCDCDC</color>
+    <color name="textColor">#262626</color>
 
 
 </resources>

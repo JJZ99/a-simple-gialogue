@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.MyApplication.Companion.context
-import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Util.DisplayUtil
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_END
@@ -33,6 +32,17 @@ import com.example.abcdialogue.Weibo.WeiBoActivity
 
 import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.image_linear_hor.view.new_image_hor
+import android.R
+import android.annotation.SuppressLint
+
+import android.graphics.Typeface
+import android.content.res.AssetManager
+
+
+
+
+
+
 
 
 class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -45,8 +55,9 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     private var winWidth = context.resources.displayMetrics.widthPixels
     //每一项的右边距
     private var itemMarginEnd = DisplayUtil.dp2px(3)
+
     //每一项的宽度
-    private var itemWidth = (winWidth - itemMarginEnd * 3 - 36) / 3
+    private var itemWidth = (winWidth - itemMarginEnd * 3 - 36 - 30) / 3
 
     var currNumber = 1
     init {
@@ -79,11 +90,18 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     /**
      * 根据position来判断是不是footer
      */
+    @SuppressLint("WrongConstant")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (position!=(itemCount-1)){
             (holder as MyRecyclerHolder).apply{
                 viewModel.statusList.value?.let { it ->
                     it[position].also{
+                        //设置第三方字体
+//                        val assetManager = context.assets
+//                        val typeface =
+//                            Typeface.createFromAsset(assetManager, "siyuan_normal.otf")
+//                        textView.typeface = typeface
+//                        textView.setTypeface(typeface)
                         textView.text = it.name
                         textView2.text = getTime(it.createdAt)
                         if (it.source.isNotEmpty()){
@@ -131,7 +149,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             var reminder = size % 3
             for (i in 0 until count) {
                 val line = LayoutInflater.from(holder.imageContainer.context)
-                    .inflate(R.layout.image_linear_hor, holder.imageContainer, false).apply {
+                    .inflate(com.example.abcdialogue.R.layout.image_linear_hor, holder.imageContainer, false).apply {
                         this.layoutParams.height = itemWidth
                     }
                 for (j in 0 until 3) {
@@ -142,7 +160,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                     FrescoUtil.loadImageAddSize(childView, it.picUrls[i * 3 + j])
                     line.new_image_hor.addView(childView, LinearLayout.LayoutParams(
                         itemWidth,
-                        LinearLayout.LayoutParams.MATCH_PARENT
+                        itemWidth
                     ).apply {
                         rightMargin = itemMarginEnd
                     })
@@ -150,7 +168,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                 holder.imageContainer.addView(line)
             }
             val footLine = LayoutInflater.from(holder.imageContainer.context)
-                .inflate(R.layout.image_linear_hor, holder.imageContainer, false).apply {
+                .inflate(com.example.abcdialogue.R.layout.image_linear_hor, holder.imageContainer, false).apply {
                     this.layoutParams.height = itemWidth
                 }
             if (reminder != 0) {
@@ -163,7 +181,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                     FrescoUtil.loadImageAddSize(childView, it.picUrls[count * 3 + i])
                     footLine.new_image_hor.addView(childView, LinearLayout.LayoutParams(
                         itemWidth,
-                        LinearLayout.LayoutParams.MATCH_PARENT
+                        itemWidth
                     ).apply {
                         rightMargin = itemMarginEnd
                     })

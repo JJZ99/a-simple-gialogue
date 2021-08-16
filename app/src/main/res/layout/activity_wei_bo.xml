@@ -6,6 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".Weibo.WeiBoActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/background"
+        app:layout_constraintBottom_toTopOf="@+id/viewPager"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="3dp"
+            android:text="关注"
+            android:fontFamily="@font/heavy"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="wrap_content"
@@ -13,7 +36,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tablayout_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
     </androidx.viewpager.widget.ViewPager>
 
     <com.google.android.material.tabs.TabLayout

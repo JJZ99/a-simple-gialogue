@@ -118,7 +118,6 @@ object ParseUtil {
                 left = right
                 true
             }
-
         }
         var allTextIndex = content.indexOf("全文： ")
         if (allTextIndex!=-1){

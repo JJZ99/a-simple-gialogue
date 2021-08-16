@@ -4,75 +4,88 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/tools"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
     android:background="@color/background">
 
     <RelativeLayout
         android:id="@+id/header_rl"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/tv_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/header_name"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/name"
-            android:layout_toRightOf="@id/header_image"
-            android:text="不知道啊"
-            android:textSize="20sp" />
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/header_image"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/header_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/header_image"
-            android:layout_alignParentRight="true"
+            <TextView
+                android:id="@+id/header_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/header_image"
+                android:text="不知道啊"
+                android:textColor="@color/name"
+                android:textSize="17sp"
+                android:textStyle="bold"/>
 
-            android:layout_marginBottom="2dp"
-            android:layout_marginRight="5dp"
-            android:text="字节跳动"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display4"
-            android:textSize="12sp"
-            android:textStyle="normal" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/source"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/header_image"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@id/header_image"
-            android:text="来自"
-            android:textSize="12sp" />
-        <TextView
-            android:id="@+id/source_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/header_image"
-            android:textColor="@color/sourceWeibo"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@id/source"
-            android:text="微博"
-            android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="来自"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/source_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginLeft="4dp"
+                    android:text="微博"
+                    android:textColor="@color/sourceWeibo"
+                    android:textSize="12sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right">
+                    <TextView
+                        android:id="@+id/header_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="server忘发了"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display4"
+                        android:textSize="12sp"
+                        android:textStyle="normal" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/header_image"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="2dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="11dp"
             app:actualImageScaleType="fitCenter"
             app:failureImageScaleType="fitCenter"
             app:placeholderImage="@drawable/loading_image"
@@ -84,12 +97,15 @@
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="12dp"
         android:ellipsize="end"
-        android:lineSpacingExtra="2dp"
+        android:lineSpacingExtra="3dp"
         android:maxLines="20"
         android:text="自己交阿见佛i阿四巴斯不读阿萨德你撒面佛可能是第几i家哦氛围超级电视品牌擦拭佛我你发i哦额无法渴望四大"
-        android:textSize="18sp"
+        android:textIsSelectable="true"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/image_container"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -102,6 +118,7 @@
         android:layout_marginTop="4dp"
         android:orientation="vertical"
         android:visibility="gone"
+        android:layout_marginStart="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_content"
