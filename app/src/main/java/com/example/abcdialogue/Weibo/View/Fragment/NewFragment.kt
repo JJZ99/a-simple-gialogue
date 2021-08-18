@@ -85,7 +85,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         adapter.onLoadMoreListener = object : MyRecyclerAdapter.OnLoadMoreListener {
             override fun onLoadMore(view: MyFooterViewHolder) {
                 "你调用了onLoadMore".toastInfo()
-                currStatus = LoadStatus.LoadMoreIn
                 viewModel.getStatusesList(TOKEN, page++)
                 viewModel.statusList.observe(this@NewFragment.viewLifecycleOwner,{
                     var hasNumber = (page-2)* PAGESIZE

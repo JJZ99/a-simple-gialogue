@@ -69,7 +69,9 @@ object ParseUtil {
     }
 
     /**
-     * 从text中获取超话信息
+     * 解析文案内容，将超话部分高亮显示，将全文设置高亮并且设置跳转链接
+     * @param content 文案内容
+     * @return span富文本
      */
     fun getFormatText(content: String): Spanned {
 
@@ -84,9 +86,7 @@ object ParseUtil {
         var left = 0
         var right = 0
         var list = mutableListOf<Pos>().apply {
-            var index = -1
-            for( char in  content){
-                ++index
+            for( (index,char) in  content.withIndex()){
                 if (char == WELL_CHAR){
                     if (!isTopic){
                         left = index
@@ -106,14 +106,24 @@ object ParseUtil {
             //链接的结尾有个ZWSP 不能截进来
             val url = content.substring(allTextIndex+4,content.length-1)
             textSpanned.setSpan(MURLSpan(url), allTextIndex, allTextIndex+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-            textSpanned.setSpan(StyleSpan(Typeface.BOLD), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            textSpanned.setSpan(StyleSpan(Typeface.BOLD), allTextIndex, allTextIndex+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        }else{
+            var httpIndex = content.indexOf("http")
+            if (httpIndex != -1) {
+                val url = content.substring(httpIndex,content.length)
+                textSpanned.setSpan(MURLSpan(url), httpIndex, content.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+                textSpanned.setSpan(StyleSpan(Typeface.BOLD), httpIndex, content.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+
+
+            }
+
         }
         spannedStringBuilder.append(textSpanned)
         return spannedStringBuilder
     }
+
     private const val WELL ="#"
     private const val WELL_CHAR ='#'
-
     private const val TYPE_NOW = "刚刚"
     private const val TYPE_MIN="分钟前"
     private const val TYPE_HOUR="小时前"

@@ -32,15 +32,24 @@ import com.example.abcdialogue.Weibo.WeiBoActivity
 
 import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.image_linear_hor.view.new_image_hor
-import android.R
 import android.annotation.SuppressLint
 
 import android.graphics.Typeface
 import android.content.res.AssetManager
+import android.graphics.Color
+import android.widget.ImageView
+import androidx.lifecycle.MutableLiveData
+import com.example.abcdialogue.R
+import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransfer
+import com.hitomi.tilibrary.style.progress.ProgressPieIndicator
+import com.hitomi.tilibrary.transfer.TransferConfig
+import com.hitomi.tilibrary.transfer.Transferee
+import com.vansz.glideimageloader.GlideImageLoader
 
 class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onItemClickListener : MyRecyclerAdapter.OnItemClickListener?= null
     var onLoadMoreListener : OnLoadMoreListener?= null
+    var transfersMap  = mutableMapOf<Int,Map<Int,Transferee>>()
 
     //这里多一项是因为footer
     private var total = 1
@@ -60,12 +69,19 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             var addCounts = (page - 1) * 15-it.size
             //如果新增的等于15个 假设还有更多，否则就没有更多了
             hasMore = addCounts >=0
+            if (!hasMore){
+                currStatus.value = LoadStatus.LoadMoreEnd
+            }
             Log.i("init adapter observe",viewModel.statusList.value.toString())
         }
         viewModel.statusList.observe(fragment.viewLifecycleOwner,{
             total = it.size+1
             var addCounts = (page - 1) * 15-it.size
             hasMore = addCounts >= 0
+            //表面已经加载完了
+            if (!hasMore){
+                currStatus.value = LoadStatus.LoadMoreEnd
+            }
             Log.i("init adapter observe",viewModel.statusList.value.toString())
             //notifyDataSetChanged()
         })
@@ -99,6 +115,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                         if (it.source.isNotEmpty()){
                             sourceTextView.visibility = View.VISIBLE
                             source.visibility = View.VISIBLE
+                            source.text = context.getString(R.string.from_source)
                             sourceTextView.text = getSource(it.source)
                             //来源文本点击后跳转
                             sourceTextView.setOnClickListener { _ ->
@@ -116,23 +133,34 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                             content.text = getFormatText(it.text)
                         }
                         FrescoUtil.loadImageAddCircle(headerImage,it.avatarLarge)
-                        bindImages(it,holder)
+                        bindImages(it,holder,position)
                     }
                 }
             }
         } else{
+            currStatus.observe(fragment.viewLifecycleOwner,{
+                when(it){
+                    LoadStatus.LoadMoreEnd ->(holder as MyFooterViewHolder).update(LOADER_STATE_END)
+                    LoadStatus.LoadMoreSuccess -> (holder as MyFooterViewHolder).update(MyFooterViewHolder.LOADER_STATE_SUCCESS)
+                    LoadStatus.LoadMoreError -> (holder as MyFooterViewHolder).update(MyFooterViewHolder.LOADER_STATE_FAIL)
+                }
+            })
             if (hasMore){
                 (holder as MyFooterViewHolder).update(LOADER_STATE_ING)
             }else{
                 (holder as MyFooterViewHolder).update(LOADER_STATE_END)
             }
+
         }
     }
+
 
     /**
      * 展示图片
      */
-    private fun bindImages(it: WBStatusBean, holder: MyRecyclerHolder) {
+    private fun bindImages(it: WBStatusBean, holder: MyRecyclerHolder,position: Int) {
+        var transferMap  = mutableMapOf<Int,Transferee>()
+
         val size = it.picUrls.size
         if (size == 0) {
             holder.imageContainer.visibility = View.GONE
@@ -148,7 +176,29 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                     }
                 for (j in 0 until 3) {
                     val childView = SimpleDraweeView(line.context)
-                    childView.setOnClickListener {
+                    val transfer = Transferee.getDefault(context)
+                    var config = TransferConfig.build()
+                        .setMissPlaceHolder(com.example.abcdialogue.R.mipmap.loading_image) // 资源加载前的占位图
+                        .setErrorPlaceHolder(com.example.abcdialogue.R.mipmap.reload_click) // 资源加载错误后的占位图
+                        .setProgressIndicator(ProgressPieIndicator()) // 资源加载进度指示器, 可以实现 IProgressIndicator 扩展
+                        .setImageLoader(GlideImageLoader.with(context)) // 图片加载器，可以实现 ImageLoader 扩展
+                        .setBackgroundColor(Color.parseColor("#FFFFFF")) // 背景色
+                        .setDuration(300) // 开启、关闭、手势拖拽关闭、显示、扩散消失等动画时长
+                        .setOffscreenPageLimit(2) // 第一次初始化或者切换页面时预加载资源的数量，与 justLoadHitImage 属性冲突，默认为 1
+                        .enableJustLoadHitPage(true) // 是否只加载当前显示在屏幕中的的资源，默认关闭
+                        .enableDragClose(true) // 是否开启下拉手势关闭，默认开启
+                        .enableDragHide(false) // 下拉拖拽关闭时，是否先隐藏页面上除主视图以外的其他视图，默认开启
+                        .enableDragPause(false) // 下拉拖拽关闭时，如果当前是视频，是否暂停播放，默认关闭
+                        .enableHideThumb(false) // 是否开启当 transferee 打开时，隐藏缩略图, 默认关闭
+                        .enableScrollingWithPageChange(false) // 是否启动列表随着页面的切换而滚动你的列表，默认关闭
+                        .setOnLongClickListener(object : Transferee.OnTransfereeLongClickListener {
+                            override fun onLongClick(imageView: ImageView?, imageUri: String?, pos: Int) {
+                                "长按监听需要实现".toastInfo()
+                            }
+                        })
+                        .bindImageView(childView, it.picUrls[i * 3 + j]) // 绑定一个 ImageView, 所有绑定方法只能调用一个
+                    childView.setOnClickListener { its->
+                        transfer.apply(config).show()
                         "width${childView.width}\nheight${childView.height}\n$winWidth".toastInfo()
                     }
                     FrescoUtil.loadImageAddSize(childView, it.picUrls[i * 3 + j])
@@ -232,8 +282,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     companion object {
         const val TYPE_NORMAL = 0
         const val TYPE_LOAD_MORE = 1
-        //当前的状态，默认为加载成功
-        var currStatus = LoadStatus.LoadMoreEnd
+
         //页码，也可以理解为加载了多少次
         const val PAGESIZE = 15
         //过滤类型ID，0：全部、1：原创、2：图片、3：视频、4：音乐，默认为0
@@ -241,6 +290,9 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
 
         //初始页码为1
         var page = 1
+
+        //当前的状态，默认为加载成功
+        var currStatus = MutableLiveData(LoadStatus.LoadMoreEnd)
 
         /**
          * 是否能加载更多

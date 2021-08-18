@@ -23,7 +23,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="3dp"
             android:text="关注"
-            android:fontFamily="@font/heavy"
+            android:font="@font/siyuan_normal"
             android:textStyle="bold"
             android:textColor="#000000"
             android:textSize="20sp" />

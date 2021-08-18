@@ -15,7 +15,7 @@ object FrescoUtil {
 
     const val DEFAULT_URL ="https://img.sj33.cn/uploads/202009/7-200913160953c5.jpg"
     const val DEFAULT_URL_BAIDU = "https://profile.csdnimg.cn/9/1/2/3_zzf0521"
-    val builder = GenericDraweeHierarchyBuilder(MyApplication.context.resources)
+    private val builder = GenericDraweeHierarchyBuilder(MyApplication.context.resources)
 
     /**
      * 加载图片，这个用在xml中图片的加载

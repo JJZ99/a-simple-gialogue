@@ -6,6 +6,7 @@
     xmlns:fresco="http://schemas.android.com/tools"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
+    android:paddingBottom="6dp"
     android:background="@color/background">
 
     <RelativeLayout
@@ -22,22 +23,20 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="11dp"
             android:layout_marginTop="15dp"
-            android:layout_toRightOf="@+id/header_image"
+            android:layout_toEndOf="@+id/header_image"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/header_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/header_image"
-                android:text="不知道啊"
+                android:text="@string/iDontKnow"
                 android:textColor="@color/name"
                 android:textSize="17sp"
                 android:font="@font/siyuan_normal"
-
                 android:textStyle="bold"/>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -46,42 +45,58 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:lines="1"
+                    android:ellipsize="end"
                     android:font="@font/siyuan_normal"
-                    android:text="来自"
-                    android:textSize="12sp" />
+                    android:lines="1"
+                    android:text="@string/from_source"
+                    android:textSize="12sp"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/header_time"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/source_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:layout_marginLeft="4dp"
-                    android:text="微博"
+                    android:layout_marginLeft="3dp"
                     android:font="@font/siyuan_normal"
-
+                    android:text="@string/weibo"
                     android:textColor="@color/sourceWeibo"
-                    android:textSize="12sp" />
-                <LinearLayout
-                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/header_time"
+                    app:layout_constraintStart_toEndOf="@+id/source"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/header_time"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="right">
-                    <TextView
-                        android:id="@+id/header_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="10dp"
-                        android:text="server忘发了"
-                        android:font="@font/siyuan_normal"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginTop="3dp"
+                    android:font="@font/siyuan_normal"
+                    android:text="@string/serverForget"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display4"
+                    android:textSize="12sp"
+                    android:textStyle="normal"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/source_tv"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                        android:textAppearance="@style/TextAppearance.AppCompat.Display4"
-                        android:textSize="12sp"
-                        android:textStyle="normal" />
-
-                </LinearLayout>
-            </LinearLayout>
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="166dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
 
@@ -108,16 +123,17 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="12dp"
         android:ellipsize="end"
+        android:font="@font/siyuan_normal"
         android:lineSpacingExtra="3dp"
-        android:maxLines="20"
-        android:text="自己交阿见佛i阿四巴斯不读阿萨德你撒面佛可能是第几i家哦氛围超级电视品牌擦拭佛我你发i哦额无法渴望四大"
         android:textIsSelectable="true"
         android:textSize="16sp"
-        android:font="@font/siyuan_normal"
         app:layout_constraintBottom_toTopOf="@+id/image_container"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_rl" />
+        app:layout_constraintTop_toBottomOf="@+id/header_rl"
+        fresco:text="自己交阿见佛i阿四巴斯不读阿萨德你撒面佛可能是第几i家哦氛围超级电视品牌擦拭佛我你发i哦额无法渴望四大"
+        />
 
     <LinearLayout
         android:id="@+id/image_container"

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus
+import com.example.abcdialogue.Weibo.Adapter.LoadStatus.*
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.currStatus
 import com.example.abcdialogue.Weibo.Bean.CountryBean
 import com.example.abcdialogue.Weibo.Bean.WBAllDTO
@@ -60,7 +61,7 @@ class WBViewModel : ViewModel(){
         DataFetchModel.getStatusesList(token,page)
             .subscribe(object : Observer<WBAllDTO> {
                 override fun onComplete() {
-                    currStatus = LoadStatus.LoadMoreSuccess
+                    currStatus.value = LoadMoreSuccess
                 }
                 override fun onSubscribe(d: Disposable) {
                     addDisposable(d)
@@ -80,7 +81,7 @@ class WBViewModel : ViewModel(){
                     string.value = statusList.value.toString()
                 }
                 override fun onError(e: Throwable) {
-                    currStatus = LoadStatus.LoadMoreError
+                    currStatus.value = LoadMoreError
                     "微博数据请求失败".toastError()
                     e.printStackTrace()
                 }
