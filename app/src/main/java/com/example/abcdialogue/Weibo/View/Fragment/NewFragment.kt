@@ -27,6 +27,7 @@ import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.page
 import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
 import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
 import com.example.abcdialogue.Weibo.Model.WBViewModel
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_liner_recycler.fab
 
@@ -60,6 +61,13 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
                 }
                 isRefresh=false
             }
+        })
+        currStatus.observe(this.viewLifecycleOwner,{
+            if (isRefresh && it == LoadStatus.LoadMoreError) {
+                refresh_layout.isRefreshing = false
+                "刷新失败，请检查网络".toastError()
+            }
+
         })
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -129,6 +137,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         refresh_layout.setColorSchemeColors(0xff0000,0x00ff00,0x0000ff)
         //refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         //refresh_layout.setProgressBackgroundColorSchemeColor(0x03DAC5);
+
         refresh_layout.setOnRefreshListener {
             refresh()
         }
