@@ -19,9 +19,9 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="3dp"
+            android:paddingTop="9dp"
             android:text="关注"
             android:font="@font/siyuan_normal"
             android:textStyle="bold"
@@ -39,6 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
     </androidx.viewpager.widget.ViewPager>
 
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout_button"
         android:layout_width="match_parent"
@@ -47,11 +48,11 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/viewPager"
-        app:tabIndicatorColor="#881010"
+        app:tabIndicatorColor="#0306FF"
         app:tabIndicatorHeight="3dp"
         app:tabMode="fixed"
         app:tabSelectedTextColor="#000000"
-        app:tabTextColor="#666666"
+        app:tabTextColor="#88000000"
         app:tabTextAppearance="@style/TabLayout"/>
 
 

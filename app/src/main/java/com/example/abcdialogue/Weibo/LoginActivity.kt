@@ -33,9 +33,9 @@ class LoginActivity : AppCompatActivity() {
             //username_input.text = getFormatText("【#商丘一院阳性产妇系救护车转运脱管#】8月14日，河南#商丘阳性产妇疑被授意隐瞒行程#持续引发关注。尹某系亲属有中风险接触史的隔离人员。8月6日，尹某突发妊娠期高血压，虞城县防疫部门派救护车转运中致其脱管。尹某称，救护车将其送到商丘市第一人民医院门口，授意其瞒报行程自行入院。@紧急呼叫 ...全文： http://m.weibo.cn/6124642021/4670225192328232 \u200B")
             username_input.movementMethod = LinkMovementMethod.getInstance()
 
-//            var intent = Intent(this, MainActivity2().javaClass)
-//            startActivity(intent)
-//            "jump！jump！".toastInfo()
+            var intent = Intent(this, MainActivity2().javaClass)
+            startActivity(intent)
+            "jump！jump！".toastInfo()
         }
         wei_bo_btn.setOnClickListener {
             val sharedPref = this.getSharedPreferences(

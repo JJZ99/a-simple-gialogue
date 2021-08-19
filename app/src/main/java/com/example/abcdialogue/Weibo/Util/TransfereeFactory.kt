@@ -13,6 +13,10 @@ import com.hitomi.tilibrary.transfer.Transferee
 import com.vansz.glideimageloader.GlideImageLoader
 import kotlinx.android.synthetic.main.activity_main2.transfer_image
 
+/**
+ * transferee工厂，仅生产transferee实例
+ * from: https://github.com/Hitomis/transferee
+ */
 object TransfereeFactory {
     fun getTransfer(context: Context, imageView: ImageView, url: String): Transferee {
         val transfer = Transferee.getDefault(context)

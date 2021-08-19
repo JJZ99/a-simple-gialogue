@@ -60,16 +60,17 @@ class WeiBoActivity : AppCompatActivity() {
             mTitles!!
         )
         tablayout_button.setupWithViewPager(viewPager)
+        viewPager.currentItem = 1
     }
 
     private fun initData() {
         Log.i(TAG,"=======into initData=======")
 
-        mTitles?.add("新闻")
         mTitles?.add("视频")
+        mTitles?.add("新闻")
         mTitles?.add("商品")
-        mFragments?.add(FragmentFactory.getInstance(1))
         mFragments?.add(FragmentFactory.getInstance(2))
+        mFragments?.add(FragmentFactory.getInstance(1))
         mFragments?.add(FragmentFactory.getInstance(3))
 
     }

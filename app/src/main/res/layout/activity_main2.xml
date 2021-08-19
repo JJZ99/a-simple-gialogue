@@ -60,14 +60,17 @@
             app:actualImageScaleType="fitCenter"
             fresco:placeholderImage="@drawable/image4" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/transfer_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignBottom="@+id/net_image"
-            android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@+id/net_image"
-            app:srcCompat="@drawable/image3"/>
-
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/transfer_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignBottom="@+id/net_image"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/net_image"
+                app:srcCompat="@drawable/image3" />
+        </ScrollView>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

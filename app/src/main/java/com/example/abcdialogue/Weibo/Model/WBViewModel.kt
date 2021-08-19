@@ -13,6 +13,7 @@ import com.example.abcdialogue.Weibo.Bean.CountryBean
 import com.example.abcdialogue.Weibo.Bean.WBAllDTO
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.Bean.transformToBean
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -62,6 +63,8 @@ class WBViewModel : ViewModel(){
             .subscribe(object : Observer<WBAllDTO> {
                 override fun onComplete() {
                     currStatus.value = LoadMoreSuccess
+                    "微博数据请求成功".toastSuccess()
+
                 }
                 override fun onSubscribe(d: Disposable) {
                     addDisposable(d)

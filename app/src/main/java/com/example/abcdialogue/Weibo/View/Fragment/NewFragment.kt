@@ -2,7 +2,6 @@ package com.example.abcdialogue.Weibo.View.Fragment
 
 import android.animation.ObjectAnimator
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,7 +27,6 @@ import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
 import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
 import com.example.abcdialogue.Weibo.Model.WBViewModel
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_liner_recycler.fab
 
 
@@ -65,9 +63,8 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         currStatus.observe(this.viewLifecycleOwner,{
             if (isRefresh && it == LoadStatus.LoadMoreError) {
                 refresh_layout.isRefreshing = false
-                "刷新失败，请检查网络".toastError()
+                "下拉刷新失败，请检查网络".toastError()
             }
-
         })
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -117,7 +114,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
 
     private fun initFloating(){
-        fab.setRippleColor(resources.getColor(R.color.floatingClicked,null))
+        fab.rippleColor = resources.getColor(R.color.floatingClicked,null)
         fab.setOnClickListener {
             refresh_layout.isRefreshing = true
             refresh()
@@ -140,6 +137,12 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
 
         refresh_layout.setOnRefreshListener {
             refresh()
+            //设置动画
+            var  objectAnim : ObjectAnimator = ObjectAnimator.ofFloat(fab,"rotation", 0f, 360f)
+            //持续1.5秒
+            objectAnim.duration = 1500
+            //开始
+            objectAnim.start()
         }
     }
 
@@ -148,20 +151,22 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         isRefresh = true
         page = 1
         viewModel.getStatusesList(TOKEN, page++)
+        currStatus.value = LoadStatus.LoadMoreIn
+
     }
 
 
 
     override fun onDetach() {
-        Log.i("onDetach","=====onDetach==========")
+        Log.i("FragmentLife","=====onDetach==========")
         super.onDetach()
     }
     override fun onPause() {
-        Log.i("onPause","=====onPause==========")
+        Log.i("FragmentLife","=====onPause==========")
         super.onPause()
     }
     override fun onDestroy() {
-        Log.i("onDestroy","=====onPause==========")
+        Log.i("FragmentLife","=====onPause==========")
         super.onDestroy()
     }
 

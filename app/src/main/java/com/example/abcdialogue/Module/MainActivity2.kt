@@ -40,7 +40,6 @@ class MainActivity2 : AppCompatActivity() {
             .enableJustLoadHitPage(true) // 是否只加载当前显示在屏幕中的的资源，默认关闭
             .enableDragClose(true) // 是否开启下拉手势关闭，默认开启
             .enableDragHide(false) // 下拉拖拽关闭时，是否先隐藏页面上除主视图以外的其他视图，默认开启
-            .enableDragPause(false) // 下拉拖拽关闭时，如果当前是视频，是否暂停播放，默认关闭
             .enableHideThumb(false) // 是否开启当 transferee 打开时，隐藏缩略图, 默认关闭
             .enableScrollingWithPageChange(false) // 是否启动列表随着页面的切换而滚动你的列表，默认关闭
             .setOnLongClickListener(object :Transferee.OnTransfereeLongClickListener{

@@ -20,6 +20,7 @@ import androidx.core.text.clearSpans
 import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.MyApplication.Companion.context
 import com.example.abcdialogue.R
+
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -113,8 +114,6 @@ object ParseUtil {
                 val url = content.substring(httpIndex,content.length)
                 textSpanned.setSpan(MURLSpan(url), httpIndex, content.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
                 textSpanned.setSpan(StyleSpan(Typeface.BOLD), httpIndex, content.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-
-
             }
 
         }
@@ -122,6 +121,24 @@ object ParseUtil {
         return spannedStringBuilder
     }
 
+    /**
+     * @param url 缩略图的url
+     * @return 大图的url
+     */
+    fun getLargeUrl(url: String):String{
+        return url.replace(SMALL_VALUE, LARGE_VALUE)
+    }
+
+    /**
+     * @param url 缩略图的url
+     * @return 中等图的url
+     * */
+    fun getMiddleUrl(url: String):String{
+        return url.replace(SMALL_VALUE, MIDDLE_VALUE)
+    }
+    private const val SMALL_VALUE ="thumbnail"
+    private const val MIDDLE_VALUE = "bmiddle"
+    private const val LARGE_VALUE = "large"
     private const val WELL ="#"
     private const val WELL_CHAR ='#'
     private const val TYPE_NOW = "刚刚"

@@ -7,9 +7,6 @@ import com.example.abcdialogue.Weibo.Util.Net.RetrofitHelper
 import com.facebook.drawee.backends.pipeline.Fresco
 import android.graphics.Typeface
 
-
-
-
 class MyApplication : Application() {
     var typeFace: Typeface? = null
 

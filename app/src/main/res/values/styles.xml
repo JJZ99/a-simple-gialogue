@@ -7,7 +7,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:typeface">monospace</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:typeface">normal</item>
     </style>
     <style name="NameStyle">
         <item name="android:textStyle">normal</item>

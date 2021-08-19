@@ -40,6 +40,7 @@ import android.graphics.Color
 import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import com.example.abcdialogue.R
+import com.example.abcdialogue.Weibo.Util.ParseUtil.getLargeUrl
 import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransfer
 import com.hitomi.tilibrary.style.progress.ProgressPieIndicator
 import com.hitomi.tilibrary.transfer.TransferConfig
@@ -49,7 +50,7 @@ import com.vansz.glideimageloader.GlideImageLoader
 class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onItemClickListener : MyRecyclerAdapter.OnItemClickListener?= null
     var onLoadMoreListener : OnLoadMoreListener?= null
-    var transfersMap  = mutableMapOf<Int,Map<Int,Transferee>>()
+    var transfersMap  = mutableMapOf<Int,MutableMap<Int,Transferee>>()
 
     //这里多一项是因为footer
     private var total = 1
@@ -159,8 +160,8 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
      * 展示图片
      */
     private fun bindImages(it: WBStatusBean, holder: MyRecyclerHolder,position: Int) {
-        var transferMap  = mutableMapOf<Int,Transferee>()
 
+        var transferMap  =mutableMapOf<Int,Transferee>()
         val size = it.picUrls.size
         if (size == 0) {
             holder.imageContainer.visibility = View.GONE
@@ -171,35 +172,15 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             var reminder = size % 3
             for (i in 0 until count) {
                 val line = LayoutInflater.from(holder.imageContainer.context)
-                    .inflate(com.example.abcdialogue.R.layout.image_linear_hor, holder.imageContainer, false).apply {
+                    .inflate(R.layout.image_linear_hor, holder.imageContainer, false).apply {
                         this.layoutParams.height = itemWidth
                     }
                 for (j in 0 until 3) {
                     val childView = SimpleDraweeView(line.context)
-                    val transfer = Transferee.getDefault(context)
-                    var config = TransferConfig.build()
-                        .setMissPlaceHolder(com.example.abcdialogue.R.mipmap.loading_image) // 资源加载前的占位图
-                        .setErrorPlaceHolder(com.example.abcdialogue.R.mipmap.reload_click) // 资源加载错误后的占位图
-                        .setProgressIndicator(ProgressPieIndicator()) // 资源加载进度指示器, 可以实现 IProgressIndicator 扩展
-                        .setImageLoader(GlideImageLoader.with(context)) // 图片加载器，可以实现 ImageLoader 扩展
-                        .setBackgroundColor(Color.parseColor("#FFFFFF")) // 背景色
-                        .setDuration(300) // 开启、关闭、手势拖拽关闭、显示、扩散消失等动画时长
-                        .setOffscreenPageLimit(2) // 第一次初始化或者切换页面时预加载资源的数量，与 justLoadHitImage 属性冲突，默认为 1
-                        .enableJustLoadHitPage(true) // 是否只加载当前显示在屏幕中的的资源，默认关闭
-                        .enableDragClose(true) // 是否开启下拉手势关闭，默认开启
-                        .enableDragHide(false) // 下拉拖拽关闭时，是否先隐藏页面上除主视图以外的其他视图，默认开启
-                        .enableDragPause(false) // 下拉拖拽关闭时，如果当前是视频，是否暂停播放，默认关闭
-                        .enableHideThumb(false) // 是否开启当 transferee 打开时，隐藏缩略图, 默认关闭
-                        .enableScrollingWithPageChange(false) // 是否启动列表随着页面的切换而滚动你的列表，默认关闭
-                        .setOnLongClickListener(object : Transferee.OnTransfereeLongClickListener {
-                            override fun onLongClick(imageView: ImageView?, imageUri: String?, pos: Int) {
-                                "长按监听需要实现".toastInfo()
-                            }
-                        })
-                        .bindImageView(childView, it.picUrls[i * 3 + j]) // 绑定一个 ImageView, 所有绑定方法只能调用一个
-                    childView.setOnClickListener { its->
-                        transfer.apply(config).show()
-                        "width${childView.width}\nheight${childView.height}\n$winWidth".toastInfo()
+                    val transfer =getTransfer(childView.context,childView,getLargeUrl(it.picUrls[i * 3 + j]))
+                    transferMap[i * 3 + j] = transfer
+                    childView.setOnClickListener {
+                        transfer.show()
                     }
                     FrescoUtil.loadImageAddSize(childView, it.picUrls[i * 3 + j])
                     line.new_image_hor.addView(childView, LinearLayout.LayoutParams(
@@ -212,16 +193,17 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                 holder.imageContainer.addView(line)
             }
             val footLine = LayoutInflater.from(holder.imageContainer.context)
-                .inflate(com.example.abcdialogue.R.layout.image_linear_hor, holder.imageContainer, false).apply {
+                .inflate(R.layout.image_linear_hor, holder.imageContainer, false).apply {
                     this.layoutParams.height = itemWidth
                 }
             if (reminder != 0) {
                 for (i in 0 until reminder) {
                     val childView = SimpleDraweeView(footLine.context)
+                    val transfer = getTransfer(childView.context, childView, getLargeUrl(it.picUrls[count * 3 + i]))
+                    transferMap[count * 3 + i] = transfer
                     childView.setOnClickListener {
-                        "width${childView.width}\nheight${childView.height}\n$winWidth".toastInfo()
+                        transfer.show()
                     }
-
                     FrescoUtil.loadImageAddSize(childView, it.picUrls[count * 3 + i])
                     footLine.new_image_hor.addView(childView, LinearLayout.LayoutParams(
                         itemWidth,
@@ -233,6 +215,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                 holder.imageContainer.addView(footLine)
             }
         }
+        transfersMap[position] = transferMap
 
     }
 
