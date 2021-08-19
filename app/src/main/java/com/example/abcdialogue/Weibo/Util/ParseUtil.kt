@@ -1,6 +1,5 @@
 package com.example.abcdialogue.Weibo.Util
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
@@ -9,15 +8,12 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.style.ForegroundColorSpan
-import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.text.style.URLSpan
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.text.clearSpans
-import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.MyApplication.Companion.context
 import com.example.abcdialogue.R
 
@@ -110,8 +106,11 @@ object ParseUtil {
             textSpanned.setSpan(StyleSpan(Typeface.BOLD), allTextIndex, allTextIndex+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         }else{
             var httpIndex = content.indexOf("http")
+            var special = content.indexOf(" \u200B")
+
             if (httpIndex != -1) {
-                val url = content.substring(httpIndex,content.length)
+
+                val url =if (special==-1) content.substring(httpIndex,content.length) else content.substring(httpIndex,special)
                 textSpanned.setSpan(MURLSpan(url), httpIndex, content.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
                 textSpanned.setSpan(StyleSpan(Typeface.BOLD), httpIndex, content.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
             }
@@ -125,8 +124,8 @@ object ParseUtil {
      * @param url 缩略图的url
      * @return 大图的url
      */
-    fun getLargeUrl(url: String):String{
-        return url.replace(SMALL_VALUE, LARGE_VALUE)
+    fun getLargeUrl(url: String): String {
+        return url.replace(MIDDLE_VALUE, LARGE_VALUE)
     }
 
     /**
@@ -136,9 +135,9 @@ object ParseUtil {
     fun getMiddleUrl(url: String):String{
         return url.replace(SMALL_VALUE, MIDDLE_VALUE)
     }
-    private const val SMALL_VALUE ="thumbnail"
-    private const val MIDDLE_VALUE = "bmiddle"
-    private const val LARGE_VALUE = "large"
+    private const val SMALL_VALUE ="/thumbnail"
+    private const val MIDDLE_VALUE = "/bmiddle"
+    private const val LARGE_VALUE = "/large"
     private const val WELL ="#"
     private const val WELL_CHAR ='#'
     private const val TYPE_NOW = "刚刚"

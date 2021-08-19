@@ -1,12 +1,16 @@
 package com.example.abcdialogue.Weibo
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.widget.EditText
+import androidx.core.app.ActivityCompat
 import com.example.abcdialogue.Module.MainActivity2
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getFormatText
@@ -25,17 +29,20 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        getPermission()
+
         baseContext.toast("Hello",)
 
         login_btn.setOnClickListener {
 
-            username_input.text = getFormatText("第一集熟了→ http://t.cn/A6ISgLwF")
+            username_input.text = getFormatText("            //在过去五年里，英伟达的营收仅增长了233%，股价却从15美元上下飙升超过10倍至逼近200美元，已有声音认为，英伟达将成为下一只“永不出售”的股票。高估值背后，曾经的游戏显卡供应商何以超车众巨头？答曰：平台化。http://t.cn/A6IKzQaLv \u200B\n")
+            //第一集熟了→ http://t.cn/A6ISgLwF
             //username_input.text = getFormatText("【#商丘一院阳性产妇系救护车转运脱管#】8月14日，河南#商丘阳性产妇疑被授意隐瞒行程#持续引发关注。尹某系亲属有中风险接触史的隔离人员。8月6日，尹某突发妊娠期高血压，虞城县防疫部门派救护车转运中致其脱管。尹某称，救护车将其送到商丘市第一人民医院门口，授意其瞒报行程自行入院。@紧急呼叫 ...全文： http://m.weibo.cn/6124642021/4670225192328232 \u200B")
             username_input.movementMethod = LinkMovementMethod.getInstance()
 
-            var intent = Intent(this, MainActivity2().javaClass)
-            startActivity(intent)
-            "jump！jump！".toastInfo()
+//            var intent = Intent(this, MainActivity2().javaClass)
+//            startActivity(intent)
+//            "jump！jump！".toastInfo()
         }
         wei_bo_btn.setOnClickListener {
             val sharedPref = this.getSharedPreferences(
@@ -51,11 +58,29 @@ class LoginActivity : AppCompatActivity() {
                 //不为空直接跳转到微博页
                 "已经存在Token：${token}直接跳到微博".toastInfo()
                 Log.i("token has",token)
-                //InitSDK.TOKEN = "2.00llrezFRMpNJDd3d5f9f262Ln9WYC"
-                InitSDK.TOKEN = token
+                InitSDK.TOKEN = "2.00llrezFRMpNJDd3d5f9f262Ln9WYC"
+                //InitSDK.TOKEN = token
                 var intent = Intent(this, WeiBoActivity().javaClass)
                 startActivity(intent)
                 finish()
+            }
+        }
+    }
+
+    /**
+     * 判断是否拥有读写权限。没有就申请
+     */
+    private fun getPermission() {
+        //验证权限
+        if (Build.VERSION.SDK_INT >= 23) {
+            val REQUEST_CODE_CONTACT = 101
+            val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE)
+            //验证是否许可权限
+            for (str in permissions) {
+                if (checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
+                    //申请权限
+                    requestPermissions(permissions, REQUEST_CODE_CONTACT)
+                }
             }
         }
     }
@@ -68,6 +93,17 @@ class LoginActivity : AppCompatActivity() {
         val p = Pattern.compile(regExp)
         val m = p.matcher(num)
         return m.matches()
+    }
+
+    /**
+     * 在点击允许或者拒绝后会执行这个方法
+     */
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     companion object {

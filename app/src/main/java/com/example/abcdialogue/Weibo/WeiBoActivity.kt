@@ -59,6 +59,7 @@ class WeiBoActivity : AppCompatActivity() {
             mFragments!!,
             mTitles!!
         )
+
         tablayout_button.setupWithViewPager(viewPager)
         viewPager.currentItem = 1
     }

@@ -3,9 +3,11 @@ package com.example.abcdialogue
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.content.pm.PackageManager
 import com.example.abcdialogue.Weibo.Util.Net.RetrofitHelper
 import com.facebook.drawee.backends.pipeline.Fresco
 import android.graphics.Typeface
+import android.os.Build
 
 class MyApplication : Application() {
     var typeFace: Typeface? = null
@@ -17,7 +19,7 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         //在app启动创建时调用
-        setTypeface()
+        //setTypeface()
         RetrofitHelper.init()
         Fresco.initialize(this)
         context = applicationContext

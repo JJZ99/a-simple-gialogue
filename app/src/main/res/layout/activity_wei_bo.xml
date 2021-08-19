@@ -48,6 +48,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/viewPager"
+        app:tabRippleColor="#7777FF"
         app:tabIndicatorColor="#0306FF"
         app:tabIndicatorHeight="3dp"
         app:tabMode="fixed"

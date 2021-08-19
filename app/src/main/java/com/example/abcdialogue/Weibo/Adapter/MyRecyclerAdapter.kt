@@ -2,9 +2,6 @@ package com.example.abcdialogue.Weibo.Adapter
 
 
 import android.content.Intent
-import android.graphics.Paint
-import android.net.Uri
-import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,13 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.MyApplication.Companion.context
 import com.example.abcdialogue.Weibo.Util.DisplayUtil
-import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_END
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_ING
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
@@ -28,29 +22,21 @@ import com.example.abcdialogue.Weibo.Util.ParseUtil.getFormatText
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getSource
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getTime
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getUri
-import com.example.abcdialogue.Weibo.WeiBoActivity
 
 import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.image_linear_hor.view.new_image_hor
 import android.annotation.SuppressLint
 
-import android.graphics.Typeface
-import android.content.res.AssetManager
-import android.graphics.Color
-import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getLargeUrl
 import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransfer
-import com.hitomi.tilibrary.style.progress.ProgressPieIndicator
-import com.hitomi.tilibrary.transfer.TransferConfig
-import com.hitomi.tilibrary.transfer.Transferee
-import com.vansz.glideimageloader.GlideImageLoader
 
 class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onItemClickListener : MyRecyclerAdapter.OnItemClickListener?= null
     var onLoadMoreListener : OnLoadMoreListener?= null
-    var transfersMap  = mutableMapOf<Int,MutableMap<Int,Transferee>>()
+
+    var onDeleteImageListener : OnDeleteImageListener?= null
 
     //这里多一项是因为footer
     private var total = 1
@@ -105,12 +91,6 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             (holder as MyRecyclerHolder).apply{
                 viewModel.statusList.value?.let { it ->
                     it[position].also{
-                        //设置第三方字体
-//                        val assetManager = context.assets
-//                        val typeface =
-//                            Typeface.createFromAsset(assetManager, "siyuan_normal.otf")
-//                        textView.typeface = typeface
-//                        textView.setTypeface(typeface)
                         textView.text = it.name
                         textView2.text = getTime(it.createdAt)
                         if (it.source.isNotEmpty()){
@@ -161,7 +141,6 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
      */
     private fun bindImages(it: WBStatusBean, holder: MyRecyclerHolder,position: Int) {
 
-        var transferMap  =mutableMapOf<Int,Transferee>()
         val size = it.picUrls.size
         if (size == 0) {
             holder.imageContainer.visibility = View.GONE
@@ -177,8 +156,14 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                     }
                 for (j in 0 until 3) {
                     val childView = SimpleDraweeView(line.context)
-                    val transfer =getTransfer(childView.context,childView,getLargeUrl(it.picUrls[i * 3 + j]))
-                    transferMap[i * 3 + j] = transfer
+                    val transfer = getTransfer(
+                        fragment,
+                        childView,
+                        getLargeUrl(it.picUrls[i * 3 + j]),
+                        this.onDeleteImageListener,
+                        position,
+                        i * 3 + j
+                    )
                     childView.setOnClickListener {
                         transfer.show()
                     }
@@ -199,8 +184,12 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             if (reminder != 0) {
                 for (i in 0 until reminder) {
                     val childView = SimpleDraweeView(footLine.context)
-                    val transfer = getTransfer(childView.context, childView, getLargeUrl(it.picUrls[count * 3 + i]))
-                    transferMap[count * 3 + i] = transfer
+                    val transfer = getTransfer(
+                        fragment,
+                        childView,
+                        getLargeUrl(it.picUrls[count * 3 + i]),
+                        this.onDeleteImageListener,position,count * 3 + i
+                    )
                     childView.setOnClickListener {
                         transfer.show()
                     }
@@ -215,8 +204,6 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                 holder.imageContainer.addView(footLine)
             }
         }
-        transfersMap[position] = transferMap
-
     }
 
 
@@ -260,6 +247,11 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     //加载更多的监听接口
     public interface OnLoadMoreListener{
         fun onLoadMore(view: MyFooterViewHolder)
+    }
+
+    //删除图片的监听接口
+    public interface OnDeleteImageListener{
+        fun onDeleteImageListener(position: Int,index:Int)
     }
 
     companion object {

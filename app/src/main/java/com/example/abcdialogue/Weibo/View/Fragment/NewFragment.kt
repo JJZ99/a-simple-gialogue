@@ -83,8 +83,8 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         adapter.onItemClickListener = object : MyRecyclerAdapter.OnItemClickListener {
             override fun onItemClick(view: View,pos:Int) {
                 "你点击了第${pos}Item".toastInfo()
-                var intent = Intent(MyApplication.context, MainActivity2().javaClass)
-                startActivity(intent)
+//                var intent = Intent(MyApplication.context, MainActivity2().javaClass)
+//                startActivity(intent)
             }
         }
         adapter.onLoadMoreListener = object : MyRecyclerAdapter.OnLoadMoreListener {
@@ -96,10 +96,15 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
                     var total = it.size
                     for (i in hasNumber until total){
                         adapter.addItem(adapter.itemCount-1,it[i])
-                        Log.i("loadmore observe",it[i].toString())
                     }
                 })
             }
+        }
+        adapter.onDeleteImageListener = object : MyRecyclerAdapter.OnDeleteImageListener {
+            override fun onDeleteImageListener(position: Int, index: Int) {
+                TODO("Not yet implemented")
+            }
+
         }
     }
 
@@ -119,7 +124,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
             refresh_layout.isRefreshing = true
             refresh()
             //设置动画
-            var  objectAnim : ObjectAnimator = ObjectAnimator.ofFloat(it,"rotation", 0f, 360f)
+            var objectAnim : ObjectAnimator = ObjectAnimator.ofFloat(it,"rotation", 0f, 360f)
             //持续1.5秒
             objectAnim.duration = 1500
             //开始
@@ -136,6 +141,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         //refresh_layout.setProgressBackgroundColorSchemeColor(0x03DAC5);
 
         refresh_layout.setOnRefreshListener {
+            "触发下啦监听".toastInfo()
             refresh()
             //设置动画
             var  objectAnim : ObjectAnimator = ObjectAnimator.ofFloat(fab,"rotation", 0f, 360f)
@@ -154,8 +160,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         currStatus.value = LoadStatus.LoadMoreIn
 
     }
-
-
 
     override fun onDetach() {
         Log.i("FragmentLife","=====onDetach==========")
