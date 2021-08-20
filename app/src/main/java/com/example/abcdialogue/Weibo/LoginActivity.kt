@@ -34,7 +34,9 @@ class LoginActivity : AppCompatActivity() {
         baseContext.toast("Hello",)
 
         login_btn.setOnClickListener {
-
+            //#陈伟霆晒沉浸式刷牙#@William威廉陈伟霆 帅照🈶！陈伟霆就算是刷牙也能这么帅🆘果然靓仔什么姿势拍照都帅气满分！ ​
+            //半导体产业与地缘政治的联系日益紧密，贸易保护主义使半导体供应链风险不断上升。据悉，韩国三星电子和SK 海力士都在研究各种半导体材料、零部件和设备，以降低对进口产品的依赖。http://t.cn/A6I9PdOc ​
+            //2021年8月21日下午14:00，为搭建IC企业与应届毕业生之间的招聘桥梁，爱集微与西电微电子专业校友会联合举办的“西电微电子行业校友企业线上招聘宣讲会”将进行线上直播。http://t.cn/A6I9PFid 直播入口：http://t.cn/A6I2nXGY ​
             username_input.text = getFormatText("            //在过去五年里，英伟达的营收仅增长了233%，股价却从15美元上下飙升超过10倍至逼近200美元，已有声音认为，英伟达将成为下一只“永不出售”的股票。高估值背后，曾经的游戏显卡供应商何以超车众巨头？答曰：平台化。http://t.cn/A6IKzQaLv \u200B\n")
             //第一集熟了→ http://t.cn/A6ISgLwF
             //username_input.text = getFormatText("【#商丘一院阳性产妇系救护车转运脱管#】8月14日，河南#商丘阳性产妇疑被授意隐瞒行程#持续引发关注。尹某系亲属有中风险接触史的隔离人员。8月6日，尹某突发妊娠期高血压，虞城县防疫部门派救护车转运中致其脱管。尹某称，救护车将其送到商丘市第一人民医院门口，授意其瞒报行程自行入院。@紧急呼叫 ...全文： http://m.weibo.cn/6124642021/4670225192328232 \u200B")
@@ -50,16 +52,16 @@ class LoginActivity : AppCompatActivity() {
             val token = sharedPref.getString(ACCESS_TOKEN,"")
             //如果token为空就跳转登陆获取
             if(token.isNullOrEmpty()){
-                "不存在Token：${token}跳转到登陆授权界面".toastInfo()
+                //"不存在Token：${token}跳转到登陆授权界面".toastInfo()
                 var intent = Intent(this, InitSDK().javaClass)
                 startActivity(intent)
                 finish()
             }else{
                 //不为空直接跳转到微博页
-                "已经存在Token：${token}直接跳到微博".toastInfo()
+                //"已经存在Token：${token}直接跳到微博".toastInfo()
                 Log.i("token has",token)
-                InitSDK.TOKEN = "2.00llrezFRMpNJDd3d5f9f262Ln9WYC"
-                //InitSDK.TOKEN = token
+                //InitSDK.TOKEN = "2.00llrezFRMpNJDd3d5f9f262Ln9WYC"
+                InitSDK.TOKEN = token
                 var intent = Intent(this, WeiBoActivity().javaClass)
                 startActivity(intent)
                 finish()

@@ -26,6 +26,8 @@ import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.page
 import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
 import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
 import com.example.abcdialogue.Weibo.Model.WBViewModel
+import com.example.abcdialogue.Weibo.Util.FrescoUtil
+import com.example.abcdialogue.Weibo.Util.ParseUtil.getLarge2MiddleUrl
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
 import kotlinx.android.synthetic.main.fragment_liner_recycler.fab
 
@@ -89,20 +91,33 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         }
         adapter.onLoadMoreListener = object : MyRecyclerAdapter.OnLoadMoreListener {
             override fun onLoadMore(view: MyFooterViewHolder) {
-                "你调用了onLoadMore".toastInfo()
+                //"你调用了onLoadMore".toastInfo()
                 viewModel.getStatusesList(TOKEN, page++)
                 viewModel.statusList.observe(this@NewFragment.viewLifecycleOwner,{
                     var hasNumber = (page-2)* PAGESIZE
                     var total = it.size
                     for (i in hasNumber until total){
-                        adapter.addItem(adapter.itemCount-1,it[i])
+                        adapter.addItem(adapter.itemCount-1)
                     }
                 })
             }
         }
         adapter.onDeleteImageListener = object : MyRecyclerAdapter.OnDeleteImageListener {
-            override fun onDeleteImageListener(position: Int, index: Int) {
-                TODO("Not yet implemented")
+            override fun onDeleteImageListener(position: Int, imageUrl: String?) {
+                //"你调用了DeleteImage".toastInfo()
+                viewModel.statusList.value?.let {
+                    //Log.i("infoRemove", index.toString())
+                    Log.i("infoRemoveBefore", it[position].picUrls.size.toString())
+                    imageUrl?.let { it1 ->
+                        var originUrl = getLarge2MiddleUrl(it1)
+                        //删除缩略图的缓存
+                        FrescoUtil.removeImageCache(originUrl)
+                         (it[position].picUrls as MutableList<String>).remove(originUrl)
+                    }
+                    adapter.updateItem(position)
+                    Log.i("infoRemoveAfter", it[position].picUrls.size.toString())
+                }
+
             }
 
         }
@@ -141,7 +156,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         //refresh_layout.setProgressBackgroundColorSchemeColor(0x03DAC5);
 
         refresh_layout.setOnRefreshListener {
-            "触发下啦监听".toastInfo()
+            //"触发下啦监听".toastInfo()
             refresh()
             //设置动画
             var  objectAnim : ObjectAnimator = ObjectAnimator.ofFloat(fab,"rotation", 0f, 360f)
@@ -153,11 +168,11 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
 
     private fun refresh(){
+        currStatus.value = LoadStatus.LoadMoreIn
         viewModel.statusList.value?.clear()
         isRefresh = true
         page = 1
         viewModel.getStatusesList(TOKEN, page++)
-        currStatus.value = LoadStatus.LoadMoreIn
 
     }
 

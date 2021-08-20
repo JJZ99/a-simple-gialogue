@@ -44,7 +44,7 @@ class MainActivity2 : AppCompatActivity() {
             .enableScrollingWithPageChange(false) // 是否启动列表随着页面的切换而滚动你的列表，默认关闭
             .setOnLongClickListener(object :Transferee.OnTransfereeLongClickListener{
                 override fun onLongClick(imageView: ImageView?, imageUri: String?, pos: Int) {
-                    "长按监听需要实现".toastInfo()
+                   // "长按监听需要实现".toastInfo()
                 } // 长按当前页面监听器
 
             })

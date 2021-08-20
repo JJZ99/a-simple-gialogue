@@ -124,7 +124,7 @@ object ParseUtil {
      * @param url 缩略图的url
      * @return 大图的url
      */
-    fun getLargeUrl(url: String): String {
+    fun getMiddle2LargeUrl(url: String): String {
         return url.replace(MIDDLE_VALUE, LARGE_VALUE)
     }
 
@@ -132,8 +132,11 @@ object ParseUtil {
      * @param url 缩略图的url
      * @return 中等图的url
      * */
-    fun getMiddleUrl(url: String):String{
+    fun getSmall2MiddleUrl(url: String):String{
         return url.replace(SMALL_VALUE, MIDDLE_VALUE)
+    }
+    fun getLarge2MiddleUrl(url: String):String{
+        return url.replace(LARGE_VALUE, MIDDLE_VALUE)
     }
     private const val SMALL_VALUE ="/thumbnail"
     private const val MIDDLE_VALUE = "/bmiddle"

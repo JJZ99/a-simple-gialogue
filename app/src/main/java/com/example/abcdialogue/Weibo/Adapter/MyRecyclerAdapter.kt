@@ -29,7 +29,7 @@ import android.annotation.SuppressLint
 
 import androidx.lifecycle.MutableLiveData
 import com.example.abcdialogue.R
-import com.example.abcdialogue.Weibo.Util.ParseUtil.getLargeUrl
+import com.example.abcdialogue.Weibo.Util.ParseUtil.getMiddle2LargeUrl
 import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransfer
 
 class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -59,7 +59,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             if (!hasMore){
                 currStatus.value = LoadStatus.LoadMoreEnd
             }
-            Log.i("init adapter observe",viewModel.statusList.value.toString())
+            //Log.i("init adapter observe",viewModel.statusList.value.toString())
         }
         viewModel.statusList.observe(fragment.viewLifecycleOwner,{
             total = it.size+1
@@ -69,7 +69,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             if (!hasMore){
                 currStatus.value = LoadStatus.LoadMoreEnd
             }
-            Log.i("init adapter observe",viewModel.statusList.value.toString())
+            //Log.i("init adapter observe",viewModel.statusList.value.toString())
             //notifyDataSetChanged()
         })
     }
@@ -93,6 +93,11 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                     it[position].also{
                         textView.text = it.name
                         textView2.text = getTime(it.createdAt)
+                        forwardTextView.text = it.repostsCount.toString()
+                        commentTextView.text = it.commentsCount.toString()
+                        likeTextView.text = it.attitudesCount.toString()
+
+
                         if (it.source.isNotEmpty()){
                             sourceTextView.visibility = View.VISIBLE
                             source.visibility = View.VISIBLE
@@ -159,7 +164,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                     val transfer = getTransfer(
                         fragment,
                         childView,
-                        getLargeUrl(it.picUrls[i * 3 + j]),
+                        getMiddle2LargeUrl(it.picUrls[i * 3 + j]),
                         this.onDeleteImageListener,
                         position,
                         i * 3 + j
@@ -187,7 +192,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                     val transfer = getTransfer(
                         fragment,
                         childView,
-                        getLargeUrl(it.picUrls[count * 3 + i]),
+                        getMiddle2LargeUrl(it.picUrls[count * 3 + i]),
                         this.onDeleteImageListener,position,count * 3 + i
                     )
                     childView.setOnClickListener {
@@ -212,7 +217,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     }
 
     /**
-     * 获取Item的数据类型
+     * 获取Item的类型
      */
     override fun getItemViewType(position: Int): Int {
         return if (position == (itemCount - 1)) {
@@ -225,18 +230,24 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     /**
      * 添加数据
      */
-     fun addItem(pos:Int,item:WBStatusBean){
+     fun addItem(pos:Int){
         ++currNumber
         //刷新适配器
         notifyItemInserted(pos)
-        notifyItemRangeChanged(pos,1)
     }
 
     fun removeItem(pos:Int){
 
+        //移除该位置的项目
         notifyItemRemoved(pos)
         --currNumber
-        notifyItemRangeChanged(pos,1)
+    }
+
+    fun updateItem(position: Int) {
+        //更新某一项，当某一项的数据过期时调用该方法刷新
+        notifyItemChanged(position)
+        //notifyItemRangeChanged(pos,1)
+
     }
 
     //每一项的点击事件
@@ -251,7 +262,8 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
 
     //删除图片的监听接口
     public interface OnDeleteImageListener{
-        fun onDeleteImageListener(position: Int,index:Int)
+        fun onDeleteImageListener(position: Int, imageUrl: String?)
+
     }
 
     companion object {

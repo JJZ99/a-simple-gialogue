@@ -39,10 +39,11 @@ object TransfereeFactory {
         imageView: ImageView,
         url: String,
         onDeleteImageListener: MyRecyclerAdapter.OnDeleteImageListener?,
-        pos: Int,
+        position: Int,
         index: Int
     ): Transferee {
-        Log.i("getTransfer imageViewUrl",url)
+      //  Log.i("infoRemoveGetTransfer",index.toString())
+
         if (transfersMap.containsKey(url)){
             return transfersMap.getValue(url)
         }else{
@@ -72,15 +73,25 @@ object TransfereeFactory {
                             override fun onClick(dialog: DialogInterface?, which: Int) {
                                 when(which){
                                     0 -> {
-                                        "你触发了保存到本地事件".toastInfo()
+                                        //"你触发了保存到本地事件".toastInfo()
+                                        Log.i("线程aid",Thread.currentThread().id.toString())
+                                        //CoroutineScope绑定到这个LifecycleOwner的生命周期,即作用域。 当生命周期被销毁时，这个范围将被取消
+                                        //你可以简单的理解为在协程作用域中创建一个新的协程，然后执行挂起函数
                                         fragment.viewLifecycleOwner.lifecycleScope.launch {
+                                            Log.i("线程bid",Thread.currentThread().id.toString())
                                             savePhoto(imageView,fragment.requireContext())
                                         }
                                     }
                                     1 -> {
-                                        "你触发了图片删除事件".toastInfo()
-                                        onDeleteImageListener.onDeleteImageListener()
-                                        //移除map存储的内容
+                                        //"你触发了图片删除回调事件".toastInfo()
+                                        onDeleteImageListener?.let {
+                                            it.onDeleteImageListener(position,imageUrl)
+                                        }
+                                        //如果你不希望在移除后把当前的大图关闭，请把下面三行注释
+                                        transfer.dismiss()   //先关闭transfer
+                                        transfer.clear()   //然后清楚图片缓存
+                                        transfer.destroy() //销毁资源
+                                        //移除KV
                                         transfersMap.remove(url)
                                     }
                                 }
@@ -96,9 +107,15 @@ object TransfereeFactory {
         }
     }
 
+    /**
+     * 挂起函数
+     */
     private suspend fun savePhoto(imageView: ImageView?, context: Context) {
+        //因为保存图片是磁盘或网络I/O操作，所以我们使用Dispatchers.IO调度器，在主线程之外的线程执行
+        //用withContext 指定挂起
         withContext(Dispatchers.IO){
             val bitmap = imageView!!.drawable.toBitmap()
+            //获取存储路径，为空则返回
             val saveUri = context.contentResolver.insert(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 ContentValues()
@@ -106,6 +123,7 @@ object TransfereeFactory {
                 "存储失败".toastError()
                 return@withContext
             }
+            //输出流，输出到本地相册，根据结果判读是否成功
             context.contentResolver.openOutputStream(saveUri).use {
                 if (bitmap.compress(Bitmap.CompressFormat.JPEG,100,it)) {
                     MainScope().launch {"存储成功".toastSuccess()}
@@ -113,6 +131,7 @@ object TransfereeFactory {
                     MainScope().launch {"存储失败".toastError()}
                 }
             }
+            Log.i("线程cid",Thread.currentThread().id.toString())
         }
 
     }

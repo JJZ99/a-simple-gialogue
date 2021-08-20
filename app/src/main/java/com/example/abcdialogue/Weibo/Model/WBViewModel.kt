@@ -20,17 +20,10 @@ import io.reactivex.disposables.Disposable
 
 class WBViewModel : ViewModel(){
 
-    private val disposables: CompositeDisposable by lazy{
-        CompositeDisposable()
-    }
-
-    fun addDisposable(d: Disposable){
-        disposables.add(d)
-    }
 
     val countryList = MutableLiveData<List<CountryBean>>()
     val statusList = MutableLiveData<MutableList<WBStatusBean>>()
-    val string = MutableLiveData<String>()
+
 
 
     //也可以参考CommentViewModel。kt 140的写法
@@ -39,7 +32,6 @@ class WBViewModel : ViewModel(){
             .subscribe(object : Observer<List<Map<String, String>>> {
                 override fun onComplete() {}
                 override fun onSubscribe(d: Disposable) {
-                    addDisposable(d)
                 }
                 override fun onNext(t: List<Map<String, String>>) {
                     Log.i("https:", t.toString())
@@ -63,11 +55,8 @@ class WBViewModel : ViewModel(){
             .subscribe(object : Observer<WBAllDTO> {
                 override fun onComplete() {
                     currStatus.value = LoadMoreSuccess
-                    "微博数据请求成功".toastSuccess()
-
                 }
                 override fun onSubscribe(d: Disposable) {
-                    addDisposable(d)
                 }
                 override fun onNext(resp: WBAllDTO) {
                     if (statusList.value == null){
@@ -81,7 +70,7 @@ class WBViewModel : ViewModel(){
                     }
                     //可以删除下面两行
                     Log.i("get statueslist:", statusList.value.toString())
-                    string.value = statusList.value.toString()
+                  //  string.value = statusList.value.toString()
                 }
                 override fun onError(e: Throwable) {
                     currStatus.value = LoadMoreError
@@ -95,6 +84,5 @@ class WBViewModel : ViewModel(){
 
     override fun onCleared() {
         super.onCleared()
-        disposables.clear()
     }
 }

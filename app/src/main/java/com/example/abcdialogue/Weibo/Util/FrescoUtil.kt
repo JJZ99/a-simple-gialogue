@@ -1,8 +1,11 @@
 package com.example.abcdialogue.Weibo.Util
 
 import android.net.Uri
+import android.util.Log
 import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.R
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
@@ -51,6 +54,7 @@ object FrescoUtil {
      * 删除图片
      */
     fun removeImageCache(url:String){
+       // "你调用了删除Frasco缓存的方法".toastInfo()
         val uri =  if (url?.isNotEmpty()) Uri.parse(url) else return
         var imagePipeline = Fresco.getImagePipeline()
         imagePipeline.also{

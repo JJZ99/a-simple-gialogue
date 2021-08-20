@@ -4,10 +4,10 @@
     <string name="hello_world">Hello World</string>
     <string name="preference_file_key">com.example.abcdialogue.module.PREFERENCE_FILE_KEY</string>
     <string name="load_moreing">Loading......</string>
-    <string name="load_more_fail">加载失败，请检查网络</string>
+    <string name="load_more_fail">加载失败，请检查网络后重试</string>
     <string name="load_more_end">你已经划到底啦～</string>
     <string name="sp_access_token">com.example.abcdialogue.weibo.PREFERENCE_FILE_KEY</string>
-    <string name="oh_captain_my_captain">Oh,Captain！My Captain！</string>
+    <string name="oh_captain_my_captain">Need A Yeah</string>
     <string name="iDontKnow">不知道啊</string>
     <string name="from_source">来自</string>
     <string name="weibo">微博</string>

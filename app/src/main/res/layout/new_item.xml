@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/tools"
-    android:layout_marginTop="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
-    android:paddingBottom="6dp"
-    android:background="@color/background">
+    android:layout_marginTop="4dp"
+    android:background="@color/background"
+    android:paddingBottom="6dp">
 
     <RelativeLayout
         android:id="@+id/header_rl"
@@ -30,11 +30,11 @@
                 android:id="@+id/header_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:font="@font/siyuan_normal"
                 android:text="@string/iDontKnow"
                 android:textColor="@color/name"
                 android:textSize="17sp"
-                android:font="@font/siyuan_normal"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -73,8 +73,8 @@
                     android:id="@+id/header_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
                     android:layout_marginEnd="5dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="3dp"
                     android:font="@font/siyuan_normal"
                     android:text="@string/serverForget"
@@ -87,12 +87,6 @@
                     app:layout_constraintLeft_toRightOf="@+id/source_tv"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_begin="166dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
@@ -111,15 +105,14 @@
             app:placeholderImageScaleType="fitXY" />
     </RelativeLayout>
 
-
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="4dp"
         android:ellipsize="end"
         android:font="@font/siyuan_normal"
         android:lineSpacingExtra="3dp"
@@ -130,21 +123,114 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_rl"
-        fresco:text="自己交阿见佛i阿四巴斯不读阿萨德你撒面佛可能是第几i家哦氛围超级电视品牌擦拭佛我你发i哦额无法渴望四大"
-        />
+        fresco:text="自己交阿见佛i阿四巴斯不读阿萨德你撒面佛可能是第几i家哦氛围超级电视品牌擦拭佛我你发i哦额无法渴望四大" />
 
     <LinearLayout
         android:id="@+id/image_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="4dp"
         android:orientation="vertical"
         android:visibility="gone"
-        android:layout_marginStart="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_content"
         fresco:visibility="visible" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_container">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/forward_image"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_marginStart="24dp"
+            android:src="@mipmap/outline_open_in_new_black_48"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/forward_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="999"
+            android:textSize="13sp"
+            android:layout_marginLeft="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/forward_image"
+            app:layout_constraintStart_toEndOf="@+id/forward_image"
+            app:layout_constraintTop_toTopOf="@+id/forward_image" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/comment_image"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:src="@mipmap/outline_feedback_black_48"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/like_image"
+            app:layout_constraintStart_toEndOf="@+id/forward_image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/comment_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="999"
+            android:textSize="13sp"
+            android:layout_marginLeft="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/comment_image"
+            app:layout_constraintStart_toEndOf="@+id/comment_image"
+            app:layout_constraintTop_toTopOf="@+id/comment_image" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/like_image"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_marginRight="88dp"
+            android:src="@mipmap/outline_thumb_up_black_48"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/like_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="999"
+            android:textSize="13sp"
+            android:layout_marginLeft="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/like_image"
+            app:layout_constraintStart_toEndOf="@+id/like_image"
+            app:layout_constraintTop_toTopOf="@+id/like_image" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.40" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

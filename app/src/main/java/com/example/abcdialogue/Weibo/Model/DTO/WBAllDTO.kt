@@ -1,6 +1,6 @@
 package com.example.abcdialogue.Weibo.Bean
 
-import com.example.abcdialogue.Weibo.Util.ParseUtil.getMiddleUrl
+import com.example.abcdialogue.Weibo.Util.ParseUtil.getSmall2MiddleUrl
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.Collections.addAll
@@ -137,7 +137,7 @@ data class PicUrlDTO(
     val thumbnailPic: String
 ) : Serializable
 //这个是缩略图地址
-fun PicUrlDTO.transformToString(): String = getMiddleUrl(thumbnailPic)
+fun PicUrlDTO.transformToString(): String = getSmall2MiddleUrl(thumbnailPic)
 fun WBStatusDTO.transformToBean(): WBStatusBean = WBStatusBean(
     createdAt = createdAt ?: "",
     wId = id ?: 0L,
@@ -152,9 +152,9 @@ fun WBStatusDTO.transformToBean(): WBStatusBean = WBStatusBean(
     thumbnailPic = thumbnailPic ?: "",
     bmiddlePic = bmiddlePic ?: "",
     originalPic = originalPic ?: "",
-    repostsCount = repostsCount ?: 0,
-    commentsCount = commentsCount ?: 0,
-    attitudesCount = attitudesCount ?: 0,
+    repostsCount = repostsCount ?: 999,
+    commentsCount = commentsCount ?: 999,
+    attitudesCount = attitudesCount ?: 999,
     picNum = picNum ?: 0,
     uId = user.id ?: 0L,
     screenName = user.screenName ?: "",

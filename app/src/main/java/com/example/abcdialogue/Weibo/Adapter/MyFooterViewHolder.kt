@@ -45,7 +45,7 @@ class MyFooterViewHolder(private val itemView: View,private val onLoadMoreListen
                 .inflate(R.layout.load_more_item, parent, false)
             val viewHolder = MyFooterViewHolder(itemView,onLoadMoreListener)
             itemView.setOnClickListener{
-                "你点到了foot".toastInfo()
+               // "你点到了foot".toastInfo()
             }
             viewHolder.loadFail.setOnClickListener {
                 //加载失败后重新加载

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.LoginActivity.Companion.ACCESS_TOKEN
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
 import com.sina.weibo.sdk.auth.AuthInfo
 import com.sina.weibo.sdk.auth.Oauth2AccessToken
 import com.sina.weibo.sdk.auth.WbAuthListener
@@ -58,7 +59,7 @@ class InitSDK : AppCompatActivity(), WbAuthListener {
             val edit = sharedPref.edit()
             edit.putString(ACCESS_TOKEN, it)
             edit.commit()
-            "微博授权成功getToken".toastInfo()
+            "微博授权成功".toastSuccess()
             TOKEN = it
             var intent = Intent(this, WeiBoActivity().javaClass)
             startActivity(intent)

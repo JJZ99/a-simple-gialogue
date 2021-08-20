@@ -20,6 +20,10 @@ class MyRecyclerHolder(private val itemView: View): RecyclerView.ViewHolder(item
     var content :TextView = itemView.findViewById(R.id.tv_content)
     var headerImage :SimpleDraweeView = itemView.findViewById(R.id.header_image)
     var imageContainer :LinearLayout = itemView.findViewById(R.id.image_container)
+    var forwardTextView: TextView = itemView.findViewById(R.id.forward_tv)
+    var commentTextView: TextView = itemView.findViewById(R.id.comment_tv)
+    var likeTextView: TextView = itemView.findViewById(R.id.like_tv)
+
 
 
 
