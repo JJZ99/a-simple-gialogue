@@ -145,15 +145,20 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_container">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/forward_image"
             android:layout_width="23dp"
             android:layout_height="23dp"
-            android:layout_marginStart="24dp"
             android:src="@mipmap/outline_open_in_new_black_48"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -169,12 +174,11 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/comment_image"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:src="@mipmap/comment2"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@mipmap/comment3"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/like_image"
-            app:layout_constraintStart_toEndOf="@+id/forward_image"
+            app:layout_constraintLeft_toRightOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -192,10 +196,9 @@
             android:id="@+id/like_image"
             android:layout_width="23dp"
             android:layout_height="23dp"
-            android:layout_marginRight="88dp"
             android:src="@mipmap/outline_thumb_up_black_48"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/guideline4"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -209,28 +212,23 @@
             app:layout_constraintStart_toEndOf="@+id/like_image"
             app:layout_constraintTop_toTopOf="@+id/like_image" />
 
-
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.40" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.75" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.40" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

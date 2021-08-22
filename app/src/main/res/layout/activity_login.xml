@@ -7,20 +7,18 @@
     tools:context=".Weibo.LoginActivity">
 
 
-
-
     <Button
         android:id="@+id/login_btn"
         android:layout_width="100dp"
         android:layout_height="45dp"
         android:alpha="1"
         android:background="@drawable/btn_selector"
+        android:font="@font/siyuan_normal"
         android:fontFamily="sans-serif-black"
         android:gravity="center"
         android:shadowColor="#6E0000"
         android:text="登录"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:font="@font/siyuan_normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.257"
@@ -46,23 +44,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.739" />
 
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="85dp"
-        android:layout_height="40dp"
-        android:alpha="1"
+    <EditText
+        android:id="@+id/password_input"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="230dp"
+        android:layout_height="38dp"
+        android:alpha="0.7"
         android:background="@drawable/button_circle_shape"
-        android:backgroundTint="#C6F0E7"
-        android:gravity="center"
-        android:text="帐号"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textIsSelectable="false"
-        android:textSize="22sp"
-        android:textStyle="normal"
+        android:hint=" 请输入您的密码"
+        android:inputType="textPassword"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.817"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.383" />
+        app:layout_constraintVertical_bias="0.46" />
 
     <TextView
         android:id="@+id/password"
@@ -114,22 +111,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.111" />
 
-    <EditText
-        android:id="@+id/password_input"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="230dp"
-        android:layout_height="38dp"
-        android:alpha="0.7"
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="85dp"
+        android:layout_height="40dp"
+        android:alpha="1"
         android:background="@drawable/button_circle_shape"
-        android:hint=" 请输入您的密码"
-        android:inputType="textPassword"
-        android:textSize="20sp"
+        android:backgroundTint="#C6F0E7"
+        android:gravity="center"
+        android:text="帐号"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textIsSelectable="false"
+        android:textSize="22sp"
+        android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.817"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.46" />
+        app:layout_constraintVertical_bias="0.383" />
 
     <TextView
         android:id="@+id/textView4"
@@ -137,9 +135,17 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
         android:text="@string/login_info"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.92" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
