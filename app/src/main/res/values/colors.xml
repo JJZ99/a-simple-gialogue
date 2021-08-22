@@ -9,7 +9,7 @@
     <!--    微博超话字体的颜色-->
     <color name="topicColor">#4D8EC1</color>
     <color name="name">#FF493A</color>
-    <color name="sourceWeibo">#33668E</color>
+    <color name="sourceWeibo">#2F76AE</color>
     <color name="background">#FFFFFF</color>
 <!--    刷新悬浮按钮颜色-->
     <color name="floatingNormal">#AD5CBC</color>

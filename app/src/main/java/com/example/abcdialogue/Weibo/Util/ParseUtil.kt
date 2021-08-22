@@ -7,6 +7,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextPaint
+import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.text.style.URLSpan
@@ -16,9 +17,12 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.abcdialogue.MyApplication.Companion.context
 import com.example.abcdialogue.R
+import com.sina.weibo.sdk.net.h
+import retrofit2.http.HTTP
 
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.regex.Pattern
 
 /**
  * 用于文本的解析
@@ -77,6 +81,53 @@ object ParseUtil {
         var textSpanned = if (allTextIndex !=-1 )SpannableString(content.substring(0,allTextIndex+2)) else SpannableString(content)
         textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.textColor,null)), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
 
+        //超话部分
+        getTopicSpanUseRegex(textSpanned)
+        //@部分
+        getAtSpanUseRegex(textSpanned)
+        if (allTextIndex!=-1){//结尾的全文部分
+            //链接的结尾有个ZWSP 不能截进来
+            val url = content.substring(allTextIndex+4,content.length-1)
+            textSpanned.setSpan(MURLSpan(url), allTextIndex, allTextIndex+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            textSpanned.setSpan(StyleSpan(Typeface.BOLD), allTextIndex, allTextIndex+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        }else{//结尾的一些链接
+            getUrlSpanUseRegex(textSpanned)
+        }
+        spannedStringBuilder.append(textSpanned)
+        return spannedStringBuilder
+    }
+
+    fun getAtSpanUseRegex(textSpanned: SpannableString){
+        //@部分使用正则表达式
+        var pattern = Pattern.compile(AT_RE);
+        var matcher = pattern.matcher(textSpanned);
+        matcher.reset()
+        while (matcher.find()){
+            var at = matcher.group(0)
+            if (at!= null) {
+                var start = matcher.start()
+                var end = matcher.end()
+                textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.topicColor,null)), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+                textSpanned.setSpan(MyClickSpan(at), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            }
+        }
+    }
+    fun getTopicSpanUseRegex(textSpanned: SpannableString){
+        var pattern = Pattern.compile(TOPIC);
+        var matcher = pattern.matcher(textSpanned);
+        matcher.reset()
+        while (matcher.find()){
+            var topic = matcher.group(0)
+            if (topic!= null) {
+                var start = matcher.start()
+                var end = matcher.end()
+                textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.topicColor,null)), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+                textSpanned.setSpan(MyClickSpan(topic), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            }
+        }
+    }
+
+    fun getTopicSpanUseStringUtil(content: String,textSpanned: SpannableString){
         //用来标志下一个#是不是右边的
         var isTopic = false
         //上一个#的索引
@@ -99,25 +150,31 @@ object ParseUtil {
         list.forEach {
             textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.topicColor,null)), it.left, it.right+1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         }
-        if (allTextIndex!=-1){
-            //链接的结尾有个ZWSP 不能截进来
-            val url = content.substring(allTextIndex+4,content.length-1)
-            textSpanned.setSpan(MURLSpan(url), allTextIndex, allTextIndex+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-            textSpanned.setSpan(StyleSpan(Typeface.BOLD), allTextIndex, allTextIndex+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-        }else{
-            var httpIndex = content.indexOf("http")
-            var special = content.indexOf(" \u200B")
-
-            if (httpIndex != -1) {
-
-                val url =if (special==-1) content.substring(httpIndex,content.length) else content.substring(httpIndex,special)
-                textSpanned.setSpan(MURLSpan(url), httpIndex, content.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-                textSpanned.setSpan(StyleSpan(Typeface.BOLD), httpIndex, content.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+    }
+    fun getUrlSpanUseRegex(textSpanned: SpannableString){
+        var pattern = Pattern.compile(URL3);
+        var matcher = pattern.matcher(textSpanned);
+        matcher.reset()
+        while (matcher.find()){
+            var url = matcher.group(0)
+            if (url!= null) {
+                var start = matcher.start()
+                var end = matcher.end()
+                textSpanned.setSpan(MURLSpan(url), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+                textSpanned.setSpan(StyleSpan(Typeface.BOLD), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
             }
-
         }
-        spannedStringBuilder.append(textSpanned)
-        return spannedStringBuilder
+    }
+
+    fun getUrlSpanUseStringUtil(content:String,textSpanned: SpannableString){
+        var httpIndex = content.indexOf(HTTP)
+        while (httpIndex != -1) {
+            var blackIndex = content.indexOf(BLANK,httpIndex)
+            val url = if (blackIndex == -1) content.substring(httpIndex, content.length) else content.substring(httpIndex, blackIndex)
+            textSpanned.setSpan(MURLSpan(url), httpIndex, blackIndex, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            textSpanned.setSpan(StyleSpan(Typeface.BOLD), httpIndex, blackIndex, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            httpIndex = content.indexOf(HTTP,blackIndex)
+        }
     }
 
     /**
@@ -138,14 +195,30 @@ object ParseUtil {
     fun getLarge2MiddleUrl(url: String):String{
         return url.replace(LARGE_VALUE, MIDDLE_VALUE)
     }
-    private const val SMALL_VALUE ="/thumbnail"
-    private const val MIDDLE_VALUE = "/bmiddle"
-    private const val LARGE_VALUE = "/large"
-    private const val WELL ="#"
+
+
+    private const val AT ="@"
+    private const val BLANK = " "
+    private const val HTTP ="http"
     private const val WELL_CHAR ='#'
     private const val TYPE_NOW = "刚刚"
     private const val TYPE_MIN="分钟前"
     private const val TYPE_HOUR="小时前"
+
+    private const val SMALL_VALUE ="/thumbnail"
+    private const val MIDDLE_VALUE = "/bmiddle"
+    private const val LARGE_VALUE = "/large"
+
+    // 定义正则表达式
+    private const val AT_RE = "@[0-9a-zA-Z\\u4e00-\\u9fa5-_]+" // @人
+    private const val TOPIC = "#[0-9a-zA-Z\\u4e00-\\u9fa5]+#" // ##话题
+    private const val EMOJI = "\\[[0-9a-zA-Z\\u4e00-\\u9fa5]+\\]" // 表情
+    private const val URL = "\\b(([\\w-]+://?|www[.])[^\\s()<>]+(?:\\([\\w\\d]+\\)|([^[:punct:]\\s]|/)))" // url 前面有汉字时不可取
+    private const val URL2 = "http://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]" // url,https时不可取
+    private const val URL3 = "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]" // url 啥case都ok
+
+
+
 }
 
 class MURLSpan(private val url: String) : URLSpan(url){
@@ -164,6 +237,15 @@ class MURLSpan(private val url: String) : URLSpan(url){
         (widget as? TextView)?.highlightColor = Color.TRANSPARENT
         //自定义超链接动作
         Toast.makeText(context, "自定义超链接动作", Toast.LENGTH_SHORT).show()
+    }
+}
+
+class MyClickSpan(var text:String): ClickableSpan(){
+    override fun updateDrawState(ds: TextPaint) {
+    }
+    override fun onClick(widget: View) {
+        (widget as? TextView)?.highlightColor = Color.TRANSPARENT
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
 }
 data class Pos(val left:Int,val right:Int)

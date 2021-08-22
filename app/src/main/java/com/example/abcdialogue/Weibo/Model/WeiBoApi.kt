@@ -16,7 +16,7 @@ interface WeiBoApi {
     fun getProvinceList(@Query("access_token") accessToken: String): Observable<List<Map<String,String>>>
 
     /**
-     * 获取page的微博，每页15
+     * 获取page的微博，每页15条
      * page 1.....
      */
     @GET(STATUES)

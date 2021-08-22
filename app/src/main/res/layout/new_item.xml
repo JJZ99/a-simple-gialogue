@@ -171,7 +171,7 @@
             android:id="@+id/comment_image"
             android:layout_width="23dp"
             android:layout_height="23dp"
-            android:src="@mipmap/outline_feedback_black_48"
+            android:src="@mipmap/comment2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/like_image"
             app:layout_constraintStart_toEndOf="@+id/forward_image"

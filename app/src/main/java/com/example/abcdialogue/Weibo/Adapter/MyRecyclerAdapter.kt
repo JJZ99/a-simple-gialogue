@@ -59,7 +59,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             if (!hasMore){
                 currStatus.value = LoadStatus.LoadMoreEnd
             }
-            //Log.i("init adapter observe",viewModel.statusList.value.toString())
+            Log.i("init adapter observe",viewModel.statusList.value.toString())
         }
         viewModel.statusList.observe(fragment.viewLifecycleOwner,{
             total = it.size+1
@@ -69,7 +69,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             if (!hasMore){
                 currStatus.value = LoadStatus.LoadMoreEnd
             }
-            //Log.i("init adapter observe",viewModel.statusList.value.toString())
+            Log.i("init adapter observe",viewModel.statusList.value.toString())
             //notifyDataSetChanged()
         })
     }

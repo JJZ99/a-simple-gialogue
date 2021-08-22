@@ -9,8 +9,6 @@
 
 
 
-
-
     <Button
         android:id="@+id/login_btn"
         android:layout_width="100dp"
@@ -99,6 +97,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.382" />
+
+    <TextView
+        android:id="@+id/username_input_test"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:alpha="0.7"
+        android:background="@drawable/button_circle_shape"
+        android:hint=" 请输入您的账号"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.111" />
 
     <EditText
         android:id="@+id/password_input"
