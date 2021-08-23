@@ -7,27 +7,37 @@
         <entry key="app/src/main/res/drawable-v24/button_circle_shape.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.24305555555555555" />
         <entry key="app/src/main/res/drawable-v24/scrollbar.xml" value="0.33046875" />
+        <entry key="app/src/main/res/drawable/ic_file_download_gray.xml" value="0.17314814814814813" />
+        <entry key="app/src/main/res/drawable/ic_file_download_white.xml" value="0.17314814814814813" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.21737451737451738" />
         <entry key="app/src/main/res/drawable/ic_launcher_weibo_background.xml" value="0.24305555555555555" />
         <entry key="app/src/main/res/drawable/ic_launcher_weibo_foreground.xml" value="0.27175925925925926" />
         <entry key="app/src/main/res/drawable/ic_weiboicon.xml" value="0.24305555555555555" />
         <entry key="app/src/main/res/drawable/ic_weiboicon_back.xml" value="0.24305555555555555" />
+        <entry key="app/src/main/res/drawable/photo_placeholder.xml" value="0.29814814814814816" />
+        <entry key="app/src/main/res/drawable/save_button_image.xml" value="0.29814814814814816" />
         <entry key="app/src/main/res/font/font.xml" value="0.23194444444444445" />
         <entry key="app/src/main/res/font/font1.xml" value="0.2935185185185185" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.2078125" />
+        <entry key="app/src/main/res/layout/activity_picture.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/activity_start.xml" value="0.21481481481481482" />
         <entry key="app/src/main/res/layout/activity_wei_bo.xml" value="0.30833333333333335" />
+        <entry key="app/src/main/res/layout/fragment_contain.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_liner_recycler.xml" value="0.15859375" />
         <entry key="app/src/main/res/layout/fragment_liner_recycler2.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/layout/fragment_liner_recycler3.xml" value="0.20078125" />
+        <entry key="app/src/main/res/layout/fragment_my_dialog.xml" value="0.19067028985507245" />
+        <entry key="app/src/main/res/layout/fragment_pager_photo.xml" value="0.25407608695652173" />
+        <entry key="app/src/main/res/layout/image_item.xml" value="0.20199275362318841" />
         <entry key="app/src/main/res/layout/image_linear_hor.xml" value="0.20078125" />
         <entry key="app/src/main/res/layout/istiew.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/load_more_item.xml" value="0.164453125" />
         <entry key="app/src/main/res/layout/login.xml" value="0.18229166666666666" />
         <entry key="app/src/main/res/layout/new_item.xml" value="0.474671669793621" />
         <entry key="app/src/main/res/layout/new_item2.xml" value="0.204296875" />
+        <entry key="app/src/main/res/layout/pager_photo_view.xml" value="0.25407608695652173" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.170703125" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.24305555555555555" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_weibo.xml" value="0.24305555555555555" />

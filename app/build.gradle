@@ -111,8 +111,10 @@ dependencies {
     implementation 'com.github.Hitomis.transferee:Transferee:1.6.1'
     // 添加 Glide 图片加载器
     implementation 'com.github.Hitomis.transferee:GlideImageLoader:1.6.1'
-    // 集成CodeLocator
-    implementation "com.bytedance.tools.codelocator:codelocator-core:1.0.0"
+
+    implementation 'com.github.chrisbanes.photoview:library:1.2.4'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+
 
 
 

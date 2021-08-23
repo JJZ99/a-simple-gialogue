@@ -31,6 +31,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getMiddle2LargeUrl
 import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransfer
+import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransferRecycler
 
 class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onItemClickListener : MyRecyclerAdapter.OnItemClickListener?= null
@@ -161,14 +162,17 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                     }
                 for (j in 0 until 3) {
                     val childView = SimpleDraweeView(line.context)
-                    val transfer = getTransfer(
-                        fragment,
-                        childView,
-                        getMiddle2LargeUrl(it.picUrls[i * 3 + j]),
-                        this.onDeleteImageListener,
-                        position,
-                        i * 3 + j
-                    )
+//                    val transfer = getTransfer(
+//                        fragment,
+//                        childView,
+//                        getMiddle2LargeUrl(it.picUrls[i * 3 + j]),
+//                        this.onDeleteImageListener,
+//                        position,
+//                        i * 3 + j
+//                    )
+                    val transfer = getTransferRecycler(fragment, it.picUrls.map{
+                                                                               getMiddle2LargeUrl(it)
+                    }, onDeleteImageListener,position,i * 3 + j)
                     childView.setOnClickListener {
                         transfer.show()
                     }
@@ -189,12 +193,10 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             if (reminder != 0) {
                 for (i in 0 until reminder) {
                     val childView = SimpleDraweeView(footLine.context)
-                    val transfer = getTransfer(
-                        fragment,
-                        childView,
-                        getMiddle2LargeUrl(it.picUrls[count * 3 + i]),
-                        this.onDeleteImageListener,position,count * 3 + i
-                    )
+                    val transfer = getTransferRecycler(fragment, it.picUrls.map{
+                        getMiddle2LargeUrl(it)
+                    }, onDeleteImageListener,position,count * 3 + i)
+
                     childView.setOnClickListener {
                         transfer.show()
                     }

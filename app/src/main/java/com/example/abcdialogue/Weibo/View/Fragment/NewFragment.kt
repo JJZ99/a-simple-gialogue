@@ -78,6 +78,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         initRecycler()
         initFloating()
         initRefresh()
+
     }
 
     private fun initAdapter() {
@@ -154,7 +155,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         refresh_layout.setColorSchemeColors(0xff0000,0x00ff00,0x0000ff)
         //refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         //refresh_layout.setProgressBackgroundColorSchemeColor(0x03DAC5);
-
         refresh_layout.setOnRefreshListener {
             //"触发下啦监听".toastInfo()
             refresh()

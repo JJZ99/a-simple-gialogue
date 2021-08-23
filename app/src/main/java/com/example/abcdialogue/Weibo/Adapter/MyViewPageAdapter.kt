@@ -28,9 +28,4 @@ class MyViewPageAdapter(fragmentManager: FragmentManager,
     override fun getPageTitle(position: Int): CharSequence? {
         return titles[position]
     }
-
-
-
-
-
 }
