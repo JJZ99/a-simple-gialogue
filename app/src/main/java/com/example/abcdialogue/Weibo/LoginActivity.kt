@@ -7,66 +7,90 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
-import android.widget.EditText
-import androidx.core.app.ActivityCompat
-import com.example.abcdialogue.Module.MainActivity2
-import com.example.abcdialogue.R
-import com.example.abcdialogue.Weibo.Util.ParseUtil.getFormatText
-import com.example.abcdialogue.Weibo.Util.ParseUtil.getUri
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toast
-import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
-
-import kotlinx.android.synthetic.main.activity_login.username_input
+import kotlinx.android.synthetic.main.activity_login.open_weibo_anim
 import kotlinx.android.synthetic.main.activity_login.wei_bo_btn
 import java.util.regex.Pattern
+import com.facebook.drawee.backends.pipeline.Fresco
+
+import com.facebook.drawee.interfaces.DraweeController
+
+import android.R
+import android.net.Uri
+import android.view.View
+
+import com.facebook.common.util.UriUtil
+import kotlinx.android.synthetic.main.activity_login.open_weibo_anim_constrain
+
 
 class LoginActivity : AppCompatActivity() {
+    //向主进程发送消息的句柄
+    var handler: Handler = object : Handler(Looper.getMainLooper()){
+        //子类必须实现此功能才能接收消息
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            next()
+        }
+    }
+    /**
+     * 自定义方法
+     * 启动登录界面
+     */
+    fun next() {
+        val sharedPref = this.getSharedPreferences(
+            getString(com.example.abcdialogue.R.string.sp_access_token), Context.MODE_PRIVATE)
+        val token = sharedPref.getString(ACCESS_TOKEN,"")
+        //如果token为空就跳转登陆获取
+        if(token.isNullOrEmpty()){
+            //"不存在Token：${token}跳转到登陆授权界面".toastInfo()
+            var intent = Intent(this, InitSDK().javaClass)
+            startActivity(intent)
+            finish()
+        }else{
+            //不为空直接跳转到微博页
+            //"已经存在Token：${token}直接跳到微博".toastInfo()
+            Log.i("token has",token)
+            //InitSDK.TOKEN = "2.00llrezFRMpNJDd3d5f9f262Ln9WYC"
+            InitSDK.TOKEN = token
+            var intent = Intent(this, WeiBoActivity().javaClass)
+            startActivity(intent)
+            finish()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(com.example.abcdialogue.R.layout.activity_login)
 
         getPermission()
+        // 设置箭头gif
+        // 设置箭头gif
+        val uri = Uri.Builder()
+            .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
+            .path(java.lang.String.valueOf(com.example.abcdialogue.R.drawable.loading))
+            .build()
+        val controller: DraweeController = Fresco.newDraweeControllerBuilder()
+            .setUri(uri)
+            .setAutoPlayAnimations(true)
+            .build()
 
-        baseContext.toast("Hello",)
-        //login_btn.setOnClickListener {
-            //这里是一些case
-            //#陈伟霆晒沉浸式刷牙#@William威廉陈伟霆 帅照🈶！陈伟霆就算是刷牙也能这么帅🆘果然靓仔什么姿势拍照都帅气满分！ ​
-            //半导体产业与地缘政治的联系日益紧密，贸易保护主义使半导体供应链风险不断上升。据悉，韩国三星电子和SK 海力士都在研究各种半导体材料、零部件和设备，以降低对进口产品的依赖。http://t.cn/A6I9PdOc ​
-            //2021年8月21日下午14:00，为搭建IC企业与应届毕业生之间的招聘桥梁，爱集微与西电微电子专业校友会联合举办的“西电微电子行业校友企业线上招聘宣讲会”将进行线上直播。http://t.cn/A6I9PFid 直播入口：http://t.cn/A6I2nXGY ​
-            //username_input_test.text= getFormatText("#陈伟霆晒沉浸式刷牙#@William威廉陈伟霆 帅照\uD83C\uDE36！陈伟霆就算是刷牙也能这么帅\uD83C\uDD98果然靓仔什么姿势拍照都帅气满分！ \u200B\n")
-            //username_input_test.text= getFormatText("https://i.cnblogs.com/EditPosts.aspx https://i.cnblogs.com/EditPosts.aspx?opt=1香港市民可通过http://t.cn/A6IphCyS参与问题和心愿征集。http://t.cn/A6I0vaDB #陈伟霆晒沉浸式刷牙#@William威廉陈伟霆:帅照\uD83C\uDE36//2021年8月21日下午14:00，为搭建IC企业与应届毕业生之间的招聘桥梁，爱集微与西电微电子专业校友会联合举办的“西电微电子行业校友企业线上招聘宣讲会”将进行线上直播。http://t.cn/A6I9PFid 直播入口：http://t.cn/A6I2nXGY  https://www.jianshu.com/p/90bfbe35e4c6 \u200B\n")
-            //username_input.text = getFormatText(" //在过去五年里，英伟达的营收仅增长了233%，股价却从15美元上下飙升超过10倍至逼近200美元，已有声音认为，英伟达将成为下一只“永不出售”的股票。高估值背后，曾经的游戏显卡供应商何以超车众巨头？答曰：平台化。http://t.cn/A6IKzQaLv \u200B\n")
-            //第一集熟了→ http://t.cn/A6ISgLwF
-            //【#商丘一院阳性产妇系救护车转运脱管#】8月14日，河南#商丘阳性产妇疑被授意隐瞒行程#持续引发关注。尹某系亲属有中风险接触史的隔离人员。8月6日，尹某突发妊娠期高血压，虞城县防疫部门派救护车转运中致其脱管。尹某称，救护车将其送到商丘市第一人民医院门口，授意其瞒报行程自行入院。@紧急呼叫 ...全文： http://m.weibo.cn/6124642021/4670225192328232 \u200B
-            //username_input_test.movementMethod = LinkMovementMethod.getInstance()
-
-//            var intent = Intent(this, MainActivity2().javaClass)
-//            startActivity(intent)
-//            "jump！jump！".toastInfo()
-    //    }
+        baseContext.toast("Hello")
         wei_bo_btn.setOnClickListener {
-            val sharedPref = this.getSharedPreferences(
-                getString(R.string.sp_access_token), Context.MODE_PRIVATE)
-            val token = sharedPref.getString(ACCESS_TOKEN,"")
-            //如果token为空就跳转登陆获取
-            if(token.isNullOrEmpty()){
-                //"不存在Token：${token}跳转到登陆授权界面".toastInfo()
-                var intent = Intent(this, InitSDK().javaClass)
-                startActivity(intent)
-                finish()
-            }else{
-                //不为空直接跳转到微博页
-                //"已经存在Token：${token}直接跳到微博".toastInfo()
-                Log.i("token has",token)
-                //InitSDK.TOKEN = "2.00llrezFRMpNJDd3d5f9f262Ln9WYC"
-                InitSDK.TOKEN = token
-                var intent = Intent(this, WeiBoActivity().javaClass)
-                startActivity(intent)
-                finish()
-            }
+            open_weibo_anim_constrain.visibility = View.VISIBLE
+            open_weibo_anim.visibility = View.VISIBLE
+            open_weibo_anim.controller = controller
+            //延时2秒发送一个消息给主进程,让主进程执行next()方法,跳到登陆界面
+            handler.postDelayed(object : Runnable {
+                override fun run() {
+                    handler.sendEmptyMessage(0)
+                }
+            }, 1500)
+            wei_bo_btn.isEnabled = false
+
         }
     }
 

@@ -30,7 +30,6 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getMiddle2LargeUrl
-import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransfer
 import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransferRecycler
 
 class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

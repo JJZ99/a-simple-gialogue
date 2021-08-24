@@ -117,30 +117,10 @@ object TransfereeFactory {
         position :Int,
         index: Int
     ): Transferee {
-
             val transfer = Transferee.getDefault(fragment.context)
             var config = TransferConfig.build()
                 .setSourceUrlList(pictures)
                 .setNowThumbnailIndex(index)
-                .setIndexIndicator(object : IIndexIndicator{
-                    override fun attach(parent: FrameLayout?) {
-                        "FrameLayout".toastInfo()
-
-                    }
-
-                    override fun onShow(viewPager: ViewPager?) {
-                        "viewpageShow".toastInfo()
-                    }
-
-                    override fun onHide() {
-                        "onHide".toastInfo()
-                    }
-
-                    override fun onRemove() {
-                        "onRemove".toastInfo()
-
-                    }
-                })
                 .setMissPlaceHolder(R.mipmap.loading_image) // 资源加载前的占位图
                 .setErrorPlaceHolder(R.mipmap.reload_click) // 资源加载错误后的占位图
                 .setProgressIndicator(ProgressPieIndicator()) // 资源加载进度指示器, 可以实现 IProgressIndicator 扩展

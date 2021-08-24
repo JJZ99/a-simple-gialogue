@@ -85,7 +85,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         adapter = MyRecyclerAdapter(this,viewModel)
         adapter.onItemClickListener = object : MyRecyclerAdapter.OnItemClickListener {
             override fun onItemClick(view: View,pos:Int) {
-                "你点击了第${pos}Item".toastInfo()
+                //"你点击了第${pos}Item".toastInfo()
 //                var intent = Intent(MyApplication.context, MainActivity2().javaClass)
 //                startActivity(intent)
             }
@@ -135,7 +135,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
 
     private fun initFloating(){
-        fab.rippleColor = resources.getColor(R.color.floatingClicked,null)
         fab.setOnClickListener {
             refresh_layout.isRefreshing = true
             refresh()

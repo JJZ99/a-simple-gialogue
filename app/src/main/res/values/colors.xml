@@ -5,7 +5,7 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="Red">#ffff0000</color>
     <!--    刷新悬浮按钮被按下去的颜色-->
-    <color name="floatingClicked">#9536A5</color>
+    <color name="floatingClicked">#007EE3</color>
     <!--    微博超话字体的颜色-->
     <color name="topicColor">#4D8EC1</color>
     <color name="name">#FF493A</color>
@@ -16,6 +16,5 @@
 <!--    底部背景颜色-->
     <color name="bottomBackground">#33DCDCDC</color>
     <color name="textColor">#262626</color>
-
-
+    <color name="floatingUnClick">#6DA4ED</color>
 </resources>

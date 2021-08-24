@@ -50,7 +50,7 @@ class WBViewModel : ViewModel(){
 
     fun getStatusesList(token:String,page:Int){
         Log.i("页数","===============$page===============")
-        "=======第{$page}页======".toastInfo()
+        //"=======第{$page}页======".toastInfo()
         DataFetchModel.getStatusesList(token,page)
             .subscribe(object : Observer<WBAllDTO> {
                 override fun onComplete() {
