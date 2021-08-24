@@ -12,6 +12,8 @@
     <string name="from_source">来自</string>
     <string name="weibo">微博</string>
     <string name="serverForget">server忘发了</string>
+    <string name="label">username</string>
+    <string name="label2">password</string>
 
 
 </resources>

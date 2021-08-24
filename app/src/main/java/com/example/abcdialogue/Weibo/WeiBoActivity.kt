@@ -68,7 +68,7 @@ class WeiBoActivity : AppCompatActivity() {
         Log.i(TAG,"=======into initData=======")
 
         mTitles?.add("视频")
-        mTitles?.add("新闻")
+        mTitles?.add("推荐")
         mTitles?.add("商品")
         mFragments?.add(FragmentFactory.getInstance(2))
         mFragments?.add(FragmentFactory.getInstance(1))

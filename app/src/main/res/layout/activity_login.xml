@@ -5,26 +5,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Weibo.LoginActivity">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/pipes"
+        android:scaleType="fitXY"
+        />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/login_image_back"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:src="@drawable/ic_weiboicon_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.130" />
 
-    <Button
-        android:id="@+id/login_btn"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/login_image_for"
         android:layout_width="100dp"
-        android:layout_height="45dp"
-        android:alpha="1"
-        android:background="@drawable/btn_selector"
-        android:font="@font/siyuan_normal"
-        android:fontFamily="sans-serif-black"
-        android:gravity="center"
-        android:shadowColor="#6E0000"
-        android:text="登录"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_weiboicon"
+        app:layout_constraintBottom_toBottomOf="@+id/login_image_back"
+        app:layout_constraintEnd_toEndOf="@+id/login_image_back"
+        app:layout_constraintStart_toStartOf="@+id/login_image_back"
+        app:layout_constraintTop_toTopOf="@+id/login_image_back" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/label2"
+        app:endIconMode="password_toggle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.257"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.739" />
+        app:layout_constraintVertical_bias="0.425"
+        app:startIconDrawable="@mipmap/password_icon">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password_input"
+            android:layout_width="260dp"
+            android:layout_height="45dp"
+            android:inputType="textPassword"
+            android:textSize="20sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/label"
+        app:endIconMode="clear_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.321"
+        app:startIconDrawable="@mipmap/username_icon">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/username_input"
+            android:layout_width="260dp"
+            android:layout_height="45dp"
+            android:textSize="20sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/wei_bo_btn"
@@ -35,99 +83,17 @@
         android:fontFamily="sans-serif-black"
         android:gravity="center"
         android:shadowColor="#6E0000"
-        android:text="微博"
+        android:text="J U M P"
+        android:textStyle="italic"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.773"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.739" />
-
-    <EditText
-        android:id="@+id/password_input"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="230dp"
-        android:layout_height="38dp"
-        android:alpha="0.7"
-        android:background="@drawable/button_circle_shape"
-        android:hint=" 请输入您的密码"
-        android:inputType="textPassword"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.817"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.46" />
-
-    <TextView
-        android:id="@+id/password"
-        android:layout_width="85dp"
-        android:layout_height="40dp"
-        android:alpha="1"
-        android:background="@drawable/button_circle_shape"
-        android:backgroundTint="#C6F0E7"
-        android:gravity="center"
-        android:text="密码"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textIsSelectable="false"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.458" />
+        app:layout_constraintVertical_bias="0.711" />
 
 
-    <TextView
-        android:id="@+id/username_input"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="230dp"
-        android:layout_height="38dp"
-        android:alpha="0.7"
-        android:background="@drawable/button_circle_shape"
-        android:hint=" 请输入您的账号"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.816"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.382" />
 
-    <TextView
-        android:id="@+id/username_input_test"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:alpha="0.7"
-        android:background="@drawable/button_circle_shape"
-        android:hint=" 请输入您的账号"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.42"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.111" />
-
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="85dp"
-        android:layout_height="40dp"
-        android:alpha="1"
-        android:background="@drawable/button_circle_shape"
-        android:backgroundTint="#C6F0E7"
-        android:gravity="center"
-        android:text="帐号"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textIsSelectable="false"
-        android:textSize="22sp"
-        android:textStyle="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.383" />
 
     <TextView
         android:id="@+id/textView4"

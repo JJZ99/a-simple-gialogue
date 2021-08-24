@@ -154,9 +154,9 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/forward_image"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:src="@mipmap/outline_open_in_new_black_48"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/forward"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="parent" />
@@ -174,9 +174,9 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/comment_image"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:src="@mipmap/comment3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/message"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="parent" />
@@ -194,9 +194,9 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/like_image"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:src="@mipmap/outline_thumb_up_black_48"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/favorite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/guideline4"
             app:layout_constraintTop_toTopOf="parent" />

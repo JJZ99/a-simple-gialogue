@@ -9,6 +9,6 @@ android:shape="rectangle">
     android:radius="10dip" />
     <stroke
         android:width="2dp"
-        android:color="#5EC392" />
+        android:color="#9BEFC7" />
 
 </shape>

@@ -27,8 +27,8 @@
             android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginRight="13dp"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
@@ -54,8 +54,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/viewPager"
-        app:tabRippleColor="#7777FF"
-        app:tabIndicatorColor="#0306FF"
+        app:tabRippleColor="#E36C7B"
+        app:tabIndicatorColor="#F4364D"
         app:tabIndicatorHeight="3dp"
         app:tabMode="fixed"
         app:tabSelectedTextColor="#000000"

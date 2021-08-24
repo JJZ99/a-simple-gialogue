@@ -12,7 +12,7 @@
     <color name="sourceWeibo">#2F76AE</color>
     <color name="background">#FFFFFF</color>
 <!--    刷新悬浮按钮颜色-->
-    <color name="floatingNormal">#AD5CBC</color>
+    <color name="floatingNormal">#2EC4B6</color>
 <!--    底部背景颜色-->
     <color name="bottomBackground">#33DCDCDC</color>
     <color name="textColor">#262626</color>
