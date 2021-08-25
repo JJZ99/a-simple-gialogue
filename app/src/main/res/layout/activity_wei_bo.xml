@@ -60,7 +60,28 @@
         app:tabMode="fixed"
         app:tabSelectedTextColor="#000000"
         app:tabTextColor="#88000000"
-        app:tabTextAppearance="@style/TabLayout"/>
+        app:tabTextAppearance="@style/TabLayout">
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_1"
+            android:icon="@mipmap/face_tab"
+            />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_2"
+            android:icon="@mipmap/favorite_tab"
+            />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_3"
+            android:icon="@mipmap/relation_icon"
+            />
+    </com.google.android.material.tabs.TabLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

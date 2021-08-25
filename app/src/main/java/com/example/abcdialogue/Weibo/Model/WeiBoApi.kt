@@ -7,6 +7,9 @@ import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+/**
+ * 微博请求接口
+ */
 interface WeiBoApi {
 
     /**

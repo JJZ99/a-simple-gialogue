@@ -1,5 +1,6 @@
-package com.example.abcdialogue.Weibo.Bean
+package com.example.abcdialogue.Weibo.Model.DTO
 
+import com.example.abcdialogue.Weibo.Bean.WBStatusDTO
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 

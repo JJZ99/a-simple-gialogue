@@ -8,12 +8,12 @@ import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus.*
-import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.currStatus
 import com.example.abcdialogue.Weibo.Bean.CountryBean
 import com.example.abcdialogue.Weibo.Bean.WBAllDTO
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.Bean.transformToBean
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
+import com.example.abcdialogue.Weibo.View.Fragment.NewFragment.Companion.isRefresh
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -22,10 +22,9 @@ class WBViewModel : ViewModel(){
 
 
     val countryList = MutableLiveData<List<CountryBean>>()
+    //当前的状态，默认为加载成功
+    var currStatus = MutableLiveData(LoadMoreEnd)
     val statusList = MutableLiveData<MutableList<WBStatusBean>>()
-
-
-
     //也可以参考CommentViewModel。kt 140的写法
     fun getProvinceList(token: String) {
         DataFetchModel.getProvinceList(token)
@@ -59,18 +58,20 @@ class WBViewModel : ViewModel(){
                 override fun onSubscribe(d: Disposable) {
                 }
                 override fun onNext(resp: WBAllDTO) {
-                    if (statusList.value == null){
-                        statusList.value = mutableListOf()
+                    if (isRefresh) {
+                        statusList.value = mutableListOf<WBStatusBean>().apply {
+                            addAll(resp.statuses?.map { dto ->
+                                dto.transformToBean()
+                            } ?: listOf())
+                        }
+                    } else {
+                        statusList.value = statusList.value?.apply {
+                            addAll(resp.statuses?.map { dto ->
+                                dto.transformToBean()
+                            } ?: listOf())
+                        }
                     }
-                    //这里是分页每请求一次，就把进请求的数据追加到后面，然后触发观察者
-                    statusList.value = statusList.value?.apply {
-                        addAll(resp.statuses?.map { dto ->
-                            dto.transformToBean()
-                        } ?: listOf())
-                    }
-                    //可以删除下面两行
                     Log.i("get statueslist:", statusList.value.toString())
-                  //  string.value = statusList.value.toString()
                 }
                 override fun onError(e: Throwable) {
                     currStatus.value = LoadMoreError
@@ -78,7 +79,6 @@ class WBViewModel : ViewModel(){
                     e.printStackTrace()
                 }
             })
-
     }
 
 

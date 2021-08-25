@@ -21,7 +21,6 @@ import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.PAGESIZE
-import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.currStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.page
 import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
 import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
@@ -39,8 +38,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
     lateinit var adapter: MyRecyclerAdapter
 
-    var isRefresh = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         //初始化数据
         initData()
@@ -53,19 +50,20 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         savedInstanceState: Bundle?
     ): View? {
         viewModel.statusList.observe(this.viewLifecycleOwner,{
-            if (isRefresh||page==2){
+            if (Companion.isRefresh ||page==2){
+
                 initRecycler()
                 refresh_layout.isRefreshing = false
-                if (isRefresh){
+                if (Companion.isRefresh){
                     "刷新成功".toastSuccess()
                 }
-                isRefresh=false
+                Companion.isRefresh =false
             }
         })
-        currStatus.observe(this.viewLifecycleOwner,{
-            if (isRefresh && it == LoadStatus.LoadMoreError) {
+        viewModel.currStatus.observe(this.viewLifecycleOwner,{
+            if (Companion.isRefresh && it == LoadStatus.LoadMoreError) {
                 refresh_layout.isRefreshing = false
-                "下拉刷新失败，请检查网络".toastError()
+               // "下拉刷新失败，请检查网络".toastError()
             }
         })
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -78,7 +76,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         initRecycler()
         initFloating()
         initRefresh()
-
     }
 
     private fun initAdapter() {
@@ -167,7 +164,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
 
     private fun refresh(){
-        currStatus.value = LoadStatus.LoadMoreIn
+        viewModel.currStatus.value = LoadStatus.LoadMoreIn
         viewModel.statusList.value?.clear()
         isRefresh = true
         page = 1
@@ -186,6 +183,10 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     override fun onDestroy() {
         Log.i("FragmentLife","=====onPause==========")
         super.onDestroy()
+    }
+
+    companion object {
+        var isRefresh = false
     }
 
 

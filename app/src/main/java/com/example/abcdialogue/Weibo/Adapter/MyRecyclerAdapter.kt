@@ -57,7 +57,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             //如果新增的等于15个 假设还有更多，否则就没有更多了
             hasMore = addCounts >=0
             if (!hasMore){
-                currStatus.value = LoadStatus.LoadMoreEnd
+                viewModel.currStatus.value = LoadStatus.LoadMoreEnd
             }
             Log.i("init adapter observe",viewModel.statusList.value.toString())
         }
@@ -67,11 +67,12 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             hasMore = addCounts >= 0
             //表面已经加载完了
             if (!hasMore){
-                currStatus.value = LoadStatus.LoadMoreEnd
+                viewModel.currStatus.value = LoadStatus.LoadMoreEnd
             }
             Log.i("init adapter observe",viewModel.statusList.value.toString())
             //notifyDataSetChanged()
         })
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -124,18 +125,21 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                 }
             }
         } else{
-            currStatus.observe(fragment.viewLifecycleOwner,{
-                when(it){
-                    LoadStatus.LoadMoreEnd ->(holder as MyFooterViewHolder).update(LOADER_STATE_END)
-                    LoadStatus.LoadMoreSuccess -> (holder as MyFooterViewHolder).update(MyFooterViewHolder.LOADER_STATE_SUCCESS)
-                    LoadStatus.LoadMoreError -> (holder as MyFooterViewHolder).update(MyFooterViewHolder.LOADER_STATE_FAIL)
+            (holder as MyFooterViewHolder).let { holder ->
+                viewModel.currStatus.observe(fragment.viewLifecycleOwner,{
+                    when(it){
+                        LoadStatus.LoadMoreEnd ->(holder).update(LOADER_STATE_END)
+                        LoadStatus.LoadMoreSuccess -> (holder).update(MyFooterViewHolder.LOADER_STATE_SUCCESS)
+                        LoadStatus.LoadMoreError -> (holder ).update(MyFooterViewHolder.LOADER_STATE_FAIL)
+                    }
+                })
+                if (hasMore){
+                    (holder).update(LOADER_STATE_ING)
+                }else{
+                    (holder).update(LOADER_STATE_END)
                 }
-            })
-            if (hasMore){
-                (holder as MyFooterViewHolder).update(LOADER_STATE_ING)
-            }else{
-                (holder as MyFooterViewHolder).update(LOADER_STATE_END)
             }
+
 
         }
     }
@@ -279,8 +283,6 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
         //初始页码为1
         var page = 1
 
-        //当前的状态，默认为加载成功
-        var currStatus = MutableLiveData(LoadStatus.LoadMoreEnd)
 
         /**
          * 是否能加载更多
