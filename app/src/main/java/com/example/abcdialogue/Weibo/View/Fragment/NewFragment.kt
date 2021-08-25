@@ -165,7 +165,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
 
     private fun refresh(){
         viewModel.currStatus.value = LoadStatus.LoadMoreIn
-        viewModel.statusList.value?.clear()
         isRefresh = true
         page = 1
         viewModel.getStatusesList(TOKEN, page++)
