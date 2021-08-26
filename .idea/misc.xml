@@ -20,11 +20,11 @@
         <entry key="app/src/main/res/drawable/save_button_image.xml" value="0.29814814814814816" />
         <entry key="app/src/main/res/font/font.xml" value="0.23194444444444445" />
         <entry key="app/src/main/res/font/font1.xml" value="0.2935185185185185" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.2078125" />
         <entry key="app/src/main/res/layout/activity_picture.xml" value="0.19610507246376813" />
-        <entry key="app/src/main/res/layout/activity_start.xml" value="0.21481481481481482" />
+        <entry key="app/src/main/res/layout/activity_start.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_wei_bo.xml" value="0.30833333333333335" />
         <entry key="app/src/main/res/layout/fragment_contain.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_liner_recycler.xml" value="0.15859375" />

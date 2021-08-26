@@ -65,10 +65,8 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.example.abcdialogue.R.layout.activity_login)
-
+        //权限申请
         getPermission()
-        // 设置箭头gif
-        // 设置箭头gif
         val uri = Uri.Builder()
             .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
             .path(java.lang.String.valueOf(com.example.abcdialogue.R.drawable.loading))
