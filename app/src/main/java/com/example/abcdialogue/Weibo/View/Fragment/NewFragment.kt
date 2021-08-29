@@ -49,19 +49,24 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel.statusList.observe(this.viewLifecycleOwner,{
-            if (Companion.isRefresh ||page==2){
-
-                initRecycler()
-                refresh_layout.isRefreshing = false
-                if (Companion.isRefresh){
+        viewModel.statusList.observe(this.viewLifecycleOwner, {
+            //这里做两层判断是要把打开app第一次请求和刷新区分开来，
+            if (page == 2) {
+                //如果是刷新操作
+                if (isRefresh) {
                     "刷新成功".toastSuccess()
+                    //通知任何已注册的观察者数据集已更改，刷新 recyclerview
+                    adapter.notifyDataSetChanged()
+                    refresh_layout.isRefreshing = false
+                    isRefresh = false
+                } else {
+                    //如果是第一次请求就初始化 recyclerview
+                    initRecycler()
                 }
-                Companion.isRefresh =false
             }
         })
         viewModel.currStatus.observe(this.viewLifecycleOwner,{
-            if (Companion.isRefresh && it == LoadStatus.LoadMoreError) {
+            if (isRefresh && it == LoadStatus.LoadMoreError) {
                 refresh_layout.isRefreshing = false
                // "下拉刷新失败，请检查网络".toastError()
             }
@@ -166,9 +171,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     private fun refresh(){
         viewModel.currStatus.value = LoadStatus.LoadMoreIn
         isRefresh = true
-        page = 1
-        viewModel.getStatusesList(TOKEN, page++)
-
+        viewModel.getStatusesList(TOKEN, 1)
     }
 
     override fun onDetach() {

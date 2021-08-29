@@ -35,9 +35,9 @@ class StartActivity : AppCompatActivity() {
        // supportActionBar?.hide()
         setContentView(R.layout.activity_start)
         //去掉状态栏
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        window.setFlags(
+//            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//            WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //延时2秒发送一个消息给主进程,让主进程执行next()方法,跳到登陆界面
         handler.postDelayed(object : Runnable {

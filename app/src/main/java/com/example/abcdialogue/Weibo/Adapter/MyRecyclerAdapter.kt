@@ -27,10 +27,9 @@ import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.image_linear_hor.view.new_image_hor
 import android.annotation.SuppressLint
 
-import androidx.lifecycle.MutableLiveData
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getMiddle2LargeUrl
-import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransferRecycler
+import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransferList
 
 class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onItemClickListener : MyRecyclerAdapter.OnItemClickListener?= null
@@ -65,12 +64,11 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             total = it.size+1
             var addCounts = (page - 1) * 15-it.size
             hasMore = addCounts >= 0
-            //表面已经加载完了
+            //已经加载完了
             if (!hasMore){
                 viewModel.currStatus.value = LoadStatus.LoadMoreEnd
             }
             Log.i("init adapter observe",viewModel.statusList.value.toString())
-            //notifyDataSetChanged()
         })
 
     }
@@ -91,15 +89,14 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
         if (position!=(itemCount-1)){
             (holder as MyRecyclerHolder).apply{
                 viewModel.statusList.value?.let { it ->
-                    it[position].also{
+                    it[position].also {
                         textView.text = it.name
                         textView2.text = getTime(it.createdAt)
                         forwardTextView.text = it.repostsCount.toString()
                         commentTextView.text = it.commentsCount.toString()
                         likeTextView.text = it.attitudesCount.toString()
 
-
-                        if (it.source.isNotEmpty()){
+                        if (it.source.isNotEmpty()) {
                             sourceTextView.visibility = View.VISIBLE
                             source.visibility = View.VISIBLE
                             source.text = context.getString(R.string.from_source)
@@ -109,23 +106,27 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                                 var intent = Intent(Intent.ACTION_VIEW, getUri(it.source))
                                 fragment.startActivity(intent)
                             }
-                        }else{
+                        } else {
                             sourceTextView.visibility = View.GONE
                             source.visibility = View.VISIBLE
                             source.text = it.description
-
                         }
+                        //设置文本中的链接支持点击
                         content.movementMethod = LinkMovementMethod.getInstance()
-                        if (it.text.isNotEmpty()){
+                        if (it.text.isNotEmpty()) {
+                            //将微博正文穿进去，获取span
                             content.text = getFormatText(it.text)
                         }
-                        FrescoUtil.loadImageAddCircle(headerImage,it.avatarLarge)
-                        bindImages(it,holder,position)
+                        //头像
+                        FrescoUtil.loadImageAddCircle(headerImage, it.avatarLarge)
+                        //正文下面的多图部分
+                        bindImages(it, holder, position)
                     }
                 }
             }
         } else{
             (holder as MyFooterViewHolder).let { holder ->
+                //这里给当前的状态设置观察者，不考虑为LoadMoreIng的情况，另行处理
                 viewModel.currStatus.observe(fragment.viewLifecycleOwner,{
                     when(it){
                         LoadStatus.LoadMoreEnd ->(holder).update(LOADER_STATE_END)
@@ -159,34 +160,29 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             var count = size / 3
             var reminder = size % 3
             for (i in 0 until count) {
+                //填充布局设置高度
                 val line = LayoutInflater.from(holder.imageContainer.context)
                     .inflate(R.layout.image_linear_hor, holder.imageContainer, false).apply {
                         this.layoutParams.height = itemWidth
                     }
                 for (j in 0 until 3) {
                     val childView = SimpleDraweeView(line.context)
-//                    val transfer = getTransfer(
-//                        fragment,
-//                        childView,
-//                        getMiddle2LargeUrl(it.picUrls[i * 3 + j]),
-//                        this.onDeleteImageListener,
-//                        position,
-//                        i * 3 + j
-//                    )
-                    val transfer = getTransferRecycler(fragment, it.picUrls.map{
-                                                                               getMiddle2LargeUrl(it)
-                    }, onDeleteImageListener,position,i * 3 + j)
-                    childView.setOnClickListener {
-                        transfer.show()
-                    }
-                    FrescoUtil.loadImageAddSize(childView, it.picUrls[i * 3 + j])
                     line.new_image_hor.addView(childView, LinearLayout.LayoutParams(
                         itemWidth,
                         itemWidth
                     ).apply {
                         rightMargin = itemMarginEnd
                     })
+                    //小图使用fresco加载
+                    FrescoUtil.loadImageAddSize(childView, it.picUrls[i * 3 + j])
+                    val transfer = getTransferList(fragment, it.picUrls.map{
+                        getMiddle2LargeUrl(it)
+                    }, onDeleteImageListener,position,i * 3 + j)
+                    childView.setOnClickListener {
+                        transfer.show()
+                    }
                 }
+                //添加到子视图
                 holder.imageContainer.addView(line)
             }
             val footLine = LayoutInflater.from(holder.imageContainer.context)
@@ -196,21 +192,24 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             if (reminder != 0) {
                 for (i in 0 until reminder) {
                     val childView = SimpleDraweeView(footLine.context)
-                    val transfer = getTransferRecycler(fragment, it.picUrls.map{
-                        getMiddle2LargeUrl(it)
-                    }, onDeleteImageListener,position,count * 3 + i)
-
-                    childView.setOnClickListener {
-                        transfer.show()
-                    }
-                    FrescoUtil.loadImageAddSize(childView, it.picUrls[count * 3 + i])
+                    //设置宽高和边距
                     footLine.new_image_hor.addView(childView, LinearLayout.LayoutParams(
                         itemWidth,
                         itemWidth
                     ).apply {
                         rightMargin = itemMarginEnd
                     })
+                    //小图使用fresco加载
+                    FrescoUtil.loadImageAddSize(childView, it.picUrls[count * 3 + i])
+                    val transfer = getTransferList(fragment, it.picUrls.map{
+                        getMiddle2LargeUrl(it)
+                    }, onDeleteImageListener,position,count * 3 + i)
+                    //设置点击监听
+                    childView.setOnClickListener {
+                        transfer.show() //展示
+                    }
                 }
+                //添加到子视图
                 holder.imageContainer.addView(footLine)
             }
         }

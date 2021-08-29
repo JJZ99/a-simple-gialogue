@@ -8,6 +8,7 @@ import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus.*
+import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
 import com.example.abcdialogue.Weibo.Bean.CountryBean
 import com.example.abcdialogue.Weibo.Bean.WBAllDTO
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
@@ -59,6 +60,7 @@ class WBViewModel : ViewModel(){
                 }
                 override fun onNext(resp: WBAllDTO) {
                     if (isRefresh) {
+                        MyRecyclerAdapter.page = 2
                         statusList.value = mutableListOf<WBStatusBean>().apply {
                             addAll(resp.statuses?.map { dto ->
                                 dto.transformToBean()

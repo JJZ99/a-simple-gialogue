@@ -110,7 +110,7 @@ object TransfereeFactory {
         }
     }
 
-    fun getTransferRecycler(
+    fun getTransferList(
         fragment: Fragment,
         pictures: List<String>,
         onDeleteImageListener: MyRecyclerAdapter.OnDeleteImageListener?,

@@ -16,23 +16,29 @@ class MyFooterViewHolder(private val itemView: View,private val onLoadMoreListen
 
 
     /**
-     * 根据状态码来更新控件状态
+     * 根据状态码来更新底部控件状态
      */
-    fun update(state:Int){
-        when(state){
-            LOADER_STATE_ING->{
-                loading.visibility = View.VISIBLE;loadFail.visibility = View.GONE ;loadEnd.visibility=View.GONE
+    fun update(state: Int) {
+        when (state) {
+            LOADER_STATE_ING -> {
+                loading.visibility = View.VISIBLE;loadFail.visibility =
+                    View.GONE;loadEnd.visibility = View.GONE
                 //在这里面去加载数据
                 startLoaderMore()
             }
-            LOADER_STATE_SUCCESS->{
-                loading.visibility = View.GONE;loadFail.visibility = View.GONE ;loadEnd.visibility=View.GONE }
-            LOADER_STATE_FAIL->{
-                loading.visibility = View.GONE;loadFail.visibility = View.VISIBLE ;loadEnd.visibility=View.GONE }
-            LOADER_STATE_END->{
-                loading.visibility = View.GONE;loadFail.visibility = View.GONE ;loadEnd.visibility=View.VISIBLE}
+            LOADER_STATE_SUCCESS -> {
+                loading.visibility = View.GONE;loadFail.visibility = View.GONE;loadEnd.visibility =
+                    View.GONE
+            }
+            LOADER_STATE_FAIL -> {
+                loading.visibility = View.GONE;loadFail.visibility =
+                    View.VISIBLE;loadEnd.visibility = View.GONE
+            }
+            LOADER_STATE_END -> {
+                loading.visibility = View.GONE;loadFail.visibility = View.GONE;loadEnd.visibility =
+                    View.VISIBLE
+            }
         }
-
     }
 
     private fun startLoaderMore() {

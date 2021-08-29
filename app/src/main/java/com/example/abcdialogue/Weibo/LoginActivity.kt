@@ -22,6 +22,7 @@ import com.facebook.drawee.interfaces.DraweeController
 import android.R
 import android.net.Uri
 import android.view.View
+import android.view.WindowManager
 
 import com.facebook.common.util.UriUtil
 import kotlinx.android.synthetic.main.activity_login.open_weibo_anim_constrain
