@@ -10,6 +10,7 @@ object RetrofitHelper {
 
     private const val BASE_URL = "http://www.weather.com.cn"
 
+    @Volatile
     private var retrofit: Retrofit? = null
 
     private var retrofitBuilder: Retrofit.Builder? = null
@@ -40,7 +41,11 @@ object RetrofitHelper {
 
     fun getRetrofit():Retrofit{
         if (retrofit == null){
-            throw IllegalAccessException("Retrofit is not initialized!")
+            synchronized(RetrofitHelper.javaClass){
+                if (retrofit == null) {
+                    init()
+                }
+            }
         }
         return retrofit!!
     }
