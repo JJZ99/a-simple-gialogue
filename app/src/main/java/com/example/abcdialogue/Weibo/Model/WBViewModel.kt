@@ -4,6 +4,7 @@ package com.example.abcdialogue.Weibo.Model
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus
@@ -18,6 +19,8 @@ import com.example.abcdialogue.Weibo.View.Fragment.NewFragment.Companion.isRefre
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WBViewModel : ViewModel(){
 
@@ -28,24 +31,27 @@ class WBViewModel : ViewModel(){
     val statusList = MutableLiveData<MutableList<WBStatusBean>>(mutableListOf<WBStatusBean>())
     //也可以参考CommentViewModel。kt 140的写法
     fun getProvinceList(token: String) {
-        DataFetchModel.getProvinceList(token)
-            .subscribe(object : Observer<List<Map<String, String>>> {
-                override fun onComplete() {}
-                override fun onSubscribe(d: Disposable) {
-                }
-                override fun onNext(t: List<Map<String, String>>) {
-                    Log.i("https:", t.toString())
-                    val list = mutableListOf<CountryBean>()
-                    for (i in t.indices) {
-                        list.add(CountryBean(t[i].keys.first(), t[i].values.first()))
+        this.viewModelScope.launch(Dispatchers.IO){
+            DataFetchModel.getProvinceList(token)
+                .subscribe(object : Observer<List<Map<String, String>>> {
+                    override fun onComplete() {}
+                    override fun onSubscribe(d: Disposable) {
                     }
-                    countryList.value = list
-                }
-                override fun onError(e: Throwable) {
-                    "城市数据请求失败".toastError()
-                    e.printStackTrace()
-                }
-            })
+                    override fun onNext(t: List<Map<String, String>>) {
+                        Log.i("https:", t.toString())
+                        val list = mutableListOf<CountryBean>()
+                        for (i in t.indices) {
+                            list.add(CountryBean(t[i].keys.first(), t[i].values.first()))
+                        }
+                        countryList.value = list
+                    }
+                    override fun onError(e: Throwable) {
+                        "城市数据请求失败".toastError()
+                        e.printStackTrace()
+                    }
+                })
+        }
+
     }
 
     fun getStatusesList(token:String,page:Int){

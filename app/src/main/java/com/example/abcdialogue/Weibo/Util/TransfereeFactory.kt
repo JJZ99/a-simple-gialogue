@@ -13,7 +13,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.viewpager.widget.ViewPager
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
