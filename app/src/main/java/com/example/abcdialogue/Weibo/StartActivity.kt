@@ -26,7 +26,7 @@ class StartActivity : AppCompatActivity() {
      * 自定义方法
      * 启动登录界面
      */
-    fun next() {
+    suspend fun next() {
         var intent = Intent(this,LoginActivity().javaClass)
         startActivity(intent);
         finish()

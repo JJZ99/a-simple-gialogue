@@ -129,15 +129,15 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                 //这里给当前的状态设置观察者，不考虑为LoadMoreIng的情况，另行处理
                 viewModel.currStatus.observe(fragment.viewLifecycleOwner,{
                     when(it){
-                        LoadStatus.LoadMoreEnd ->(holder).update(LOADER_STATE_END)
-                        LoadStatus.LoadMoreSuccess -> (holder).update(MyFooterViewHolder.LOADER_STATE_SUCCESS)
-                        LoadStatus.LoadMoreError -> (holder ).update(MyFooterViewHolder.LOADER_STATE_FAIL)
+                        LoadStatus.LoadMoreEnd ->(holder).update(it)
+                        LoadStatus.LoadMoreSuccess -> (holder).update(it)
+                        LoadStatus.LoadMoreError -> (holder ).update(it)
                     }
                 })
                 if (hasMore){
-                    (holder).update(LOADER_STATE_ING)
+                    (holder).update(LoadStatus.LoadMoreIn)
                 }else{
-                    (holder).update(LOADER_STATE_END)
+                    (holder).update(LoadStatus.LoadMoreEnd)
                 }
             }
 

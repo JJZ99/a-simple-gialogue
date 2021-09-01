@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
      * 自定义方法
      * 启动登录界面
      */
-    fun next() {
+    suspend fun next() {
         val sharedPref = this.getSharedPreferences(
             getString(com.example.abcdialogue.R.string.sp_access_token), Context.MODE_PRIVATE)
         val token = sharedPref.getString(ACCESS_TOKEN,"")

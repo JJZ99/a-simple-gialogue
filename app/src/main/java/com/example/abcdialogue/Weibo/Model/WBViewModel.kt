@@ -27,7 +27,7 @@ class WBViewModel : ViewModel(){
 
     val countryList = MutableLiveData<List<CountryBean>>()
     //当前的状态，默认为加载成功
-    var currStatus = MutableLiveData(LoadMoreEnd)
+    var currStatus = MutableLiveData<LoadStatus>(LoadMoreEnd)
     val statusList = MutableLiveData<MutableList<WBStatusBean>>(mutableListOf<WBStatusBean>())
     //也可以参考CommentViewModel。kt 140的写法
     fun getProvinceList(token: String) {

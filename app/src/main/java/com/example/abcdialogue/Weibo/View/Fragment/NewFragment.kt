@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.abcdialogue.Module.MainActivity2
 import com.example.abcdialogue.MyApplication
@@ -22,6 +24,7 @@ import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
 import com.example.abcdialogue.Weibo.Adapter.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.PAGESIZE
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.page
+import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
 import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
 import com.example.abcdialogue.Weibo.Model.WBViewModel
@@ -37,6 +40,35 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         ViewModelProvider(this, WBViewModelFactory()).get(WBViewModel::class.java)
     }
     lateinit var adapter: MyRecyclerAdapter
+    private var observerPageIs2 = Observer<MutableList<WBStatusBean>> {
+        //这里做两层判断是要把打开app第一次请求和刷新区分开来，
+        if (page == 2) {
+            //如果是刷新操作
+            if (isRefresh) {
+                "刷新成功".toastSuccess()
+                //通知任何已注册的观察者数据集已更改，刷新 recyclerview
+                adapter.notifyDataSetChanged()
+                refresh_layout.isRefreshing = false
+                isRefresh = false
+            } else {
+                //如果是第一次请求就初始化 recyclerview
+                initRecycler()
+            }
+        }
+    }
+    private var observerRefreshError = Observer<LoadStatus> {
+        if (isRefresh && it == LoadStatus.LoadMoreError) {
+            refresh_layout.isRefreshing = false
+            // "下拉刷新失败，请检查网络".toastError()
+        }
+    }
+    private var observerLoadMore = Observer<MutableList<WBStatusBean>> {
+        var hasNumber = (page-2)* PAGESIZE
+        var total = it.size
+        for (i in hasNumber until total){
+            adapter.addItem(adapter.itemCount-1)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //初始化数据
@@ -49,28 +81,10 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel.statusList.observe(this.viewLifecycleOwner, {
-            //这里做两层判断是要把打开app第一次请求和刷新区分开来，
-            if (page == 2) {
-                //如果是刷新操作
-                if (isRefresh) {
-                    "刷新成功".toastSuccess()
-                    //通知任何已注册的观察者数据集已更改，刷新 recyclerview
-                    adapter.notifyDataSetChanged()
-                    refresh_layout.isRefreshing = false
-                    isRefresh = false
-                } else {
-                    //如果是第一次请求就初始化 recyclerview
-                    initRecycler()
-                }
-            }
-        })
-        viewModel.currStatus.observe(this.viewLifecycleOwner,{
-            if (isRefresh && it == LoadStatus.LoadMoreError) {
-                refresh_layout.isRefreshing = false
-               // "下拉刷新失败，请检查网络".toastError()
-            }
-        })
+
+        //如果不用了就removeObserver
+        viewModel.statusList.observe(this.viewLifecycleOwner, observerPageIs2)
+        viewModel.currStatus.observe(this.viewLifecycleOwner, observerRefreshError)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -96,13 +110,8 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
             override fun onLoadMore(view: MyFooterViewHolder) {
                 //"你调用了onLoadMore".toastInfo()
                 viewModel.getStatusesList(TOKEN, page++)
-                viewModel.statusList.observe(this@NewFragment.viewLifecycleOwner,{
-                    var hasNumber = (page-2)* PAGESIZE
-                    var total = it.size
-                    for (i in hasNumber until total){
-                        adapter.addItem(adapter.itemCount-1)
-                    }
-                })
+                viewModel.statusList.observe(this@NewFragment.viewLifecycleOwner, observerLoadMore)
+
             }
         }
         adapter.onDeleteImageListener = object : MyRecyclerAdapter.OnDeleteImageListener {
