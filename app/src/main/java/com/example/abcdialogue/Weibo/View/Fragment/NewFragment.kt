@@ -1,36 +1,29 @@
 package com.example.abcdialogue.Weibo.View.Fragment
 
 import android.animation.ObjectAnimator
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.abcdialogue.Module.MainActivity2
-import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder
 import kotlinx.android.synthetic.main.fragment_liner_recycler.new_rv
 import kotlinx.android.synthetic.main.fragment_liner_recycler.refresh_layout
 import androidx.lifecycle.ViewModelProvider
-import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
-import com.example.abcdialogue.Weibo.Adapter.LoadStatus
+import com.example.abcdialogue.Weibo.Util.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.PAGESIZE
-import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.page
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
 import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
 import com.example.abcdialogue.Weibo.Model.WBViewModel
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getLarge2MiddleUrl
-import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
 import kotlinx.android.synthetic.main.fragment_liner_recycler.fab
 
 
@@ -42,12 +35,14 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     lateinit var adapter: MyRecyclerAdapter
     private var observerPageIs2 = Observer<MutableList<WBStatusBean>> {
         //这里做两层判断是要把打开app第一次请求和刷新区分开来，
-        if (page == 2) {
+        if (viewModel.page == 2) {
             //如果是刷新操作
             if (isRefresh) {
                 "刷新成功".toastSuccess()
                 //通知任何已注册的观察者数据集已更改，刷新 recyclerview
                 adapter.notifyDataSetChanged()
+                //定位到第一项
+                new_rv.scrollToPosition(0)
                 refresh_layout.isRefreshing = false
                 isRefresh = false
             } else {
@@ -63,7 +58,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         }
     }
     private var observerLoadMore = Observer<MutableList<WBStatusBean>> {
-        var hasNumber = (page-2)* PAGESIZE
+        var hasNumber = (viewModel.page-2)* PAGESIZE
         var total = it.size
         for (i in hasNumber until total){
             adapter.addItem(adapter.itemCount-1)
@@ -109,7 +104,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         adapter.onLoadMoreListener = object : MyRecyclerAdapter.OnLoadMoreListener {
             override fun onLoadMore(view: MyFooterViewHolder) {
                 //"你调用了onLoadMore".toastInfo()
-                viewModel.getStatusesList(TOKEN, page++)
+                viewModel.getStatusesList(TOKEN, viewModel.page++)
                 viewModel.statusList.observe(this@NewFragment.viewLifecycleOwner, observerLoadMore)
 
             }
@@ -136,7 +131,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
 
     private fun initData() {
-        viewModel.getStatusesList(TOKEN,page++)
+        viewModel.getStatusesList(TOKEN,viewModel.page++)
     }
 
     private fun initRecycler() {
@@ -180,7 +175,8 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     private fun refresh(){
         viewModel.currStatus.value = LoadStatus.LoadMoreIn
         isRefresh = true
-        viewModel.getStatusesList(TOKEN, 1)
+        viewModel.page = 1
+        viewModel.getStatusesList(TOKEN, viewModel.page++)
     }
 
     override fun onDetach() {

@@ -13,8 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abcdialogue.MyApplication.Companion.context
 import com.example.abcdialogue.Weibo.Util.DisplayUtil
-import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_END
-import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder.Companion.LOADER_STATE_ING
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.Model.WBViewModel
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
@@ -28,6 +26,7 @@ import kotlinx.android.synthetic.main.image_linear_hor.view.new_image_hor
 import android.annotation.SuppressLint
 
 import com.example.abcdialogue.R
+import com.example.abcdialogue.Weibo.Util.LoadStatus
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getMiddle2LargeUrl
 import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransferList
 
@@ -52,7 +51,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
         //这里多写一个是担心，如果在走到这里之前还没有完成第一次请求数据完成了那么
         viewModel.statusList.value?.let {
             total = it.size+1
-            var addCounts = (page - 1) * 15-it.size
+            var addCounts = (viewModel.page - 1) * 15-it.size
             //如果新增的等于15个 假设还有更多，否则就没有更多了
             hasMore = addCounts >=0
             if (!hasMore){
@@ -62,7 +61,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
         }
         viewModel.statusList.observe(fragment.viewLifecycleOwner,{
             total = it.size+1
-            var addCounts = (page - 1) * 15-it.size
+            var addCounts = (viewModel.page - 1) * 15-it.size
             hasMore = addCounts >= 0
             //已经加载完了
             if (!hasMore){
@@ -278,9 +277,6 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
         const val PAGESIZE = 15
         //过滤类型ID，0：全部、1：原创、2：图片、3：视频、4：音乐，默认为0
         const val FEATURE = 2
-
-        //初始页码为1
-        var page = 1
 
 
         /**

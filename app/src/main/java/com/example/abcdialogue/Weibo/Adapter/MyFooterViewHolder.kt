@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abcdialogue.R
-import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
+import com.example.abcdialogue.Weibo.Util.LoadStatus
 
 class MyFooterViewHolder(private val itemView: View,private val onLoadMoreListener: MyRecyclerAdapter.OnLoadMoreListener?): RecyclerView.ViewHolder(itemView) {
     val loading = itemView.findViewById<LinearLayout>(R.id.load_more_ing)

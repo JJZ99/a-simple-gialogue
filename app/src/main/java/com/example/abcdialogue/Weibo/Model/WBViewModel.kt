@@ -6,25 +6,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
-import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
-import com.example.abcdialogue.Weibo.Adapter.LoadStatus
-import com.example.abcdialogue.Weibo.Adapter.LoadStatus.*
+import com.example.abcdialogue.Weibo.Util.LoadStatus
+import com.example.abcdialogue.Weibo.Util.LoadStatus.*
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
 import com.example.abcdialogue.Weibo.Bean.CountryBean
 import com.example.abcdialogue.Weibo.Bean.WBAllDTO
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.Bean.transformToBean
-import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
 import com.example.abcdialogue.Weibo.View.Fragment.NewFragment.Companion.isRefresh
 import io.reactivex.Observer
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class WBViewModel : ViewModel(){
 
-
+    //初始页码为1
+    var page = 1
     val countryList = MutableLiveData<List<CountryBean>>()
     //当前的状态，默认为加载成功
     var currStatus = MutableLiveData<LoadStatus>(LoadMoreEnd)
@@ -46,6 +44,7 @@ class WBViewModel : ViewModel(){
                         countryList.value = list
                     }
                     override fun onError(e: Throwable) {
+                        page--
                         "城市数据请求失败".toastError()
                         e.printStackTrace()
                     }
@@ -54,19 +53,20 @@ class WBViewModel : ViewModel(){
 
     }
 
-    fun getStatusesList(token:String,page:Int){
-        Log.i("页数","===============$page===============")
+    fun getStatusesList(token: String, page: Int) {
+        Log.i("页数", "===============$page===============")
         //"=======第{$page}页======".toastInfo()
-        DataFetchModel.getStatusesList(token,page)
+        DataFetchModel.getStatusesList(token, page)
             .subscribe(object : Observer<WBAllDTO> {
                 override fun onComplete() {
                     currStatus.value = LoadMoreSuccess
                 }
+
                 override fun onSubscribe(d: Disposable) {
                 }
+
                 override fun onNext(resp: WBAllDTO) {
                     if (isRefresh) {
-                        MyRecyclerAdapter.page = 2
                         statusList.value = mutableListOf<WBStatusBean>().apply {
                             addAll(resp.statuses?.map { dto ->
                                 dto.transformToBean()
@@ -81,7 +81,9 @@ class WBViewModel : ViewModel(){
                     }
                     Log.i("get statueslist:", statusList.value.toString())
                 }
+
                 override fun onError(e: Throwable) {
+                    this@WBViewModel.page--
                     currStatus.value = LoadMoreError
                     "微博数据请求失败".toastError()
                     e.printStackTrace()
