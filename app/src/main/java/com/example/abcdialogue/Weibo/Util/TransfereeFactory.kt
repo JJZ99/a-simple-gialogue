@@ -1,10 +1,13 @@
 package com.example.abcdialogue.Weibo.Util
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.FrameLayout
@@ -23,8 +26,21 @@ import com.hitomi.tilibrary.style.progress.ProgressPieIndicator
 import com.hitomi.tilibrary.transfer.TransferConfig
 import com.hitomi.tilibrary.transfer.Transferee
 import com.vansz.glideimageloader.GlideImageLoader
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
+import io.reactivex.FlowableEmitter
+import io.reactivex.FlowableOnSubscribe
+import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
+import io.reactivex.ObservableOnSubscribe
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -151,6 +167,7 @@ object TransfereeFactory {
                                         fragment.viewLifecycleOwner.lifecycleScope.launch {
                                             Log.i("线程bid",Thread.currentThread().id.toString())
                                             savePhoto(imageView,fragment.requireContext())
+                                            //savePhotoUseRxjava(imageView,fragment.requireContext())
                                         }
                                     }
                                     1 -> {
@@ -180,6 +197,12 @@ object TransfereeFactory {
      * 挂起
      */
     private suspend fun savePhoto(imageView: ImageView?, context: Context) {
+        //这里的coroutineScope是本来就有的
+//        coroutineScope  {
+//            val deferred1 = async  { loadImage (name1) }
+//            val deferred2 = async  { loadImage (name2) }
+//            combineImages (deferred1.await(), deferred2.await() )
+//        }
         //因为保存图片是磁盘或网络I/O操作，所以我们使用Dispatchers.IO调度器，在主线程之外的线程执行
         //用withContext 指定挂起
         withContext(Dispatchers.IO){
@@ -202,7 +225,84 @@ object TransfereeFactory {
             }
             Log.i("线程cid",Thread.currentThread().id.toString())
         }
+    }
+    /**
+     *     晨辉小哥哥提问之：怎么用rxjava来保存图片
+     */
+    @SuppressLint("CheckResult")
+    fun savePhotoUseRxjava(imageView: ImageView?, context: Context){
+        //方法1
+        Flowable.create(
+            FlowableOnSubscribe<ImageView> {
+                if (imageView != null) {
+                    it.onNext(imageView)
+                }
+            }, BackpressureStrategy.BUFFER
+        ).subscribeOn(Schedulers.io())
+            .subscribe(object :Consumer<ImageView>{
+                override fun accept(t: ImageView?) {
+                    val bitmap = imageView!!.drawable.toBitmap()
+                    //获取存储路径，为空则返回
+                    val saveUri = context.contentResolver.insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        ContentValues()
+                    ) ?: kotlin.run {
+                        "存储失败".toastError()
+                        return@run
+                    }
+                    //输出流，输出到本地相册，根据结果判读是否成功
+                    context.contentResolver.openOutputStream(saveUri as Uri).use {
+                        if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)) {
+                            MainScope().launch { "存储成功".toastSuccess() }
+                        } else {
+                            MainScope().launch { "存储失败".toastError() }
+                        }
+                    }
+                }
 
+            })
+
+        //方法2
+//        Observable.create(ObservableOnSubscribe<ImageView> { emitter ->
+//            if (imageView != null) {
+//                emitter.onNext(imageView)
+//            } else {
+//                emitter.onError(NullPointerException("空指针了，给老子爬"))
+//            }
+//        }).subscribeOn(Schedulers.io())
+//        .subscribe(object : Observer<ImageView> {
+//
+//            override fun onSubscribe(d: Disposable) {
+//            }
+//
+//            override fun onNext(t: ImageView) {
+//                val bitmap = imageView!!.drawable.toBitmap()
+//                //获取存储路径，为空则返回
+//                val saveUri = context.contentResolver.insert(
+//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                    ContentValues()
+//                ) ?: kotlin.run {
+//                    "存储失败".toastError()
+//                    return@run
+//                }
+//                //输出流，输出到本地相册，根据结果判读是否成功
+//                context.contentResolver.openOutputStream(saveUri as Uri).use {
+//                    if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)) {
+//                        MainScope().launch { "存储成功".toastSuccess() }
+//                    } else {
+//                        MainScope().launch { "存储失败".toastError() }
+//                    }
+//                }
+//            }
+//
+//            override fun onError(e: Throwable) {
+//            }
+//
+//            override fun onComplete() {
+//
+//            }
+//
+//        })
     }
 
 
