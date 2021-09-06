@@ -1,11 +1,13 @@
 package com.example.abcdialogue.Weibo
 
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.os.PersistableBundle
 import android.view.WindowManager
 import androidx.lifecycle.lifecycleScope
 import com.example.abcdialogue.R
@@ -54,4 +56,22 @@ class StartActivity : AppCompatActivity() {
 //        }, 2000)
 
     }
+
+    //当activity被意外销毁时调用的方法，我们可以把一些数据保存到Bundle
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+    }
+
+    //当activity被意外销毁重建时，调用的方法，先执行的onCreate然后调用的这个方法
+    //可以在里面进行数据恢复相关的工作
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+    }
+
+
 }

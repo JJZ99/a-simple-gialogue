@@ -33,9 +33,11 @@ import io.reactivex.FlowableOnSubscribe
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.ObservableOnSubscribe
+import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -229,16 +231,16 @@ object TransfereeFactory {
     /**
      *     晨辉小哥哥提问之：怎么用rxjava来保存图片
      */
-    @SuppressLint("CheckResult")
     fun savePhotoUseRxjava(imageView: ImageView?, context: Context){
         //方法1
-        Flowable.create(
+        var disposable = Flowable.create(
             FlowableOnSubscribe<ImageView> {
                 if (imageView != null) {
                     it.onNext(imageView)
                 }
-            }, BackpressureStrategy.BUFFER
+            }, BackpressureStrategy.BUFFER  //第二个参数是压背策略
         ).subscribeOn(Schedulers.io())
+            //这里的consumer是消费者,可以有多个消费者，比如增加出错时的消费Consumer<Throwable>
             .subscribe(object :Consumer<ImageView>{
                 override fun accept(t: ImageView?) {
                     val bitmap = imageView!!.drawable.toBitmap()
@@ -260,49 +262,91 @@ object TransfereeFactory {
                     }
                 }
 
+            },object :Consumer<Throwable>{
+                override fun accept(t: Throwable?) {
+                    TODO("Not yet implemented")
+                }
+
             })
+        disposable.dispose()
 
         //方法2
-//        Observable.create(ObservableOnSubscribe<ImageView> { emitter ->
-//            if (imageView != null) {
-//                emitter.onNext(imageView)
-//            } else {
-//                emitter.onError(NullPointerException("空指针了，给老子爬"))
-//            }
-//        }).subscribeOn(Schedulers.io())
-//        .subscribe(object : Observer<ImageView> {
-//
-//            override fun onSubscribe(d: Disposable) {
-//            }
-//
-//            override fun onNext(t: ImageView) {
-//                val bitmap = imageView!!.drawable.toBitmap()
-//                //获取存储路径，为空则返回
-//                val saveUri = context.contentResolver.insert(
-//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-//                    ContentValues()
-//                ) ?: kotlin.run {
-//                    "存储失败".toastError()
-//                    return@run
-//                }
-//                //输出流，输出到本地相册，根据结果判读是否成功
-//                context.contentResolver.openOutputStream(saveUri as Uri).use {
-//                    if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)) {
-//                        MainScope().launch { "存储成功".toastSuccess() }
-//                    } else {
-//                        MainScope().launch { "存储失败".toastError() }
-//                    }
-//                }
-//            }
-//
-//            override fun onError(e: Throwable) {
-//            }
-//
-//            override fun onComplete() {
-//
-//            }
-//
-//        })
+        var observerAble = Observable.create(ObservableOnSubscribe<ImageView> { emitter ->
+            //事件产生的地方，比如保存文件、请求网络等
+            if (imageView != null) {
+                emitter.onNext(imageView)
+            } else {
+                //error和complete是互斥的就算你这里都写了，但是只会回调用一个，前面的那个
+                emitter.onError(NullPointerException("空指针了，给老子爬"))
+                //emitter.onComplete()
+            }
+        })
+        //做一次转换，多余操作，就是想用一下
+        observerAble.map { imageView!!.drawable.toBitmap() }.subscribeOn(Schedulers.io())//设置事件发生的线程
+            .observeOn(Schedulers.io())
+            .subscribe(object : Observer<Bitmap> {
+
+                //这个方法在onNext之前被调用
+                override fun onSubscribe(d: Disposable) {
+                }
+                override fun onNext(t: Bitmap) {
+                    //获取存储路径，为空则返回
+                    val saveUri = context.contentResolver.insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        ContentValues()
+                    ) ?: kotlin.run {
+                        "存储失败".toastError()
+                        return@run
+                    }
+                    //输出流，输出到本地相册，根据结果判读是否成功
+                    context.contentResolver.openOutputStream(saveUri as Uri).use {
+                        if (t.compress(Bitmap.CompressFormat.JPEG, 100, it)) {
+                            MainScope().launch { "存储成功".toastSuccess() }
+                        } else {
+                            MainScope().launch { "存储失败".toastError() }
+                        }
+                    }
+                }
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                }
+
+                //这个方法在onNext之后被调用
+                override fun onComplete() {
+                }
+            })
+    }
+    fun demoFlatMap(){
+        //这里注意flatmap和map的不同，前者返回的是新的ObservableSource，他是把事件处理之后，交给一个新的被观察者然后进行发送
+        //map是对事件做了一次处理，然后返回了新的事件，但还是由原来的被观察者发送
+        var observerAble = Observable.fromIterable(arrayListOf("111","222","333","444","555"))
+            .flatMap(object :Function<String,ObservableSource<Int>>{
+                override fun apply(t: String): ObservableSource<Int> {
+                    return Observable.fromArray(t.toInt())
+                }
+
+            }).subscribe(object :Observer<Int>{
+                override fun onSubscribe(d: Disposable) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onNext(t: Int) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onError(e: Throwable) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onComplete() {
+                    TODO("Not yet implemented")
+                }
+
+            })
+
+
+
+
     }
 
 
