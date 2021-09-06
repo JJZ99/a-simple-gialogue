@@ -50,7 +50,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     init {
         //这里多写一个是担心，如果在走到这里之前还没有完成第一次请求数据完成了那么
         viewModel.statusList.value?.let {
-            total = it.size+1
+            total = it.size
             var addCounts = (viewModel.page - 1) * 15-it.size
             //如果新增的等于15个 假设还有更多，否则就没有更多了
             hasMore = addCounts >=0
@@ -60,8 +60,8 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
             Log.i("init adapter observe",viewModel.statusList.value.toString())
         }
         viewModel.statusList.observe(fragment.viewLifecycleOwner,{
-            total = it.size+1
-            var addCounts = (viewModel.page - 1) * 15-it.size
+            total = it.size
+            var addCounts = (viewModel.page) * 15-it.size
             hasMore = addCounts >= 0
             //已经加载完了
             if (!hasMore){
@@ -85,7 +85,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
      */
     @SuppressLint("WrongConstant")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (position!=(itemCount-1)){
+        if (position!=(itemCount)){
             (holder as MyRecyclerHolder).apply{
                 viewModel.statusList.value?.let { it ->
                     it[position].also {
@@ -223,7 +223,7 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
      * 获取Item的类型
      */
     override fun getItemViewType(position: Int): Int {
-        return if (position == (itemCount - 1)) {
+        return if (position == (itemCount)) {
             TYPE_LOAD_MORE
         } else {
             TYPE_NORMAL

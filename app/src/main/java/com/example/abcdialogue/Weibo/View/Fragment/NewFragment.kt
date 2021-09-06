@@ -15,6 +15,8 @@ import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder
 import kotlinx.android.synthetic.main.fragment_liner_recycler.new_rv
 import kotlinx.android.synthetic.main.fragment_liner_recycler.refresh_layout
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DiffUtil
+import com.example.abcdialogue.Weibo.Adapter.MyDiffCallback
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
 import com.example.abcdialogue.Weibo.Util.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.PAGESIZE
@@ -28,6 +30,7 @@ import kotlinx.android.synthetic.main.fragment_liner_recycler.fab
 
 
 class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
+    var oldList = mutableListOf<WBStatusBean>()
 
     private val viewModel by lazy{
         ViewModelProvider(this, WBViewModelFactory()).get(WBViewModel::class.java)
@@ -39,10 +42,14 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
             //如果是刷新操作
             if (isRefresh) {
                 "刷新成功".toastSuccess()
+                var diffResult :DiffUtil.DiffResult  = DiffUtil.calculateDiff(MyDiffCallback(oldList,it))
+                diffResult.dispatchUpdatesTo(adapter)
+                //oldList.clear()
+
                 //通知任何已注册的观察者数据集已更改，刷新 recyclerview
-                adapter.notifyDataSetChanged()
+                //adapter.notifyDataSetChanged()
                 //定位到第一项
-                new_rv.scrollToPosition(0)
+                //new_rv.scrollToPosition(0)
                 refresh_layout.isRefreshing = false
                 isRefresh = false
             } else {
@@ -176,6 +183,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         viewModel.currStatus.value = LoadStatus.LoadMoreIn
         isRefresh = true
         viewModel.page = 1
+        oldList = viewModel.statusList.value!!
         viewModel.getStatusesList(TOKEN, viewModel.page++)
     }
 
