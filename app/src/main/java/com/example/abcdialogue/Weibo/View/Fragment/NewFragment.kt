@@ -17,9 +17,13 @@ import kotlinx.android.synthetic.main.fragment_liner_recycler.refresh_layout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import com.example.abcdialogue.Weibo.Adapter.MyDiffCallback
+import com.example.abcdialogue.Weibo.Adapter.MyListAdapter
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
 import com.example.abcdialogue.Weibo.Util.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.PAGESIZE
+import com.example.abcdialogue.Weibo.Adapter.OnDeleteImageListener
+import com.example.abcdialogue.Weibo.Adapter.OnItemClickListener
+import com.example.abcdialogue.Weibo.Adapter.OnLoadMoreListener
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
 import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
@@ -35,7 +39,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     private val viewModel by lazy{
         ViewModelProvider(this, WBViewModelFactory()).get(WBViewModel::class.java)
     }
-    lateinit var adapter: MyRecyclerAdapter
+    lateinit var adapter: MyListAdapter
     private var observerPageIs2 = Observer<MutableList<WBStatusBean>> {
         //这里做两层判断是要把打开app第一次请求和刷新区分开来，
         if (viewModel.page == 2) {
@@ -100,15 +104,15 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
 
     private fun initAdapter() {
-        adapter = MyRecyclerAdapter(this,viewModel)
-        adapter.onItemClickListener = object : MyRecyclerAdapter.OnItemClickListener {
-            override fun onItemClick(view: View,pos:Int) {
+        adapter = MyListAdapter(this,viewModel)
+        adapter.onItemClickListener = object : OnItemClickListener {
+             override fun onItemClick(view: View, pos:Int) {
                 //"你点击了第${pos}Item".toastInfo()
 //                var intent = Intent(MyApplication.context, MainActivity2().javaClass)
 //                startActivity(intent)
             }
         }
-        adapter.onLoadMoreListener = object : MyRecyclerAdapter.OnLoadMoreListener {
+        adapter.onLoadMoreListener = object : OnLoadMoreListener {
             override fun onLoadMore(view: MyFooterViewHolder) {
                 //"你调用了onLoadMore".toastInfo()
                 viewModel.getStatusesList(TOKEN, viewModel.page++)
@@ -116,7 +120,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
 
             }
         }
-        adapter.onDeleteImageListener = object : MyRecyclerAdapter.OnDeleteImageListener {
+        adapter.onDeleteImageListener = object : OnDeleteImageListener {
             override fun onDeleteImageListener(position: Int, imageUrl: String?) {
                 //"你调用了DeleteImage".toastInfo()
                 viewModel.statusList.value?.let {
@@ -183,6 +187,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         viewModel.currStatus.value = LoadStatus.LoadMoreIn
         isRefresh = true
         viewModel.page = 1
+        //先保存老的数据
         oldList = viewModel.statusList.value!!
         viewModel.getStatusesList(TOKEN, viewModel.page++)
     }

@@ -29,7 +29,7 @@ class MyRecyclerHolder(private val itemView: View): RecyclerView.ViewHolder(item
 
 
     companion object {
-        fun create(parent: ViewGroup,onItemClickListener: MyRecyclerAdapter.OnItemClickListener?): MyRecyclerHolder {
+        fun create(parent: ViewGroup,onItemClickListener: OnItemClickListener?): MyRecyclerHolder {
             val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.new_item, parent, false)
             val viewHolder = MyRecyclerHolder(itemView)

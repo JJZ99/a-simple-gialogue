@@ -7,40 +7,30 @@ import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
-import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.abcdialogue.R
+import com.example.abcdialogue.Weibo.Adapter.MyListAdapter
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
+import com.example.abcdialogue.Weibo.Adapter.OnDeleteImageListener
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
-import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
-import com.hitomi.tilibrary.style.IIndexIndicator
 import com.hitomi.tilibrary.style.progress.ProgressPieIndicator
 import com.hitomi.tilibrary.transfer.TransferConfig
 import com.hitomi.tilibrary.transfer.Transferee
 import com.vansz.glideimageloader.GlideImageLoader
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
-import io.reactivex.FlowableEmitter
 import io.reactivex.FlowableOnSubscribe
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -56,7 +46,7 @@ object TransfereeFactory {
         fragment: Fragment,
         imageView: ImageView,
         url: String,
-        onDeleteImageListener: MyRecyclerAdapter.OnDeleteImageListener?,
+        onDeleteImageListener: OnDeleteImageListener?,
         position: Int,
         index: Int
     ): Transferee {
@@ -128,8 +118,8 @@ object TransfereeFactory {
     fun getTransferList(
         fragment: Fragment,
         pictures: List<String>,
-        onDeleteImageListener: MyRecyclerAdapter.OnDeleteImageListener?,
-        position :Int,
+        onDeleteImageListener: OnDeleteImageListener?,
+        position:Int,
         index: Int
     ): Transferee {
             val transfer = Transferee.getDefault(fragment.context)

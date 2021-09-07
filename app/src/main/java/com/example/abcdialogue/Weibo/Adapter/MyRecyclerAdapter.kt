@@ -31,7 +31,7 @@ import com.example.abcdialogue.Weibo.Util.ParseUtil.getMiddle2LargeUrl
 import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransferList
 
 class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var onItemClickListener : MyRecyclerAdapter.OnItemClickListener?= null
+    var onItemClickListener : OnItemClickListener?= null
     var onLoadMoreListener : OnLoadMoreListener?= null
 
     var onDeleteImageListener : OnDeleteImageListener?= null
@@ -48,20 +48,9 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
 
     var currNumber = 1
     init {
-        //这里多写一个是担心，如果在走到这里之前还没有完成第一次请求数据完成了那么
-        viewModel.statusList.value?.let {
-            total = it.size
-            var addCounts = (viewModel.page - 1) * 15-it.size
-            //如果新增的等于15个 假设还有更多，否则就没有更多了
-            hasMore = addCounts >=0
-            if (!hasMore){
-                viewModel.currStatus.value = LoadStatus.LoadMoreEnd
-            }
-            Log.i("init adapter observe",viewModel.statusList.value.toString())
-        }
         viewModel.statusList.observe(fragment.viewLifecycleOwner,{
             total = it.size
-            var addCounts = (viewModel.page) * 15-it.size
+            var addCounts = (viewModel.page-1) * 15-it.size
             hasMore = addCounts >= 0
             //已经加载完了
             if (!hasMore){
@@ -85,8 +74,9 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
      */
     @SuppressLint("WrongConstant")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (position!=(itemCount)){
-            (holder as MyRecyclerHolder).apply{
+        Log.i("ONBINDVIEWHOLDER","${position}  count ${itemCount}")
+        if (position < (itemCount-1)) {
+            (holder as MyRecyclerHolder).apply {
                 viewModel.statusList.value?.let { it ->
                     it[position].also {
                         textView.text = it.name
@@ -123,19 +113,19 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
                     }
                 }
             }
-        } else{
+        } else {
             (holder as MyFooterViewHolder).let { holder ->
                 //这里给当前的状态设置观察者，不考虑为LoadMoreIng的情况，另行处理
-                viewModel.currStatus.observe(fragment.viewLifecycleOwner,{
-                    when(it){
-                        LoadStatus.LoadMoreEnd ->(holder).update(it)
+                viewModel.currStatus.observe(fragment.viewLifecycleOwner, {
+                    when (it) {
+                        LoadStatus.LoadMoreEnd -> (holder).update(it)
                         LoadStatus.LoadMoreSuccess -> (holder).update(it)
-                        LoadStatus.LoadMoreError -> (holder ).update(it)
+                        LoadStatus.LoadMoreError -> (holder).update(it)
                     }
                 })
-                if (hasMore){
+                if (hasMore) {
                     (holder).update(LoadStatus.LoadMoreIn)
-                }else{
+                } else {
                     (holder).update(LoadStatus.LoadMoreEnd)
                 }
             }
@@ -223,10 +213,10 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
      * 获取Item的类型
      */
     override fun getItemViewType(position: Int): Int {
-        return if (position == (itemCount)) {
-            TYPE_LOAD_MORE
-        } else {
+        return if (position != (itemCount-1)) {
             TYPE_NORMAL
+        } else {
+            TYPE_LOAD_MORE
         }
     }
 
@@ -253,21 +243,6 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
 
     }
 
-    //每一项的点击事件
-    public interface OnItemClickListener{
-        fun onItemClick(view:View,pos:Int)
-    }
-
-    //加载更多的监听接口
-    public interface OnLoadMoreListener{
-        fun onLoadMore(view: MyFooterViewHolder)
-    }
-
-    //删除图片的监听接口
-    public interface OnDeleteImageListener{
-        fun onDeleteImageListener(position: Int, imageUrl: String?)
-
-    }
 
     companion object {
         const val TYPE_NORMAL = 0

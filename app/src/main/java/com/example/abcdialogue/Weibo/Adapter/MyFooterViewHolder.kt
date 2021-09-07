@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Util.LoadStatus
 
-class MyFooterViewHolder(private val itemView: View,private val onLoadMoreListener: MyRecyclerAdapter.OnLoadMoreListener?): RecyclerView.ViewHolder(itemView) {
+class MyFooterViewHolder(private val itemView: View,private val onLoadMoreListener: OnLoadMoreListener?): RecyclerView.ViewHolder(itemView) {
     val loading = itemView.findViewById<LinearLayout>(R.id.load_more_ing)
     val loadFail = itemView.findViewById<TextView>(R.id.load_more_fail)
     val loadEnd = itemView.findViewById<TextView>(R.id.no_more)
@@ -46,7 +46,7 @@ class MyFooterViewHolder(private val itemView: View,private val onLoadMoreListen
     }
 
     companion object {
-        fun create( parent: ViewGroup, onLoadMoreListener: MyRecyclerAdapter.OnLoadMoreListener?): MyFooterViewHolder {
+        fun create(parent: ViewGroup, onLoadMoreListener: OnLoadMoreListener?): MyFooterViewHolder {
             val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.load_more_item, parent, false)
             val viewHolder = MyFooterViewHolder(itemView,onLoadMoreListener)
