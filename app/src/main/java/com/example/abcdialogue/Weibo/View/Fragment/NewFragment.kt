@@ -46,8 +46,8 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
             //如果是刷新操作
             if (isRefresh) {
                 "刷新成功".toastSuccess()
-                var diffResult :DiffUtil.DiffResult  = DiffUtil.calculateDiff(MyDiffCallback(oldList,it))
-                diffResult.dispatchUpdatesTo(adapter)
+
+                adapter.submitList(it)
                 //oldList.clear()
 
                 //通知任何已注册的观察者数据集已更改，刷新 recyclerview
