@@ -229,7 +229,7 @@ object TransfereeFactory {
         }
     }
     /**
-     *     晨辉小哥哥提问之：怎么用rxjava来保存图片
+     *  晨辉小哥哥提问之：怎么用rxjava来保存图片
      */
     fun savePhotoUseRxjava(imageView: ImageView?, context: Context){
         //方法1
