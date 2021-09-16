@@ -21,7 +21,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2021年09月13日"
+        android:text="2021年09月果然哥哥13日"
         android:layout_marginTop="25dp"
         app:layout_constraintStart_toStartOf="@+id/textView1"
         app:layout_constraintTop_toBottomOf="@+id/textView1" />
@@ -36,7 +36,7 @@
         app:layout_constraintLeft_toRightOf="@+id/barrier1"
         app:layout_constraintTop_toTopOf="@+id/textView1"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constrainedWidth="true"
+
         />
 
     <androidx.constraintlayout.widget.Barrier
