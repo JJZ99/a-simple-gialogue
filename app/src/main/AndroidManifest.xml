@@ -13,13 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
+            android:name=".LearnConstraintLayout.ConstrainLayout"
+            android:exported="true" />
+        <activity
             android:name=".Weibo.StartActivity"
             android:exported="true" />
         <activity android:name=".Weibo.LoginActivity" />
         <activity android:name=".Weibo.InitSDK" />
         <activity android:name=".Weibo.WeiBoActivity" />
         <activity android:name=".Module.MainActivity2" />
-        <activity android:name=".ConstrainLayout">
+
+        <activity android:name=".LearnConstraintLayout.JiuGongGeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,9 +31,9 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

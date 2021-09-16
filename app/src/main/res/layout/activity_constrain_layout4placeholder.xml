@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ConstrainLayout">
+    tools:context=".LearnConstraintLayout.ConstrainLayout">
 
     <Button
         android:id="@+id/btn_d"
@@ -33,15 +33,16 @@
 
     <TextView
         android:id="@+id/tv1"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:text="一顿饭"
         android:textSize="20dp"
-        android:layout_marginLeft="20dp"
-        android:background="@color/colorPrimary"
+        android:layout_marginLeft="10dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv2"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.275" />
@@ -49,12 +50,12 @@
 
     <TextView
         android:id="@+id/tv2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="两顿饭"
-        android:textSize="20dp"
         android:layout_marginLeft="20dp"
         android:background="@color/colorPrimary"
+        android:text="两顿饭"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv1"
         app:layout_constraintEnd_toStartOf="@+id/tv3"
         app:layout_constraintStart_toEndOf="@+id/tv1"
@@ -62,12 +63,12 @@
 
     <TextView
         android:id="@+id/tv3"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="二顿饭"
-        android:textSize="20dp"
         android:layout_marginLeft="20dp"
         android:background="@color/colorPrimary"
+        android:text="二顿饭"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv2"

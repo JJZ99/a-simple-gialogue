@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ConstrainLayout">
+    tools:context=".LearnConstraintLayout.ConstrainLayout">
 
     <!--dasdsa-->
     <Button
         android:id="@+id/buttonA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
         android:text="A"
         app:layout_constraintEnd_toStartOf="@+id/buttonB"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintHorizontal_chainStyle="packed"
 
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +25,8 @@
         android:id="@+id/buttonB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+
         android:text="B"
         app:layout_constraintBottom_toBottomOf="@+id/buttonA"
         app:layout_constraintEnd_toStartOf="@+id/buttonC"
@@ -36,6 +39,8 @@
         android:id="@+id/buttonC"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+
         android:text="C"
         app:layout_constraintBottom_toBottomOf="@+id/buttonB"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +90,7 @@
         android:layout_height="0dp"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="H,2:4"
+        app:layout_constraintDimensionRatio="H,1:2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
