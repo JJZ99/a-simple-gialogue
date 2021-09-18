@@ -15,6 +15,7 @@ import com.example.abcdialogue.Weibo.Util.DisplayUtil.getWindowsWidth
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
+import kotlinx.android.synthetic.clearFindViewByIdCache
 import kotlinx.android.synthetic.main.activity_constrain_layout4placeholder.root
 import kotlinx.android.synthetic.main.activity_jiu_gong_ge.btn_add
 import kotlinx.android.synthetic.main.activity_jiu_gong_ge.btn_del
@@ -40,6 +41,8 @@ class JiuGongGeActivity : AppCompatActivity() {
     var rowCount = 0
     //多少个
     var remainder = 0
+    //链的样式
+    var chainStyle = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +63,7 @@ class JiuGongGeActivity : AppCompatActivity() {
             it.isClickable = false
 
 
-
+            delete()
 
 
 
@@ -69,29 +72,46 @@ class JiuGongGeActivity : AppCompatActivity() {
 
 
     }
-    private fun add() {
-        val textView = getView()
-        if (textView == null) {
-            "满了、别加了".toastInfo()
-            return
+
+
+    /**
+     * 返回队列倒数第二个id
+     */
+    private fun getPreviousId(): Int {
+        var index = queue.size - 2
+        if (index == -1) {
+            return queue.last()
         }
-        val id = textView.id
+        return queue[index]
+    }
+
+    private fun getTopViewId(): Int {
+        return when (rowCount) {
+            1 -> ConstraintSet.PARENT_ID
+            2 -> queue[0]
+            3 -> queue[3]
+            else -> ConstraintSet.PARENT_ID
+        }
+    }
+    private fun add() {
+        val textView = createView() ?: return
         root.addView(textView)
+        val id = textView.id
         //创建
-        val constraintSet = ConstraintSet().apply {
+        ConstraintSet().apply {
             //获取约束集
             clone(root)
-            //Todo 这里需要怎么写啊，不会啊
-            //setReferencedIds(R.id.barrier2,queue[0])
 
-            //设置宽高
+            //Todo 如果可变参数你传的是个数组，那么应该在前面加*
+            setReferencedIds(R.id.barrier2, *queue.toIntArray())
+            //设置宽高和比例
             constrainWidth(id, width)
             constrainHeight(id, ConstraintSet.MATCH_CONSTRAINT)
-            setDimensionRatio(id,"1")
+            setDimensionRatio(id,"0.618")
 
             if (remainder == 1) {
                 //设置水平链的样式，2===》packed
-                setHorizontalChainStyle(id, 2)
+                setHorizontalChainStyle(id, chainStyle++)
 
                 //设置水平方向的约束
                 addToHorizontalChainRTL(id, ConstraintSet.PARENT_ID, ConstraintSet.PARENT_ID)
@@ -116,46 +136,53 @@ class JiuGongGeActivity : AppCompatActivity() {
                     getPreviousId(),
                     ConstraintSet.TOP)
             }
-
-
+            applyTo(root)
         }
-
-        constraintSet.applyTo(root)
         TransitionManager.beginDelayedTransition(root)
-        //把id存起来
-        queue.addLast(id)
     }
-
-    /**
-     * 返回队列的最后一个id
-     */
-    private fun getPreviousId(): Int {
-        return queue.last()
-    }
-
-    private fun getTopViewId(): Int {
-        return when (rowCount) {
-            1 -> ConstraintSet.PARENT_ID
-            2 -> queue[0]
-            3 -> queue[3]
-            else -> ConstraintSet.PARENT_ID
-        }
-    }
-
     private fun delete() {
-        if (queue.size == 0) {
-            "过分了啊".toastError()
-            return
+        val id = getWillRemoveId() ?: return
+        ConstraintSet().apply {
+            //获取约束集
+            clone(root)
+            //其实这里不用清除，你可以直接把view从root中移除，然后再设置其他的约束
+            clear(id)
+            //等于3说明要移除的是头部
+            if (remainder == 3) {
+                chainStyle--
+            }else{
+                //设置前一个水平方向的约束
+                connect(getPreviousId(),
+                    ConstraintSet.END,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.END)
+            }
+            applyTo(root)
         }
-
-
-
         TransitionManager.beginDelayedTransition(root)
+        //把视图移除
+        root.removeView(root.getViewById(id))
+        //移除id
         queue.removeLast()
 
     }
-    private fun getView(): TextView ? {
+
+    private fun getWillRemoveId(): Int ? {
+        if (queue.size == 0) {
+            "过分了啊".toastError()
+            return null
+        }
+        --remainder
+        if (remainder == 0) {
+            remainder = 3
+            rowCount--
+        }
+        return queue.last()
+    }
+
+    private fun createView(): TextView ? {
         if (queue.size == 9) {
+            "满了、别加了".toastInfo()
             return null
         }
         //Todo 这里直接增1不合适，应该在成功添加后再加一，或者添加失败后还原
@@ -173,9 +200,9 @@ class JiuGongGeActivity : AppCompatActivity() {
             gravity = 17
             visibility = View.VISIBLE
             setBackgroundResource(R.color.colorPrimary)
-
+            //把id存起来
+            queue.addLast(id)
         }
-
     }
 
     companion object {
