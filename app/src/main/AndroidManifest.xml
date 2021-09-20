@@ -13,7 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
+            android:name=".LearnConstraintLayout.FlowActivity"
+            android:exported="true" />
+        <activity
+            android:name=".LearnConstraintLayout.LayerActivity"
+            android:exported="true" />
+        <activity
             android:name=".LearnConstraintLayout.ConstrainLayout"
+            android:exported="true" />
+        <activity
+            android:name=".LearnConstraintLayout.JiuGongGeActivity"
             android:exported="true" />
         <activity
             android:name=".Weibo.StartActivity"
@@ -22,8 +31,7 @@
         <activity android:name=".Weibo.InitSDK" />
         <activity android:name=".Weibo.WeiBoActivity" />
         <activity android:name=".Module.MainActivity2" />
-
-        <activity android:name=".LearnConstraintLayout.JiuGongGeActivity">
+        <activity android:name=".LearnConstraintLayout.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

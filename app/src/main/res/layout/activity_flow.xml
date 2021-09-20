@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flowRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LearnConstraintLayout.FlowActivity">
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tvA,tvB,tvC,tvD,tvE,tvF,tvG,tvH,tvI,tvJ,tvK,tvL,tvM,tvN,tvO,tvP,tvR"
+        app:flow_horizontalGap="5dp"
+        app:flow_verticalGap="3dp"
+        app:flow_wrapMode="chain"
+        app:flow_horizontalStyle="packed"
+        app:flow_horizontalBias="0"
+        app:flow_verticalAlign="top"
+        app:flow_maxElementsWrap="3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvA"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:padding="2dp"
+        android:gravity="center"
+        android:text="初代"
+        android:background="@drawable/btn_bg_normal"
+
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tvB"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="漩涡鸣人"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tvC"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="围棋少年"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tvD"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="杰克"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tvE"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="剃刀党"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tvF"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="凯瑟琳"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tvG"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="间"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+    <TextView
+        android:id="@+id/tvH"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="路飞"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tvI"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="亚索"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tvJ"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="暗夜猎手"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tvK"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="易大师"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+    <TextView
+        android:id="@+id/tvL"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="虹猫蓝兔"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tvM"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="神厨小富贵"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tvN"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="小鲤鱼历险记"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+    <TextView
+        android:id="@+id/tvO"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:padding="2dp"
+
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="铠甲勇士"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tvP"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="铁甲小宝"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+
+    <TextView
+        android:id="@+id/tvR"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:padding="2dp"
+        android:background="@drawable/btn_bg_normal"
+        android:gravity="center"
+        android:text="葫芦娃"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

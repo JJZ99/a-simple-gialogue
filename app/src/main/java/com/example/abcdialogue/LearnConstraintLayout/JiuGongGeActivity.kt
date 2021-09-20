@@ -1,5 +1,6 @@
 package com.example.abcdialogue.LearnConstraintLayout
 
+import android.animation.ValueAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
@@ -17,6 +18,7 @@ import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
 import kotlinx.android.synthetic.clearFindViewByIdCache
 import kotlinx.android.synthetic.main.activity_constrain_layout4placeholder.root
+import kotlinx.android.synthetic.main.activity_jiu_gong_ge.barrier2
 import kotlinx.android.synthetic.main.activity_jiu_gong_ge.btn_add
 import kotlinx.android.synthetic.main.activity_jiu_gong_ge.btn_del
 import java.util.Stack
@@ -25,14 +27,13 @@ import java.util.Stack
  * 使用ConstraintSet来添加删除控件
  * 1、每行最多三个最少一个，最多三行
  * 2、每行或每列应该是个链
- * 3、要加上动画哦
  * */
 class JiuGongGeActivity : AppCompatActivity() {
 
 
     //每个view的宽
     val width by lazy {
-        ((getWindowsWidth() - marginTopOut*3 - marginLeftIn * 2*3) / 3).toInt()
+        ((getWindowsWidth() - marginTopOut * 3 - marginLeftIn * 2 * 3) / 3).toInt()
     }
 
     //用来存放ID
@@ -52,21 +53,13 @@ class JiuGongGeActivity : AppCompatActivity() {
         //添加
         btn_add.setOnClickListener {
             it.isClickable = false
-
             add()
-
-
             it.isClickable = true
         }
         //删除
         btn_del.setOnClickListener {
             it.isClickable = false
-
-
             delete()
-
-
-
             it.isClickable = true
         }
 
@@ -99,8 +92,11 @@ class JiuGongGeActivity : AppCompatActivity() {
         val id = textView.id
         //创建
         ConstraintSet().apply {
+            isForceId = false
             //获取约束集
             clone(root)
+
+            setAlpha(id, remainder * 0.3F)
 
             //Todo 如果可变参数你传的是个数组，那么应该在前面加*
             setReferencedIds(R.id.barrier2, *queue.toIntArray())
@@ -112,11 +108,10 @@ class JiuGongGeActivity : AppCompatActivity() {
             if (remainder == 1) {
                 //设置水平链的样式，2===》packed
                 setHorizontalChainStyle(id, chainStyle++)
-
                 //设置水平方向的约束
                 addToHorizontalChainRTL(id, ConstraintSet.PARENT_ID, ConstraintSet.PARENT_ID)
                 //设置左边距，1表示左
-                setMargin(id, 6, dip2px(marginLeftOut))
+                setMargin(id, ConstraintSet.START, dip2px(marginLeftOut))
                 //设置偏移，靠左放置
                 setHorizontalBias(id, 0F)
                 //设置垂直方向的约束，只约束top就够用了
@@ -136,17 +131,23 @@ class JiuGongGeActivity : AppCompatActivity() {
                     getPreviousId(),
                     ConstraintSet.TOP)
             }
+            TransitionManager.beginDelayedTransition(root)
             applyTo(root)
         }
-        TransitionManager.beginDelayedTransition(root)
     }
     private fun delete() {
         val id = getWillRemoveId() ?: return
+        //移除id
+        queue.removeLast()
+
         ConstraintSet().apply {
+            isForceId = false
+
             //获取约束集
             clone(root)
             //其实这里不用清除，你可以直接把view从root中移除，然后再设置其他的约束
             clear(id)
+            setReferencedIds(R.id.barrier2, *queue.toIntArray())
             //等于3说明要移除的是头部
             if (remainder == 3) {
                 chainStyle--
@@ -157,13 +158,12 @@ class JiuGongGeActivity : AppCompatActivity() {
                     ConstraintSet.PARENT_ID,
                     ConstraintSet.END)
             }
+            TransitionManager.beginDelayedTransition(root)
             applyTo(root)
         }
-        TransitionManager.beginDelayedTransition(root)
         //把视图移除
         root.removeView(root.getViewById(id))
-        //移除id
-        queue.removeLast()
+
 
     }
 

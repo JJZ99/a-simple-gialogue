@@ -1,6 +1,7 @@
 package com.example.abcdialogue.Weibo.View.Fragment
 
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater

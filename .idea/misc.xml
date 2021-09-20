@@ -3,12 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../Library/Android/sdk/platforms/android-29/data/res/layout/simple_list_item_1.xml" value="0.25277777777777777" />
         <entry key="app/src/main/res/drawable-v24/btn_bg_normal.xml" value="0.21737451737451738" />
         <entry key="app/src/main/res/drawable-v24/btn_bg_pressed.xml" value="0.262037037037037" />
         <entry key="app/src/main/res/drawable-v24/btn_selector.xml" value="0.262037037037037" />
         <entry key="app/src/main/res/drawable-v24/button_circle_shape.xml" value="0.209375" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.24305555555555555" />
         <entry key="app/src/main/res/drawable-v24/scrollbar.xml" value="0.33046875" />
+        <entry key="app/src/main/res/drawable/frame.xml" value="0.28703703703703703" />
         <entry key="app/src/main/res/drawable/ic_file_download_gray.xml" value="0.17314814814814813" />
         <entry key="app/src/main/res/drawable/ic_file_download_white.xml" value="0.17314814814814813" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.21737451737451738" />
@@ -25,7 +27,10 @@
         <entry key="app/src/main/res/layout/activity_constrain_layout3guideline.xml" value="0.2523148148148148" />
         <entry key="app/src/main/res/layout/activity_constrain_layout4barrier.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_constrain_layout4placeholder.xml" value="0.25787037037037036" />
+        <entry key="app/src/main/res/layout/activity_flow.xml" value="0.24027777777777778" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.2601851851851852" />
         <entry key="app/src/main/res/layout/activity_jiu_gong_ge.xml" value="0.24722222222222223" />
+        <entry key="app/src/main/res/layout/activity_layer.xml" value="0.2601851851851852" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.2078125" />
