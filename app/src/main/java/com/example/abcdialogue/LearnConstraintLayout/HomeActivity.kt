@@ -8,7 +8,7 @@ import com.example.abcdialogue.R
 import kotlinx.android.synthetic.main.activity_home.rv
 
 class HomeActivity : AppCompatActivity() {
-    private val mData = arrayOf("JiuGongGeActivity","LayerActivity", "FlowActivity","CircularFlowActivity")
+    private val mData = arrayOf("JiuGongGeActivity","LayerActivity", "FlowActivity","FlyActivity","LayoutStatesActivity")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,10 +26,8 @@ class HomeActivity : AppCompatActivity() {
                         0 -> startActivity(Intent(this@HomeActivity, JiuGongGeActivity::class.java))
                         1 -> startActivity(Intent(this@HomeActivity, LayerActivity::class.java))
                         2 -> startActivity(Intent(this@HomeActivity, FlowActivity::class.java))
-
-//                        1 -> startActivity(Intent(this@HomeActivity, CircularRevealHelperActivity::class.java))
-//                        2 -> startActivity(Intent(this@HomeActivity, FlyInHelperActivity::class.java))
-//                        3 -> startActivity(Intent(this@HomeActivity, ComposeMultipleHelperActivity::class.java))
+                        3 -> startActivity(Intent(this@HomeActivity, FlyActivity::class.java))
+                        4 -> startActivity(Intent(this@HomeActivity, LayoutStatesActivity::class.java))
                     }
                 }
             }
