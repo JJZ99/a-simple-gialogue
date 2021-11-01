@@ -1,16 +1,15 @@
 package com.example.abcdialogue.Weibo.Util
 
-import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
+import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.graphics.drawable.toBitmap
@@ -19,16 +18,13 @@ import androidx.lifecycle.lifecycleScope
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
-import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
-import com.hitomi.tilibrary.style.IIndexIndicator
 import com.hitomi.tilibrary.style.progress.ProgressPieIndicator
 import com.hitomi.tilibrary.transfer.TransferConfig
 import com.hitomi.tilibrary.transfer.Transferee
 import com.vansz.glideimageloader.GlideImageLoader
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
-import io.reactivex.FlowableEmitter
 import io.reactivex.FlowableOnSubscribe
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
@@ -41,8 +37,6 @@ import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -99,7 +93,9 @@ object TransfereeFactory {
                                         //你可以简单的理解为在协程作用域中创建一个新的协程，然后执行挂起函数
                                         fragment.viewLifecycleOwner.lifecycleScope.launch {
                                             Log.i("线程bid",Thread.currentThread().id.toString())
-                                            savePhoto(imageView,fragment.requireContext())
+                                            //savePhoto(imageView,fragment.requireContext())
+                                            savePhotoUseRxjava(imageView,fragment.requireContext())
+
                                         }
                                     }
                                     1 -> {
@@ -168,8 +164,8 @@ object TransfereeFactory {
                                         //你可以简单的理解为在协程作用域中创建一个新的协程，然后执行挂起函数
                                         fragment.viewLifecycleOwner.lifecycleScope.launch {
                                             Log.i("线程bid",Thread.currentThread().id.toString())
-                                            savePhoto(imageView,fragment.requireContext())
-                                            //savePhotoUseRxjava(imageView,fragment.requireContext())
+                                            //savePhoto(imageView,fragment.requireContext())
+                                            savePhotoUseRxjava(imageView,fragment.requireContext())
                                         }
                                     }
                                     1 -> {
@@ -233,56 +229,63 @@ object TransfereeFactory {
      */
     fun savePhotoUseRxjava(imageView: ImageView?, context: Context){
         //方法1
-        var disposable = Flowable.create(
-            FlowableOnSubscribe<ImageView> {
-                if (imageView != null) {
-                    it.onNext(imageView)
-                }
-            }, BackpressureStrategy.BUFFER  //第二个参数是压背策略
-        ).subscribeOn(Schedulers.io())
-            //这里的consumer是消费者,可以有多个消费者，比如增加出错时的消费Consumer<Throwable>
-            .subscribe(object :Consumer<ImageView>{
-                override fun accept(t: ImageView?) {
-                    val bitmap = imageView!!.drawable.toBitmap()
-                    //获取存储路径，为空则返回
-                    val saveUri = context.contentResolver.insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        ContentValues()
-                    ) ?: kotlin.run {
-                        "存储失败".toastError()
-                        return@run
-                    }
-                    //输出流，输出到本地相册，根据结果判读是否成功
-                    context.contentResolver.openOutputStream(saveUri as Uri).use {
-                        if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)) {
-                            MainScope().launch { "存储成功".toastSuccess() }
-                        } else {
-                            MainScope().launch { "存储失败".toastError() }
-                        }
-                    }
-                }
+//        var disposable = Flowable.create(
+//            FlowableOnSubscribe<ImageView> {
+//                if (imageView != null) {
+//                    it.onNext(imageView)
+//                }
+//            }, BackpressureStrategy.BUFFER  //第二个参数是压背策略
+//        ).subscribeOn(Schedulers.io())
+//            //这里的consumer是消费者,可以有多个消费者，比如增加出错时的消费Consumer<Throwable>
+//            .subscribe(object :Consumer<ImageView>{
+//                override fun accept(t: ImageView?) {
+//                    val bitmap = imageView!!.drawable.toBitmap()
+//                    //获取存储路径，为空则返回
+//                    val saveUri = context.contentResolver.insert(
+//                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                        ContentValues()
+//                    ) ?: kotlin.run {
+//                        "存储失败".toastError()
+//                        return@run
+//                    }
+//                    //输出流，输出到本地相册，根据结果判读是否成功
+//                    context.contentResolver.openOutputStream(saveUri as Uri).use {
+//                        if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)) {
+//                            MainScope().launch { "存储成功".toastSuccess() }
+//                        } else {
+//                            MainScope().launch { "存储失败".toastError() }
+//                        }
+//                    }
+//                }
+//
+//            },object :Consumer<Throwable>{
+//                override fun accept(t: Throwable?) {
+//                    TODO("Not yet implemented")
+//                }
+//
+//            })
+//        disposable.dispose()
 
-            },object :Consumer<Throwable>{
-                override fun accept(t: Throwable?) {
-                    TODO("Not yet implemented")
-                }
-
-            })
-        disposable.dispose()
 
         //方法2
-        var observerAble = Observable.create(ObservableOnSubscribe<ImageView> { emitter ->
-            //事件产生的地方，比如保存文件、请求网络等
-            if (imageView != null) {
-                emitter.onNext(imageView)
-            } else {
-                //error和complete是互斥的就算你这里都写了，但是只会回调用一个，前面的那个
-                emitter.onError(NullPointerException("空指针了，给老子爬"))
-                //emitter.onComplete()
-            }
+        var observerAble = Observable.create(object :ObservableOnSubscribe<ImageView>{
+            override fun subscribe(emitter: ObservableEmitter<ImageView>) {
+                    //事件产生的地方，比如保存文件、请求网络等
+                    if (imageView != null) {
+                        emitter.onNext(imageView)
+                    } else {
+                        //error和complete是互斥的就算你这里都写了，但是只会回调用一个，前面的那个
+                        emitter.onError(NullPointerException("空指针了，给老子爬"))
+                        //emitter.onComplete()
+                    }
+                }
         })
         //做一次转换，多余操作，就是想用一下
-        observerAble.map { imageView!!.drawable.toBitmap() }.subscribeOn(Schedulers.io())//设置事件发生的线程
+        observerAble.map {
+            Thread.currentThread().name
+            imageView!!.drawable.toBitmap()
+        }.subscribeOn(Schedulers.io())//设置事件发生的线程
+
             .observeOn(Schedulers.io())
             .subscribe(object : Observer<Bitmap> {
 
@@ -301,9 +304,10 @@ object TransfereeFactory {
                     //输出流，输出到本地相册，根据结果判读是否成功
                     context.contentResolver.openOutputStream(saveUri as Uri).use {
                         if (t.compress(Bitmap.CompressFormat.JPEG, 100, it)) {
-                            MainScope().launch { "存储成功".toastSuccess() }
+                            Handler(Looper.getMainLooper()).post { "存储成功".toastSuccess() }
+
                         } else {
-                            MainScope().launch { "存储失败".toastError() }
+                            Handler(Looper.getMainLooper()).post { "存储失败".toastSuccess() }
                         }
                     }
                 }

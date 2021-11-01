@@ -27,11 +27,12 @@
             android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/setting_more"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginRight="13dp"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
+            android:layout_marginRight="13dp"
             android:src="@mipmap/add" />
     </RelativeLayout>
 

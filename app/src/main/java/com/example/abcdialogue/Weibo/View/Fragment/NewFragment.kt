@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_liner_recycler.new_rv
 import kotlinx.android.synthetic.main.fragment_liner_recycler.refresh_layout
 import androidx.lifecycle.ViewModelProvider
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
-import com.example.abcdialogue.Weibo.Util.LoadStatus
+import com.example.abcdialogue.Weibo.state.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.PAGESIZE
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.fragment_liner_recycler.fab
 
 
 class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
+
 
     private val viewModel by lazy{
         ViewModelProvider(this, WBViewModelFactory()).get(WBViewModel::class.java)

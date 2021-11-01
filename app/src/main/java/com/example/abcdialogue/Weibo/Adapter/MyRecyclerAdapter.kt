@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.image_linear_hor.view.new_image_hor
 import android.annotation.SuppressLint
 
 import com.example.abcdialogue.R
-import com.example.abcdialogue.Weibo.Util.LoadStatus
+import com.example.abcdialogue.Weibo.state.LoadStatus
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getMiddle2LargeUrl
 import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransferList
 

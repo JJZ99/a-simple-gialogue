@@ -1,4 +1,4 @@
-package com.example.abcdialogue.Weibo.Util
+package com.example.abcdialogue.Weibo.state
 
 enum class LoadStatus {
     LoadMoreIn,             // 列表往下加载更多中

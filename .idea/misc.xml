@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.2677083333333333" />
         <entry key="app/src/main/res/drawable-v24/btn_bg_normal.xml" value="0.21737451737451738" />
         <entry key="app/src/main/res/drawable-v24/btn_bg_pressed.xml" value="0.262037037037037" />
         <entry key="app/src/main/res/drawable-v24/btn_selector.xml" value="0.262037037037037" />
@@ -20,6 +21,7 @@
         <entry key="app/src/main/res/drawable/save_button_image.xml" value="0.29814814814814816" />
         <entry key="app/src/main/res/font/font.xml" value="0.23194444444444445" />
         <entry key="app/src/main/res/font/font1.xml" value="0.2935185185185185" />
+        <entry key="app/src/main/res/layout/activity_font_size.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.2078125" />
@@ -27,6 +29,7 @@
         <entry key="app/src/main/res/layout/activity_start.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_wei_bo.xml" value="0.30833333333333335" />
         <entry key="app/src/main/res/layout/fragment_contain.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/fragment_font_size.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_liner_recycler.xml" value="0.15859375" />
         <entry key="app/src/main/res/layout/fragment_liner_recycler2.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/layout/fragment_liner_recycler3.xml" value="0.20078125" />
@@ -35,6 +38,8 @@
         <entry key="app/src/main/res/layout/image_item.xml" value="0.20199275362318841" />
         <entry key="app/src/main/res/layout/image_linear_hor.xml" value="0.20078125" />
         <entry key="app/src/main/res/layout/istiew.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/layout_confirm_dialog.xml" value="0.29257246376811596" />
+        <entry key="app/src/main/res/layout/layout_dmt_dialog_legacy.xml" value="0.25324074074074077" />
         <entry key="app/src/main/res/layout/load_more_item.xml" value="0.45" />
         <entry key="app/src/main/res/layout/login.xml" value="0.18229166666666666" />
         <entry key="app/src/main/res/layout/new_item.xml" value="0.474671669793621" />

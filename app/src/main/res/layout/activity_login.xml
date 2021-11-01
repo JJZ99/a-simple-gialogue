@@ -76,8 +76,9 @@
 
     <Button
         android:id="@+id/wei_bo_btn"
-        android:layout_width="100dp"
-        android:layout_height="45dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dp"
         android:background="@drawable/btn_selector"
         android:fontFamily="sans-serif-black"
         android:gravity="center"

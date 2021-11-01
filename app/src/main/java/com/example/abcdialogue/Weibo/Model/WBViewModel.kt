@@ -6,20 +6,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
-import com.example.abcdialogue.Weibo.Util.LoadStatus
-import com.example.abcdialogue.Weibo.Util.LoadStatus.*
-import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
+import com.example.abcdialogue.Weibo.state.LoadStatus
+import com.example.abcdialogue.Weibo.state.LoadStatus.*
 import com.example.abcdialogue.Weibo.Bean.CountryBean
 import com.example.abcdialogue.Weibo.Bean.WBAllDTO
 import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.Bean.transformToBean
 import com.example.abcdialogue.Weibo.View.Fragment.NewFragment.Companion.isRefresh
 import io.reactivex.Observer
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class WBViewModel : ViewModel(){
+    private val disposables: CompositeDisposable by lazy{
+        CompositeDisposable()
+    }
+
+    fun addDisposable(d: Disposable){
+        disposables.add(d)
+    }
 
     //初始页码为1
     var page = 1
@@ -34,6 +41,7 @@ class WBViewModel : ViewModel(){
                 .subscribe(object : Observer<List<Map<String, String>>> {
                     override fun onComplete() {}
                     override fun onSubscribe(d: Disposable) {
+                        addDisposable(d)
                     }
                     override fun onNext(t: List<Map<String, String>>) {
                         Log.i("https:", t.toString())
@@ -63,6 +71,7 @@ class WBViewModel : ViewModel(){
                 }
 
                 override fun onSubscribe(d: Disposable) {
+                    addDisposable(d)
                 }
 
                 override fun onNext(resp: WBAllDTO) {
@@ -94,5 +103,6 @@ class WBViewModel : ViewModel(){
 
     override fun onCleared() {
         super.onCleared()
+        disposables.clear()
     }
 }

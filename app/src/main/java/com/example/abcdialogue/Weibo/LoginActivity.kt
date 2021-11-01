@@ -5,11 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.util.Log
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toast
 import kotlinx.android.synthetic.main.activity_login.open_weibo_anim
@@ -19,11 +15,11 @@ import com.facebook.drawee.backends.pipeline.Fresco
 
 import com.facebook.drawee.interfaces.DraweeController
 
-import android.R
 import android.net.Uri
 import android.view.View
-import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.abcdialogue.MyApplication.Companion.context
 
 import com.facebook.common.util.UriUtil
 import kotlinx.android.synthetic.main.activity_login.open_weibo_anim_constrain
@@ -32,6 +28,7 @@ import kotlinx.coroutines.launch
 
 
 class LoginActivity : AppCompatActivity() {
+
     //向主进程发送消息的句柄
 //    var handler: Handler = object : Handler(Looper.getMainLooper()){
 //        //子类必须实现此功能才能接收消息
@@ -79,7 +76,6 @@ class LoginActivity : AppCompatActivity() {
             .setUri(uri)
             .setAutoPlayAnimations(true)
             .build()
-
         baseContext.toast("Hello")
         wei_bo_btn.setOnClickListener {
             open_weibo_anim_constrain.visibility = View.VISIBLE
