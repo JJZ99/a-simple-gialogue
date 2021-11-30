@@ -30,7 +30,7 @@
         android:text="@string/oh_captain_my_captain"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Display4"
-        android:textSize="23dp"
+        android:textSize="23sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

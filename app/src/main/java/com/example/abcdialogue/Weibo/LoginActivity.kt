@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -18,16 +20,29 @@ import com.facebook.drawee.interfaces.DraweeController
 import android.net.Uri
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.MyApplication.Companion.context
+import com.example.abcdialogue.R
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
 
 import com.facebook.common.util.UriUtil
+import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
+import io.reactivex.ObservableOnSubscribe
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.open_weibo_anim_constrain
+import kotlinx.android.synthetic.main.activity_login.textView4
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
 class LoginActivity : AppCompatActivity() {
+    var count = 1
+    val TAG = "LoginActivity"
 
     //向主进程发送消息的句柄
 //    var handler: Handler = object : Handler(Looper.getMainLooper()){
@@ -41,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
      * 自定义方法
      * 启动登录界面
      */
-    suspend fun next() {
+     fun next() {
         val sharedPref = this.getSharedPreferences(
             getString(com.example.abcdialogue.R.string.sp_access_token), Context.MODE_PRIVATE)
         val token = sharedPref.getString(ACCESS_TOKEN,"")
@@ -77,23 +92,76 @@ class LoginActivity : AppCompatActivity() {
             .setAutoPlayAnimations(true)
             .build()
         baseContext.toast("Hello")
+      //  textView4.lineSpacingExtra
         wei_bo_btn.setOnClickListener {
-            open_weibo_anim_constrain.visibility = View.VISIBLE
-            open_weibo_anim.visibility = View.VISIBLE
-            open_weibo_anim.controller = controller
-            lifecycleScope.launch(){
-                delay(2000)
-                next()
-            }
-//            //延时2秒发送一个消息给主进程,让主进程执行next()方法,跳到登陆界面
-//            handler.postDelayed(object : Runnable {
-//                override fun run() {
-//                    handler.sendEmptyMessage(0)
-//                }
-//            }, 1500)
-            wei_bo_btn.isEnabled = false
+            textView4.setLineSpacing(2F,0F)
 
+            textView4.getLineSpacingExtra().toString().toastSuccess()
+            textView4.text = HtmlCompat.fromHtml(
+                context.getString(R.string.shopping_coupon_back_current_state, "140","60"),
+                HtmlCompat.FROM_HTML_MODE_COMPACT
+            )
+
+                context.getString(R.string.shopping_coupon_back_current_state, "140","60")
+
+//            open_weibo_anim_constrain.visibility = View.VISIBLE
+//            open_weibo_anim.visibility = View.VISIBLE
+//            open_weibo_anim.controller = controller
+//            lifecycleScope.launch(){
+//                delay(2000)
+//                next()
+//            }
+//            wei_bo_btn.isEnabled = false
         }
+        Log.i(TAG + MyApplication.CON, "onCreate"+this.window.toString())
+
+
+    }
+
+    private fun testRx() {
+        val TAG = "RXJAVA"
+        var a = 15
+        //方法2
+        Observable.create(object : ObservableOnSubscribe<Int> {
+            override fun subscribe(emitter: ObservableEmitter<Int>) {
+                //事件产生的地方，比如保存文件、请求网络等
+                if (a % 2 == 1) {
+                    emitter.onNext(1)
+                } else {
+                    emitter.onNext(0)
+                    //error和complete是互斥的就算你这里都写了，但是只会回调用一个，前面的那个
+//                emitter.onError(NullPointerException("空指针了，给老子爬"))
+                    //emitter.onComplete()
+                }
+                Log.i("RXJAVA" ,"Emitter.onNext:"+Thread.currentThread().name.toString())
+
+            }
+        }).observeOn(Schedulers.newThread()).
+        map {   //做一次转换，多余操作，就是想用一下
+            Log.i("RXJAVA","map"+Thread.currentThread().name.toString())
+            it.toString()
+        }
+            .subscribeOn(Schedulers.computation())//设置事件发生的线程
+
+            .observeOn(Schedulers.newThread())
+            .subscribe(object : Observer<String> {
+
+                //这个方法在onNext之前被调用
+                override fun onSubscribe(d: Disposable) {
+                }
+                override fun onNext(t: String) {
+                    Log.i("RXJAVA" , "Observer.onNext:"+Thread.currentThread().name.toString())
+
+                }
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                }
+
+                //这个方法在onNext之后被调用
+                override fun onComplete() {
+
+                }
+            })
     }
 
     /**
@@ -122,6 +190,16 @@ class LoginActivity : AppCompatActivity() {
         val p = Pattern.compile(regExp)
         val m = p.matcher(num)
         return m.matches()
+    }
+    override fun getResources(): Resources {
+        val res: Resources = super.getResources()
+        if (count == 1) {
+            Log.i(TAG + MyApplication.CON, this.baseContext.toString())
+
+            //Log.i(TAG + MyApplication.CON, this.window.toString())
+            --count
+        }
+        return res
     }
 
     /**

@@ -14,6 +14,7 @@ import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.Bean.transformToBean
 import com.example.abcdialogue.Weibo.View.Fragment.NewFragment.Companion.isRefresh
 import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.Dispatchers

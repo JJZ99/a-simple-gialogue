@@ -19,6 +19,7 @@
     <string name="tab_1">tab1</string>
     <string name="tab_2">tab2</string>
     <string name="tab_3">tab3</string>
+    <string name="shopping_coupon_back_current_state"><![CDATA[今日已购%1$s 还差<font color=#FE2C55>%2$s</font>]]></string>
 
 
 </resources>

@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
 import com.hitomi.tilibrary.style.progress.ProgressPieIndicator
 import com.hitomi.tilibrary.transfer.TransferConfig
@@ -31,6 +32,8 @@ import io.reactivex.ObservableEmitter
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
@@ -39,6 +42,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
 /**
  * transferee工厂，生产transferee实例和设置长按的监听事件
@@ -165,8 +169,9 @@ object TransfereeFactory {
                                         fragment.viewLifecycleOwner.lifecycleScope.launch {
                                             Log.i("线程bid",Thread.currentThread().id.toString())
                                             //savePhoto(imageView,fragment.requireContext())
-                                            savePhotoUseRxjava(imageView,fragment.requireContext())
                                         }
+                                        savePhotoUseRxjava(imageView,fragment.requireContext())
+
                                     }
                                     1 -> {
                                         //"你触发了图片删除回调事件".toastInfo()
@@ -279,19 +284,18 @@ object TransfereeFactory {
                         //emitter.onComplete()
                     }
                 }
-        })
-        //做一次转换，多余操作，就是想用一下
-        observerAble.map {
+        }) //做一次转换，多余操作，就是想用一下
+        .map {
             Thread.currentThread().name
             imageView!!.drawable.toBitmap()
         }.subscribeOn(Schedulers.io())//设置事件发生的线程
-
             .observeOn(Schedulers.io())
             .subscribe(object : Observer<Bitmap> {
 
                 //这个方法在onNext之前被调用
                 override fun onSubscribe(d: Disposable) {
                 }
+
                 override fun onNext(t: Bitmap) {
                     //获取存储路径，为空则返回
                     val saveUri = context.contentResolver.insert(
@@ -311,6 +315,7 @@ object TransfereeFactory {
                         }
                     }
                 }
+
                 override fun onError(e: Throwable) {
                     e.printStackTrace()
                 }
@@ -319,6 +324,7 @@ object TransfereeFactory {
                 override fun onComplete() {
                 }
             })
+        demoFlatMap()
     }
     fun demoFlatMap(){
         //这里注意flatmap和map的不同，前者返回的是新的ObservableSource，他是把事件处理之后，交给一个新的被观察者然后进行发送
@@ -326,27 +332,45 @@ object TransfereeFactory {
         var observerAble = Observable.fromIterable(arrayListOf("111","222","333","444","555"))
             .flatMap(object :Function<String,ObservableSource<Int>>{
                 override fun apply(t: String): ObservableSource<Int> {
-                    return Observable.fromArray(t.toInt())
-                }
+                    var next =  t.toInt() +200
 
-            }).subscribe(object :Observer<Int>{
+                    return Observable.just(next)
+
+                    }
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object :Observer<Int>{
                 override fun onSubscribe(d: Disposable) {
-                    TODO("Not yet implemented")
+                    d.toString().toastSuccess()
                 }
 
                 override fun onNext(t: Int) {
-                    TODO("Not yet implemented")
-                }
+                    Thread.currentThread().name.toString().toastInfo()
+                    t.toString().toastSuccess()                }
 
                 override fun onError(e: Throwable) {
                     TODO("Not yet implemented")
                 }
 
                 override fun onComplete() {
-                    TODO("Not yet implemented")
-                }
+                    "onComplete".toastSuccess()
+                }})
 
-            })
+
+//        Single.fromCallable {
+//            try {
+//                ECEventService.logV3(event, JSONObject(params))
+//            } catch (e: Throwable) {
+//                ECExceptionMonitor.ensureNotReachHere(e)
+//                Log.w(TAG, "post event failed: $event", e)
+//            }
+//        }.subscribeOn(Schedulers.io())
+//            .subscribe({
+//
+//            },{
+//
+//            })
 
 
 

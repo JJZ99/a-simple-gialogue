@@ -1,6 +1,7 @@
 package com.example.abcdialogue.Weibo.View.Fragment
 
 import android.animation.ObjectAnimator
+import android.app.Fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,8 @@ import com.example.abcdialogue.Weibo.Adapter.MyFooterViewHolder
 import kotlinx.android.synthetic.main.fragment_liner_recycler.new_rv
 import kotlinx.android.synthetic.main.fragment_liner_recycler.refresh_layout
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
+import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
 import com.example.abcdialogue.Weibo.state.LoadStatus
 import com.example.abcdialogue.Weibo.Adapter.MyRecyclerAdapter.Companion.PAGESIZE
@@ -22,6 +25,8 @@ import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.InitSDK.Companion.TOKEN
 import com.example.abcdialogue.Weibo.Model.WBViewModelFactory
 import com.example.abcdialogue.Weibo.Model.WBViewModel
+import com.example.abcdialogue.Weibo.Util.DensityUtils.dip2px
+import com.example.abcdialogue.Weibo.Util.DensityUtils.px2dip
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getLarge2MiddleUrl
 import kotlinx.android.synthetic.main.fragment_liner_recycler.fab
@@ -71,6 +76,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         initData()
         Log.i("onCreateFragment","=============onCreateFragment=============")
         super.onCreate(savedInstanceState)
+
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,6 +97,8 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         initRecycler()
         initFloating()
         initRefresh()
+        Log.i( MyApplication.CON, "onCreate"+this.activity?.window.toString())
+
     }
 
     private fun initAdapter() {
@@ -139,6 +147,23 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         new_rv.layoutManager = LinearLayoutManager(this.context)
         new_rv.adapter = adapter
         Log.i("进initRecycler","initRecycler initRecycler initRecycler")
+        new_rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+
+            }
+
+            override fun onScrollStateChanged(rv: RecyclerView, newState: Int) {
+
+
+                if ( new_rv.canScrollVertically(dip2px(context, 5F))) {
+                    "闲置，正数返回为true".toastSuccess()
+                }
+                if (new_rv.canScrollVertically(dip2px(context, -5F))) {
+                    "闲置，负数返回为true".toastSuccess()
+                }
+            }
+
+        })
     }
 
     private fun initFloating(){

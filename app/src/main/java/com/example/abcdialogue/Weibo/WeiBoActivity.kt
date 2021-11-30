@@ -24,6 +24,9 @@ import kotlinx.android.synthetic.main.activity_wei_bo.tablayout_button
 import kotlinx.android.synthetic.main.activity_wei_bo.viewPager
 
 class WeiBoActivity : AppCompatActivity() {
+    var count = 1
+     val TAG = "WeiBoActivity"
+
     private val viewModel by lazy{
         ViewModelProvider(this, WBViewModelFactory()).get(WBViewModel::class.java)
     }
@@ -40,7 +43,6 @@ class WeiBoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_wei_bo)
         lifecycle.addObserver(mPresenter)
         lifecycle.addObserver(mPresenter2)
-
 
         initData()
         initView()
@@ -69,6 +71,14 @@ class WeiBoActivity : AppCompatActivity() {
             var intent = Intent(this, FontSizeActivity().javaClass)
             startActivity(intent)
         }
+//        Log.i(TAG,this.toString())
+//        Log.i(TAG,this.baseContext.toString())
+//        Log.i(TAG,this.application.toString())
+//        Log.i(TAG,this.applicationContext.toString())
+
+//        Log.i("StartActivity",this.resources.toString())
+        Log.i(TAG + MyApplication.CON, "onCreate"+this.window.toString())
+
     }
     private fun initView() {
         Log.i(TAG,"=======into initView=======")
@@ -94,6 +104,16 @@ class WeiBoActivity : AppCompatActivity() {
         mFragments?.add(FragmentFactory.getInstance(3))
 
     }
+    override fun getResources(): Resources {
+        val res: Resources = super.getResources()
+        if (count == 1) {
+            Log.i(TAG + MyApplication.CON, this.baseContext.toString())
+
+            Log.i(TAG + MyApplication.CON, this.toString())
+            --count
+        }
+        return res
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -102,9 +122,5 @@ class WeiBoActivity : AppCompatActivity() {
         lifecycle.removeObserver(mPresenter)
         lifecycle.removeObserver(mPresenter2)
 
-    }
-
-    companion object {
-        const val TAG = "========WeiBoActivity==========="
     }
 }

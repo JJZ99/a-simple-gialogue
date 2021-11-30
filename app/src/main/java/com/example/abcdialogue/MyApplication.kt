@@ -13,17 +13,22 @@ import android.os.Looper
 import android.util.Log
 import com.example.abcdialogue.Weibo.Util.SPUtils.SPFontScale
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
-import com.example.abcdialogue.Weibo.SystemObserver
 
 
 class MyApplication : Application() {
+    var count = 1
     var typeFace: Typeface? = null
+    val TAG = "MyApplication"
+
 
 
     companion object{
         @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
         var currFontSize = 1f
+        const val REC = "Resources"
+        const val CON = "Context"
+
     }
     override fun onCreate() {
         super.onCreate()
@@ -38,10 +43,11 @@ class MyApplication : Application() {
         "获取：$currFontSize".toastInfo()
         Log.i("获取currFontSize",currFontSize.toString())
 
-        //这里我想监听系统字体的变化，但还不会
-//        SystemObserver(Handler(Looper.myLooper()), context).apply {
-//            context.contentResolver.registerContentObserver(fontScaleUri, true, this)
-//        }
+//        Log.i(TAG,this.toString())
+//        Log.i(TAG,this.baseContext.toString())
+//        Log.i(TAG,this.applicationContext.toString())
+
+
 
     }
 
@@ -66,24 +72,20 @@ class MyApplication : Application() {
 
     override fun getResources(): Resources {
         val res: Resources = super.getResources()
-
-        val config: Configuration = res.getConfiguration()
+        val config: Configuration = res.configuration
         if (currFontSize > 0.5) { //防止第一次获取SP时得到默认值0
             config.fontScale = currFontSize //设置正常字体大小的倍数
         }
+        val displayMetrics = res.displayMetrics
+        displayMetrics.scaledDensity = displayMetrics.density * config.fontScale
 
+        res.updateConfiguration(config, res.displayMetrics)
+        if (count == 1) {
+            Log.i(TAG + MyApplication.CON, this.baseContext.toString())
 
-       // this.createConfigurationContext(config)
-       res.updateConfiguration(config, res.displayMetrics)
+            Log.i(TAG + MyApplication.REC, res.toString())
+            --count
+        }
         return res
-//        val resources = super.getResources()
-//        val conf = resources.configuration
-//        val displayMetrics = resources.displayMetrics
-//        conf.fontScale = mFontScale
-//        conf.densityDpi = getDefaultDisplayDensity()
-//        displayMetrics.scaledDensity = displayMetrics.density * conf.fontScale
-//        resources.updateConfiguration(conf, displayMetrics)
-//        return resources
     }
-
 }
