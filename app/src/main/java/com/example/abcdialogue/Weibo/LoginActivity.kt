@@ -94,15 +94,13 @@ class LoginActivity : AppCompatActivity() {
         baseContext.toast("Hello")
       //  textView4.lineSpacingExtra
         wei_bo_btn.setOnClickListener {
-            textView4.setLineSpacing(2F,0F)
 
-            textView4.getLineSpacingExtra().toString().toastSuccess()
-            textView4.text = HtmlCompat.fromHtml(
-                context.getString(R.string.shopping_coupon_back_current_state, "140","60"),
-                HtmlCompat.FROM_HTML_MODE_COMPACT
-            )
 
-                context.getString(R.string.shopping_coupon_back_current_state, "140","60")
+
+//            textView4.setLineSpacing(2F,0F)
+//
+//            textView4.getLineSpacingExtra().toString().toastSuccess()
+//            textView4.text = wei_bo_btn.height.toString()
 
 //            open_weibo_anim_constrain.visibility = View.VISIBLE
 //            open_weibo_anim.visibility = View.VISIBLE

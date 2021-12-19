@@ -30,16 +30,18 @@ import com.example.abcdialogue.Weibo.state.LoadStatus
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getMiddle2LargeUrl
 import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransferList
 
-class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var onItemClickListener : MyRecyclerAdapter.OnItemClickListener?= null
-    var onLoadMoreListener : OnLoadMoreListener?= null
+class MyRecyclerAdapter(private var fragment: Fragment, var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var onItemClickListener: MyRecyclerAdapter.OnItemClickListener? = null
+    var onLoadMoreListener: OnLoadMoreListener? = null
 
-    var onDeleteImageListener : OnDeleteImageListener?= null
+    var onDeleteImageListener: OnDeleteImageListener? = null
 
     //这里多一项是因为footer
     private var total = 1
+
     //手机的宽度
     private var winWidth = context.resources.displayMetrics.widthPixels
+
     //每一项的右边距
     private var itemMarginEnd = DisplayUtil.dp2px(3)
 
@@ -50,33 +52,33 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
     init {
         //这里多写一个是担心，如果在走到这里之前还没有完成第一次请求数据完成了那么
         viewModel.statusList.value?.let {
-            total = it.size+1
-            var addCounts = (viewModel.page - 1) * 15-it.size
+            total = it.size + 1
+            var addCounts = (viewModel.page - 1) * 15 - it.size
             //如果新增的等于15个 假设还有更多，否则就没有更多了
-            hasMore = addCounts >=0
-            if (!hasMore){
+            hasMore = addCounts >= 0
+            if (!hasMore) {
                 viewModel.currStatus.value = LoadStatus.LoadMoreEnd
             }
-            Log.i("init adapter observe",viewModel.statusList.value.toString())
+            Log.i("init adapter observe", viewModel.statusList.value.toString())
         }
-        viewModel.statusList.observe(fragment.viewLifecycleOwner,{
-            total = it.size+1
-            var addCounts = (viewModel.page - 1) * 15-it.size
+        viewModel.statusList.observe(fragment.viewLifecycleOwner, {
+            total = it.size + 1
+            var addCounts = (viewModel.page - 1) * 15 - it.size
             hasMore = addCounts >= 0
             //已经加载完了
-            if (!hasMore){
+            if (!hasMore) {
                 viewModel.currStatus.value = LoadStatus.LoadMoreEnd
             }
-            Log.i("init adapter observe",viewModel.statusList.value.toString())
+            Log.i("init adapter observe", viewModel.statusList.value.toString())
         })
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == TYPE_NORMAL)
+        return if (viewType == TYPE_NORMAL) {
             MyRecyclerHolder.create(parent, onItemClickListener)
-        else{
-            MyFooterViewHolder.create(parent,onLoadMoreListener)
+        } else {
+            MyFooterViewHolder.create(parent, onLoadMoreListener)
         }
     }
 
