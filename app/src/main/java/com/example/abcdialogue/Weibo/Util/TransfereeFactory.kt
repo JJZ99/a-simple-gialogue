@@ -273,17 +273,15 @@ object TransfereeFactory {
 
 
         //方法2
-        var observerAble = Observable.create(object :ObservableOnSubscribe<ImageView>{
-            override fun subscribe(emitter: ObservableEmitter<ImageView>) {
-                    //事件产生的地方，比如保存文件、请求网络等
-                    if (imageView != null) {
-                        emitter.onNext(imageView)
-                    } else {
-                        //error和complete是互斥的就算你这里都写了，但是只会回调用一个，前面的那个
-                        emitter.onError(NullPointerException("空指针了，给老子爬"))
-                        //emitter.onComplete()
-                    }
-                }
+        var observerAble = Observable.create(ObservableOnSubscribe<ImageView> { emitter ->
+            //事件产生的地方，比如保存文件、请求网络等
+            if (imageView != null) {
+                emitter.onNext(imageView)
+            } else {
+                //error和complete是互斥的就算你这里都写了，但是只会回调用一个，前面的那个
+                emitter.onError(NullPointerException("空指针了，给老子爬"))
+                //emitter.onComplete()
+            }
         }) //做一次转换，多余操作，就是想用一下
         .map {
             Thread.currentThread().name

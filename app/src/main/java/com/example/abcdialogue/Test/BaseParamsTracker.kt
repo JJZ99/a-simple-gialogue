@@ -1,7 +1,22 @@
 package com.example.abcdialogue.Test
 
 import java.util.Random
+fun main() {
+    var a = "aaaa"
+    var map1 = HashMap<String,String>().apply {
+        put("1234",a)
+        put("2345","bbbb")
+        put("3456","cccc")
+        put("4567","dddd")
+    }
+    var map2 = map1.clone()
+    println(map1.toString())
+    a = "rrrr"
+    (map2 as HashMap<String,String>)["1234" ]= a
+    println(map2.toString())
 
+
+}
 
 object BaseParamsTracker {
     var mTimes = 10000
@@ -17,6 +32,7 @@ object BaseParamsTracker {
     }
     fun getRandomString(minLength: Int, maxLength: Int): String {
         val random = Random()
+        return "1"
 
 
     }

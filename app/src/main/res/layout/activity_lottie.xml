@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Weibo.LottieActivity">
+    <com.example.abcdialogue.baseui.MyLottieView
+        android:id="@+id/lottie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/root"
+        app:layout_constraintTop_toTopOf="@+id/root"
+        app:lottie_imageAssetsFolder="images"
+        app:lottie_autoPlay="true" />
+
+    <Button
+        android:id="@+id/btn_loading"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="#F16262"
+        android:text="loading"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_empty"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/btn_empty"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="#F16262"
+        android:text="empty"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_loading"
+        app:layout_constraintStart_toEndOf="@+id/btn_loading"
+        app:layout_constraintEnd_toStartOf="@+id/btn_error"
+        app:layout_constraintTop_toTopOf="@+id/btn_loading" />
+
+    <Button
+        android:id="@+id/btn_error"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="#F16262"
+        android:text="error"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_empty"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_empty"
+        app:layout_constraintTop_toTopOf="@+id/btn_empty" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
