@@ -5,14 +5,13 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
-import com.example.abcdialogue.Weibo.Util.Net.RetrofitHelper
 import com.facebook.drawee.backends.pipeline.Fresco
 import android.graphics.Typeface
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
+import com.example.abcdialogue.Weibo.Util.Net.RetrofitHelper
 import com.example.abcdialogue.Weibo.Util.SPUtils.SPFontScale
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
+import com.gyf.immersionbar.ImmersionBar
 
 
 class MyApplication : Application() {
@@ -28,6 +27,7 @@ class MyApplication : Application() {
         var currFontSize = 1f
         const val REC = "Resources"
         const val CON = "Context"
+        var immersionBar: ImmersionBar? = null
 
     }
     override fun onCreate() {

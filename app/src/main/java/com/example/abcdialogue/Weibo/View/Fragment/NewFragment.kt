@@ -139,30 +139,31 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
 
     private fun initData() {
-        viewModel.getStatusesList(TOKEN,viewModel.page++)
+        viewModel.getStatusesList(TOKEN, viewModel.page++)
     }
 
     private fun initRecycler() {
         new_rv.layoutManager = LinearLayoutManager(this.context)
         new_rv.adapter = adapter
         Log.i("进initRecycler","initRecycler initRecycler initRecycler")
-        new_rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-
-            }
-
-            override fun onScrollStateChanged(rv: RecyclerView, newState: Int) {
-
-
-                if ( new_rv.canScrollVertically(dip2px(context, 5F))) {
-                    "闲置，正数返回为true".toastSuccess()
-                }
-                if (new_rv.canScrollVertically(dip2px(context, -5F))) {
-                    "闲置，负数返回为true".toastSuccess()
-                }
-            }
-
-        })
+        //添加的滑动监听
+//        new_rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+//
+//            }
+//
+//            override fun onScrollStateChanged(rv: RecyclerView, newState: Int) {
+//
+//
+//                if ( new_rv.canScrollVertically(dip2px(context, 5F))) {
+//                    "闲置，正数返回为true".toastSuccess()
+//                }
+//                if (new_rv.canScrollVertically(dip2px(context, -5F))) {
+//                    "闲置，负数返回为true".toastSuccess()
+//                }
+//            }
+//
+//        })
     }
 
     private fun initFloating(){
@@ -182,14 +183,14 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         //设置可用
         refresh_layout.isEnabled = true
         //加载动画三种颜色轮训
-        refresh_layout.setColorSchemeColors(0xff0000,0x00ff00,0x0000ff)
+        refresh_layout.setColorSchemeColors(0xff0000, 0x00ff00, 0x0000ff)
         //refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         //refresh_layout.setProgressBackgroundColorSchemeColor(0x03DAC5);
         refresh_layout.setOnRefreshListener {
             //"触发下啦监听".toastInfo()
             refresh()
             //设置动画
-            var  objectAnim : ObjectAnimator = ObjectAnimator.ofFloat(fab,"rotation", 0f, 360f)
+            var objectAnim: ObjectAnimator = ObjectAnimator.ofFloat(fab, "rotation", 0f, 360f)
             //持续1.5秒
             objectAnim.duration = 1500
             //开始

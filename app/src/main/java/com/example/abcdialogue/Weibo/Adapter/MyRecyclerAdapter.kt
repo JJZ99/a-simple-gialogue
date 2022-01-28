@@ -29,6 +29,7 @@ import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.state.LoadStatus
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getMiddle2LargeUrl
 import com.example.abcdialogue.Weibo.Util.TransfereeFactory.getTransferList
+import com.gyf.immersionbar.ImmersionBar
 
 class MyRecyclerAdapter(private var fragment: Fragment, var viewModel: WBViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onItemClickListener: MyRecyclerAdapter.OnItemClickListener? = null
@@ -278,7 +279,7 @@ class MyRecyclerAdapter(private var fragment: Fragment, var viewModel: WBViewMod
         //页码，也可以理解为加载了多少次
         const val PAGESIZE = 15
         //过滤类型ID，0：全部、1：原创、2：图片、3：视频、4：音乐，默认为0
-        const val FEATURE = 2
+        const val FEATURE = 0
 
 
         /**

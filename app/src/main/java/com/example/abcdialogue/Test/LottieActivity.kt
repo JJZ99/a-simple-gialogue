@@ -1,4 +1,4 @@
-package com.example.abcdialogue.Weibo
+package com.example.abcdialogue.Test
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

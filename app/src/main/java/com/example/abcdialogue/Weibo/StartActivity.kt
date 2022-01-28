@@ -39,7 +39,7 @@ class StartActivity : AppCompatActivity() {
      * 启动登录界面
      */
     fun next() {
-        var intent = Intent(this, LoginActivity.javaClass)
+        var intent = Intent(this, LoginActivity().javaClass)
         //intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent);
         finish()
