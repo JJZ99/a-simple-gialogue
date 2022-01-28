@@ -76,8 +76,11 @@
 
     <Button
         android:id="@+id/wei_bo_btn"
-        android:layout_width="100dp"
-        android:layout_height="45dp"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:paddingEnd="10dp"
         android:background="@drawable/btn_selector"
         android:fontFamily="sans-serif-black"
         android:gravity="center"
@@ -96,6 +99,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
+        android:lineSpacingExtra="2dp"
+        android:textSize="24dp"
+        android:textColor="#000000"
         android:text="@string/login_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -17,8 +17,6 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.abcdialogue.MyApplication.Companion.context
 import com.example.abcdialogue.R
-import com.sina.weibo.sdk.net.h
-import retrofit2.http.HTTP
 
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -78,8 +76,8 @@ object ParseUtil {
 
         val spannedStringBuilder = SpannableStringBuilder()
         var allTextIndex = content.indexOf("全文： ")
-        var textSpanned = if (allTextIndex !=-1 )SpannableString(content.substring(0,allTextIndex+2)) else SpannableString(content)
-        textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.textColor,null)), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        var textSpanned = if (allTextIndex !=-1 ) SpannableString(content.substring(0, allTextIndex + 2)) else SpannableString(content)
+        textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.textColor, null)), 0, textSpanned.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
 
         //超话部分
         getTopicSpanUseRegex(textSpanned)
@@ -88,8 +86,8 @@ object ParseUtil {
         if (allTextIndex!=-1){//结尾的全文部分
             //链接的结尾有个ZWSP 不能截进来
             val url = content.substring(allTextIndex+4,content.length-1)
-            textSpanned.setSpan(MURLSpan(url), allTextIndex, allTextIndex+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-            textSpanned.setSpan(StyleSpan(Typeface.BOLD), allTextIndex, allTextIndex+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            textSpanned.setSpan(MURLSpan(url), allTextIndex, allTextIndex + 2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            textSpanned.setSpan(StyleSpan(Typeface.BOLD), allTextIndex, allTextIndex + 2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         }else{//结尾的一些链接
             getUrlSpanUseRegex(textSpanned)
         }

@@ -7,6 +7,8 @@
     <string name="load_more_fail">加载失败，请检查网络后重试</string>
     <string name="load_more_end">你已经划到底啦～</string>
     <string name="sp_access_token">com.example.abcdialogue.weibo.PREFERENCE_FILE_KEY</string>
+    <string name="sp_font_scale">com.example.abcdialogue.weibo.FONT_SCALE</string>
+
     <string name="oh_captain_my_captain">Need A Yeah</string>
     <string name="iDontKnow">不知道啊</string>
     <string name="from_source">来自</string>
@@ -17,6 +19,7 @@
     <string name="tab_1">tab1</string>
     <string name="tab_2">tab2</string>
     <string name="tab_3">tab3</string>
+    <string name="shopping_coupon_back_current_state"><![CDATA[今日已购%1$s 还差<font color=#FE2C55>%2$s</font>]]></string>
 
 
 </resources>

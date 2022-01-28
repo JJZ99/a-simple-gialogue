@@ -18,26 +18,43 @@ import com.example.abcdialogue.Weibo.Bean.WBStatusBean
 import com.example.abcdialogue.Weibo.Model.WBViewModel
 import com.example.abcdialogue.Weibo.Util.DisplayUtil
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
-import com.example.abcdialogue.Weibo.Util.LoadStatus
 import com.example.abcdialogue.Weibo.Util.ParseUtil
 import com.example.abcdialogue.Weibo.Util.TransfereeFactory
+import com.example.abcdialogue.Weibo.state.LoadStatus
 import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.image_linear_hor.view.new_image_hor
+
+class WBDiff : DiffUtil.ItemCallback<WBStatusBean>() {
+
+    override fun getChangePayload(oldItem: WBStatusBean, newItem: WBStatusBean): Any? {
+        return super.getChangePayload(oldItem, newItem)
+    }
+
+    override fun areItemsTheSame(oldItem: WBStatusBean, newItem: WBStatusBean): Boolean {
+        return oldItem === newItem
+    }
+
+    override fun areContentsTheSame(oldItem: WBStatusBean, newItem: WBStatusBean): Boolean {
+        return oldItem == newItem
+    }
+
+}
 
 /***
  * 这个adapter使用的是
  */
-class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel):ListAdapter<WBStatusBean,RecyclerView.ViewHolder>(myDiffItemCallBack)  {
+class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel) : ListAdapter<WBStatusBean, RecyclerView.ViewHolder>(WBDiff()) {
 
-    var onItemClickListener : OnItemClickListener?= null
-    var onLoadMoreListener : OnLoadMoreListener?= null
-
-    var onDeleteImageListener : OnDeleteImageListener?= null
+    var onItemClickListener: OnItemClickListener? = null
+    var onLoadMoreListener: OnLoadMoreListener? = null
+    var onDeleteImageListener: OnDeleteImageListener? = null
 
     //这里多一项是因为footer
     private var total = 1
+
     //手机的宽度
     private var winWidth = MyApplication.context.resources.displayMetrics.widthPixels
+
     //每一项的右边距
     private var itemMarginEnd = DisplayUtil.dp2px(3)
 
@@ -45,25 +62,37 @@ class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel):
     private var itemWidth = (winWidth - itemMarginEnd * 3 - 36 - 30) / 3
 
     var currNumber = 1
+
     init {
-        viewModel.statusList.observe(fragment.viewLifecycleOwner,{
-            total = it.size
-            var addCounts = (viewModel.page-1) * 15-it.size
+        //这里多写一个是担心，如果在走到这里之前还没有完成第一次请求数据完成了那么
+        viewModel.statusList.value?.let {
+            total = it.size + 1
+            var addCounts = (viewModel.page - 1) * 15 - it.size
+            //如果新增的等于15个 假设还有更多，否则就没有更多了
             MyRecyclerAdapter.hasMore = addCounts >= 0
-            //已经加载完了
-            if (!MyRecyclerAdapter.hasMore){
+            if (!MyRecyclerAdapter.hasMore) {
                 viewModel.currStatus.value = LoadStatus.LoadMoreEnd
             }
-            Log.i("init adapter observe",viewModel.statusList.value.toString())
+            Log.i("init adapter observe", viewModel.statusList.value.toString())
+        }
+        viewModel.statusList.observe(fragment.viewLifecycleOwner, {
+            total = it.size
+            var addCounts = (viewModel.page - 1) * 15 - it.size
+            MyRecyclerAdapter.hasMore = addCounts >= 0
+            //已经加载完了
+            if (!MyRecyclerAdapter.hasMore) {
+                viewModel.currStatus.value = LoadStatus.LoadMoreEnd
+            }
+            Log.i("init adapter observe", viewModel.statusList.value.toString())
         })
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == MyRecyclerAdapter.TYPE_NORMAL)
+        return if (viewType == MyRecyclerAdapter.TYPE_NORMAL) {
             MyRecyclerHolder.create(parent, onItemClickListener)
-        else{
-            MyFooterViewHolder.create(parent,onLoadMoreListener)
+        } else {
+            MyFooterViewHolder.create(parent, onLoadMoreListener)
         }
     }
 
@@ -72,8 +101,8 @@ class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel):
      */
     @SuppressLint("WrongConstant")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.i("ONBINDVIEWHOLDER","${position}  count ${itemCount}")
-        if (position < (itemCount-1)) {
+        Log.i("ONBINDVIEWHOLDER", "${position}  count ${itemCount}")
+        if (position < (itemCount - 1)) {
             (holder as MyRecyclerHolder).apply {
                 viewModel.statusList.value?.let { it ->
                     it[position].also {
@@ -136,7 +165,7 @@ class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel):
     /**
      * 展示图片
      */
-    private fun bindImages(it: WBStatusBean, holder: MyRecyclerHolder,position: Int) {
+    private fun bindImages(it: WBStatusBean, holder: MyRecyclerHolder, position: Int) {
 
         val size = it.picUrls.size
         if (size == 0) {
@@ -211,7 +240,7 @@ class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel):
      * 获取Item的类型
      */
     override fun getItemViewType(position: Int): Int {
-        return if (position != (itemCount-1)) {
+        return if (position != (itemCount - 1)) {
             MyRecyclerAdapter.TYPE_NORMAL
         } else {
             MyRecyclerAdapter.TYPE_LOAD_MORE
@@ -221,14 +250,13 @@ class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel):
     /**
      * 添加数据
      */
-    fun addItem(pos:Int){
+    fun addItem(pos: Int) {
         ++currNumber
         //刷新适配器
         notifyItemInserted(pos)
     }
 
-    fun removeItem(pos:Int){
-
+    fun removeItem(pos: Int) {
         //移除该位置的项目
         notifyItemRemoved(pos)
         --currNumber
@@ -241,20 +269,4 @@ class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel):
 
     }
 
-    companion object {
-        val myDiffItemCallBack = object :DiffUtil.ItemCallback<WBStatusBean>(){
-            override fun getChangePayload(oldItem: WBStatusBean, newItem: WBStatusBean): Any? {
-                return super.getChangePayload(oldItem, newItem)
-            }
-            override fun areItemsTheSame(oldItem: WBStatusBean, newItem: WBStatusBean): Boolean {
-                return oldItem === newItem
-            }
-
-            override fun areContentsTheSame(oldItem: WBStatusBean, newItem: WBStatusBean): Boolean {
-                return oldItem == newItem
-            }
-
-        }
-
-    }
 }
