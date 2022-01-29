@@ -88,8 +88,8 @@ class MyRecyclerAdapter(private var fragment:Fragment,var viewModel: WBViewModel
      */
     @SuppressLint("WrongConstant")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (position!=(itemCount-1)){
-            (holder as MyRecyclerHolder).apply{
+        if (position != (itemCount - 1)) {
+            (holder as MyRecyclerHolder).apply {
                 viewModel.statusList.value?.let { it ->
                     it[position].also {
                         textView.text = it.name

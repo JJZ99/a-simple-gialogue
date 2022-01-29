@@ -29,6 +29,7 @@ import com.example.abcdialogue.Weibo.Model.WBViewModel
 import com.example.abcdialogue.Weibo.Util.FrescoUtil
 import com.example.abcdialogue.Weibo.Util.ParseUtil.getLarge2MiddleUrl
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
+import com.example.abcdialogue.Weibo.View.WrapContentLinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_liner_recycler.fab
 
 
@@ -41,22 +42,24 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     lateinit var adapter: MyListAdapter
     private var observerPageIs2 = Observer<MutableList<WBStatusBean>> {
         //这里做两层判断是要把打开app第一次请求和刷新区分开来，
-        if (viewModel.page == 2) {
+        if (viewModel.page == 2 && isRefresh) {
             //如果是刷新操作
-            if (isRefresh) {
-                "刷新成功".toastSuccess()
-                adapter.submitList(it)
-                oldList.clear()
+            "刷新成功".toastSuccess()
+        //    adapter.notifyDataSetChanged()
+            //     new_rv.recycledViewPool.clear()
+            adapter.submitList(it)
+            oldList.clear()
 
-                //通知任何已注册的观察者数据集已更改，刷新 recyclerview
-                //adapter.notifyDataSetChanged()
-                //定位到第一项
-                //new_rv.scrollToPosition(0)
-                refresh_layout.isRefreshing = false
-                isRefresh = false
-            } else {
-                //如果是第一次请求就初始化 recyclerview
-                initRecycler()
+            //通知任何已注册的观察者数据集已更改，刷新 recyclerview
+            //adapter.notifyDataSetChanged()
+            // 定位到第一项
+            //new_rv.scrollToPosition(0)
+            refresh_layout.isRefreshing = false
+            isRefresh = false
+        } else {
+            //loadmore的情况
+            if (!isRefresh) {
+                adapter.submitList(it)
             }
         }
     }
@@ -65,15 +68,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
             refresh_layout.isRefreshing = false
             "刷新失败，请检查网络".toastError()
         }
-    }
-    private var observerLoadMore = Observer<MutableList<WBStatusBean>> {
-        var hasNumber = (viewModel.page - 2) * PAGESIZE
-        var total = it.size
-        adapter.submitList(it)
-
-//        for (i in hasNumber until total){
-//            adapter.addItem(adapter.itemCount-1)
-//        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,12 +82,6 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        //如果不用了就removeObserver
-        viewModel.statusList.observe(this.viewLifecycleOwner, observerPageIs2)
-        viewModel.currStatus.observe(this.viewLifecycleOwner, observerRefreshError)
-        viewModel.statusList.observe(this.viewLifecycleOwner, observerLoadMore)
-
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -104,7 +92,10 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
         initRecycler()
         initFloating()
         initRefresh()
-        Log.i( MyApplication.CON, "onCreate"+this.activity?.window.toString())
+        //如果不用了就removeObserver
+        viewModel.statusList.observe(this.viewLifecycleOwner, observerPageIs2)
+        viewModel.currStatus.observe(this.viewLifecycleOwner, observerRefreshError)
+        // Log.i( MyApplication.CON, "onCreate"+this.activity?.window.toString())
 
     }
 
@@ -128,7 +119,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
                 //"你调用了DeleteImage".toastInfo()
                 viewModel.statusList.value?.let {
                     //Log.i("infoRemove", index.toString())
-                    Log.i("infoRemoveBefore", it[position].picUrls.size.toString())
+                    //Log.i("infoRemoveBefore", it[position].picUrls.size.toString())
                     imageUrl?.let { it1 ->
                         var originUrl = getLarge2MiddleUrl(it1)
                         //删除缩略图的缓存
@@ -136,7 +127,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
                          (it[position].picUrls as MutableList<String>).remove(originUrl)
                     }
                     adapter.updateItem(position)
-                    Log.i("infoRemoveAfter", it[position].picUrls.size.toString())
+                   // Log.i("infoRemoveAfter", it[position].picUrls.size.toString())
                 }
 
             }
@@ -149,9 +140,9 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
 
     private fun initRecycler() {
-        new_rv.layoutManager = LinearLayoutManager(this.context)
+        new_rv.layoutManager = WrapContentLinearLayoutManager(this.context)
         new_rv.adapter = adapter
-        Log.i("进initRecycler","initRecycler initRecycler initRecycler")
+       // Log.i("进initRecycler","initRecycler initRecycler initRecycler")
         //添加的滑动监听
 //        new_rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 //            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
@@ -205,8 +196,8 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
 
     private fun refresh(){
-        viewModel.currStatus.value = LoadStatus.LoadMoreIn
         isRefresh = true
+        viewModel.currStatus.value = LoadStatus.LoadMoreIn
         viewModel.page = 1
         //先保存老的数据
         oldList = viewModel.statusList.value!!
@@ -227,6 +218,7 @@ class NewFragment: Fragment(R.layout.fragment_liner_recycler) {
     }
 
     companion object {
+        @Volatile
         var isRefresh = false
     }
 

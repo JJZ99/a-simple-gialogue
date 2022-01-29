@@ -49,22 +49,24 @@ object ParseUtil {
         Log.i("Uri",uri.toString())
         return uri
     }
+
     /**
      * 将Sun Nov 14 10:04:36 +0800 2010格式的时间，转化为分钟前小时前刚刚
      * @param string  Sun Nov 14 10:04:36 +0800 2010格式的字符串
      * @return 刚刚or某分钟前or某小时前
      */
-    fun getTime(string: String):String{
+    fun getTime(string: String): String {
         //格式化时间字符串
-        var simpleDateFormat =  SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.CANADA).parse(string);
+        var simpleDateFormat =
+            SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.CANADA).parse(string);
         //获取已经发表了多少分钟
-        var time = (System.currentTimeMillis()-simpleDateFormat.time)/60000
+        var time = (System.currentTimeMillis() - simpleDateFormat.time) / 60000
         when {
             time < 1 -> return TYPE_NOW
-            time<60 -> return time.toString()+TYPE_MIN
-            time>=60 -> return (time/60).toString()+TYPE_HOUR
+            time < 60 -> return time.toString() + TYPE_MIN
+            time >= 60 -> return (time / 60).toString() + TYPE_HOUR
         }
-        return (time/60).toString()+TYPE_HOUR
+        return (time / 60).toString() + TYPE_HOUR
     }
 
     /**
@@ -85,9 +87,15 @@ object ParseUtil {
         getAtSpanUseRegex(textSpanned)
         if (allTextIndex!=-1){//结尾的全文部分
             //链接的结尾有个ZWSP 不能截进来
-            val url = content.substring(allTextIndex+4,content.length-1)
-            textSpanned.setSpan(MURLSpan(url), allTextIndex, allTextIndex + 2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-            textSpanned.setSpan(StyleSpan(Typeface.BOLD), allTextIndex, allTextIndex + 2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            val url = content.substring(allTextIndex + 4, content.length - 1)
+            textSpanned.setSpan(MURLSpan(url),
+                allTextIndex,
+                allTextIndex + 2,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            textSpanned.setSpan(StyleSpan(Typeface.BOLD),
+                allTextIndex,
+                allTextIndex + 2,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         }else{//结尾的一些链接
             getUrlSpanUseRegex(textSpanned)
         }
@@ -105,7 +113,8 @@ object ParseUtil {
             if (at!= null) {
                 var start = matcher.start()
                 var end = matcher.end()
-                textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.topicColor,null)), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+                textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.topicColor,
+                    null)), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
                 textSpanned.setSpan(MyClickSpan(at), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
             }
         }
@@ -119,25 +128,29 @@ object ParseUtil {
             if (topic!= null) {
                 var start = matcher.start()
                 var end = matcher.end()
-                textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.topicColor,null)), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-                textSpanned.setSpan(MyClickSpan(topic), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+                textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.topicColor,
+                    null)), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+                textSpanned.setSpan(MyClickSpan(topic),
+                    start,
+                    end,
+                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
             }
         }
     }
 
-    fun getTopicSpanUseStringUtil(content: String,textSpanned: SpannableString){
+    fun getTopicSpanUseStringUtil(content: String, textSpanned: SpannableString) {
         //用来标志下一个#是不是右边的
         var isTopic = false
         //上一个#的索引
         var left = 0
         var right = 0
         var list = mutableListOf<Pos>().apply {
-            for( (index,char) in  content.withIndex()){
-                if (char == WELL_CHAR){
-                    if (!isTopic){
+            for ((index, char) in content.withIndex()) {
+                if (char == WELL_CHAR) {
+                    if (!isTopic) {
                         left = index
                         isTopic = true
-                    }else{
+                    } else {
                         right = index
                         isTopic = false
                         add(Pos(left, right))
@@ -146,7 +159,8 @@ object ParseUtil {
             }
         }
         list.forEach {
-            textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.topicColor,null)), it.left, it.right+1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            textSpanned.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.topicColor,
+                null)), it.left, it.right + 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         }
     }
     fun getUrlSpanUseRegex(textSpanned: SpannableString){
@@ -159,19 +173,29 @@ object ParseUtil {
                 var start = matcher.start()
                 var end = matcher.end()
                 textSpanned.setSpan(MURLSpan(url), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-                textSpanned.setSpan(StyleSpan(Typeface.BOLD), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+                textSpanned.setSpan(StyleSpan(Typeface.BOLD),
+                    start,
+                    end,
+                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
             }
         }
     }
 
-    fun getUrlSpanUseStringUtil(content:String,textSpanned: SpannableString){
+    fun getUrlSpanUseStringUtil(content: String, textSpanned: SpannableString) {
         var httpIndex = content.indexOf(HTTP)
         while (httpIndex != -1) {
-            var blackIndex = content.indexOf(BLANK,httpIndex)
-            val url = if (blackIndex == -1) content.substring(httpIndex, content.length) else content.substring(httpIndex, blackIndex)
-            textSpanned.setSpan(MURLSpan(url), httpIndex, blackIndex, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-            textSpanned.setSpan(StyleSpan(Typeface.BOLD), httpIndex, blackIndex, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-            httpIndex = content.indexOf(HTTP,blackIndex)
+            var blackIndex = content.indexOf(BLANK, httpIndex)
+            val url = if (blackIndex == -1) content.substring(httpIndex,
+                content.length) else content.substring(httpIndex, blackIndex)
+            textSpanned.setSpan(MURLSpan(url),
+                httpIndex,
+                blackIndex,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            textSpanned.setSpan(StyleSpan(Typeface.BOLD),
+                httpIndex,
+                blackIndex,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            httpIndex = content.indexOf(HTTP, blackIndex)
         }
     }
 

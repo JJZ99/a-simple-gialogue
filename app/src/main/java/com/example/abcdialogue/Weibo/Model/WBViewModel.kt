@@ -82,13 +82,14 @@ class WBViewModel : ViewModel(){
                             } ?: listOf())
                         }
                     } else {
-                        statusList.value = statusList.value?.apply {
+                        statusList.value = mutableListOf<WBStatusBean>().apply {
+                            statusList.value?.let { addAll(it) }
                             addAll(resp.statuses?.map { dto ->
                                 dto.transformToBean()
                             } ?: listOf())
                         }
                     }
-                    Log.i("get statueslist:", statusList.value.toString())
+                    Log.i("getStatusesList:", statusList.value!!.size.toString())
                 }
 
                 override fun onError(e: Throwable) {

@@ -49,19 +49,16 @@ class StartActivity : AppCompatActivity() {
     }
 
 
-
-
-
-        override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //去掉标题栏
-       // supportActionBar?.hide()
+        // supportActionBar?.hide()
         setContentView(R.layout.activity_start)
         //去掉状态栏
 //        window.setFlags(
 //            WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //            WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            Log.i(TAG + MyApplication.CON, "onCreate" + this.window.toString())
+    //    Log.i(TAG + MyApplication.CON, "onCreate" + this.window.toString())
 
         //延时2秒发送一个消息给主进程,让主进程执行next()方法,跳到登陆界面
         lifecycleScope.launch {
@@ -81,7 +78,6 @@ class StartActivity : AppCompatActivity() {
 //
 //        Log.i(TAG,this.toString())
 //        Log.i(TAG,this.resources.toString())
-
 
 
     }

@@ -2,6 +2,7 @@ package com.example.abcdialogue.Weibo.Adapter
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -25,16 +27,20 @@ import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.image_linear_hor.view.new_image_hor
 
 class WBDiff : DiffUtil.ItemCallback<WBStatusBean>() {
+    val TAG = "ItemCallback"
 
     override fun getChangePayload(oldItem: WBStatusBean, newItem: WBStatusBean): Any? {
+     //   Log.i(TAG, "getChangePayload:oldItem:${oldItem},newItem:${newItem}")
         return super.getChangePayload(oldItem, newItem)
     }
 
     override fun areItemsTheSame(oldItem: WBStatusBean, newItem: WBStatusBean): Boolean {
-        return oldItem === newItem
+        Log.i(TAG, "areItemsTheSame:oldItem:${oldItem.wId},newItem:${newItem.wId}")
+        return oldItem.wId == newItem.wId
     }
 
     override fun areContentsTheSame(oldItem: WBStatusBean, newItem: WBStatusBean): Boolean {
+        Log.i(TAG, "areContentsTheSame:oldItem:${oldItem.wId},newItem:${newItem.wId}")
         return oldItem == newItem
     }
 
@@ -62,30 +68,18 @@ class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel) 
     private var itemWidth = (winWidth - itemMarginEnd * 3 - 36 - 30) / 3
 
     var currNumber = 1
-
-    init {
-        //这里多写一个是担心，如果在走到这里之前还没有完成第一次请求数据完成了那么
-        viewModel.statusList.value?.let {
-            total = it.size + 1
-            var addCounts = (viewModel.page - 1) * 15 - it.size
-            //如果新增的等于15个 假设还有更多，否则就没有更多了
-            MyRecyclerAdapter.hasMore = addCounts >= 0
-            if (!MyRecyclerAdapter.hasMore) {
-                viewModel.currStatus.value = LoadStatus.LoadMoreEnd
-            }
-            Log.i("init adapter observe", viewModel.statusList.value.toString())
+    private var observerHasMore = Observer<MutableList<WBStatusBean>> {
+        total = it.size
+        var addCounts = (viewModel.page - 1) * 15 - it.size
+        MyRecyclerAdapter.hasMore = addCounts >= 0
+        //已经加载完了
+        if (!MyRecyclerAdapter.hasMore) {
+            viewModel.currStatus.value = LoadStatus.LoadMoreEnd
         }
-        viewModel.statusList.observe(fragment.viewLifecycleOwner, {
-            total = it.size
-            var addCounts = (viewModel.page - 1) * 15 - it.size
-            MyRecyclerAdapter.hasMore = addCounts >= 0
-            //已经加载完了
-            if (!MyRecyclerAdapter.hasMore) {
-                viewModel.currStatus.value = LoadStatus.LoadMoreEnd
-            }
-            Log.i("init adapter observe", viewModel.statusList.value.toString())
-        })
-
+      //  Log.i("init adapter observe", viewModel.statusList.value.toString())
+    }
+    init {
+        viewModel.statusList.observe(fragment.viewLifecycleOwner, observerHasMore)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -96,6 +90,14 @@ class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel) 
         }
     }
 
+//    override fun onBindViewHolder(
+//        holder: RecyclerView.ViewHolder,
+//        position: Int,
+//        payloads: MutableList<Any>
+//    ) {
+//        super.onBindViewHolder(holder, position, payloads)
+//    }
+
     /**
      * 根据position来判断是不是footer
      */
@@ -104,7 +106,7 @@ class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel) 
         Log.i("ONBINDVIEWHOLDER", "${position}  count ${itemCount}")
         if (position < (itemCount - 1)) {
             (holder as MyRecyclerHolder).apply {
-                viewModel.statusList.value?.let { it ->
+                currentList.let { it ->
                     it[position].also {
                         textView.text = it.name
                         textView2.text = ParseUtil.getTime(it.createdAt)
@@ -233,7 +235,9 @@ class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel) 
 
 
     override fun getItemCount(): Int {
-        return total
+        val count = super.getItemCount()
+        Log.i("getItemCount", count.toString())
+        return count
     }
 
     /**
