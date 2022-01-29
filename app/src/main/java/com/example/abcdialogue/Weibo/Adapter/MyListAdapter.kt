@@ -51,6 +51,7 @@ class WBDiff : DiffUtil.ItemCallback<WBStatusBean>() {
  */
 class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel) : ListAdapter<WBStatusBean, RecyclerView.ViewHolder>(WBDiff()) {
 
+    val TAG = "MyListAdapter"
     var onItemClickListener: OnItemClickListener? = null
     var onLoadMoreListener: OnLoadMoreListener? = null
     var onDeleteImageListener: OnDeleteImageListener? = null
@@ -249,6 +250,14 @@ class MyListAdapter(private var fragment: Fragment, var viewModel: WBViewModel) 
         } else {
             MyRecyclerAdapter.TYPE_LOAD_MORE
         }
+    }
+
+    override fun onCurrentListChanged(
+        previousList: MutableList<WBStatusBean>,
+        currentList: MutableList<WBStatusBean>
+    ) {
+        Log.i(TAG,"onCurrentListChanged")
+        super.onCurrentListChanged(previousList, currentList)
     }
 
     /**
