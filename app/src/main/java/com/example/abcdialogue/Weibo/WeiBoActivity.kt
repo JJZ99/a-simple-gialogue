@@ -30,7 +30,7 @@ class WeiBoActivity : AppCompatActivity() {
 
     private var mTitles: MutableList<String>? = mutableListOf()
     private var mFragments: MutableList<Fragment>? = mutableListOf()
-    private var mPresenter = IPresenter(this)
+    private var mPresenter = IPresenter(this, TAG)
 
     private var mPresenter2 = IPresenter2(this)
 

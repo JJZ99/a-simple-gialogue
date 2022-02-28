@@ -4,45 +4,37 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.content.res.Resources
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
-import com.example.abcdialogue.Weibo.Util.ToastUtil.toast
-import kotlinx.android.synthetic.main.activity_login.open_weibo_anim
-import kotlinx.android.synthetic.main.activity_login.wei_bo_btn
-import java.util.regex.Pattern
-import com.facebook.drawee.backends.pipeline.Fresco
-
-import com.facebook.drawee.interfaces.DraweeController
-
-import android.net.Uri
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.HtmlCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.abcdialogue.MyApplication
-import com.example.abcdialogue.MyApplication.Companion.context
-import com.example.abcdialogue.R
-import com.example.abcdialogue.Weibo.Util.ToastUtil.toastSuccess
-
+import com.example.abcdialogue.Weibo.Prestener.IPresenter
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toast
+import com.example.abcdialogue.Weibo.View.dialog.MyBottomSheetDialogFragment
 import com.facebook.common.util.UriUtil
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.Observer
+import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.drawee.interfaces.DraweeController
+import io.reactivex.*
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_login.open_weibo_anim_constrain
-import kotlinx.android.synthetic.main.activity_login.textView4
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.regex.Pattern
 
 
 class LoginActivity : AppCompatActivity() {
     var count = 1
     val TAG = "LoginActivity"
+    private var mPresenter = IPresenter(this, TAG)
 
     //向主进程发送消息的句柄
 //    var handler: Handler = object : Handler(Looper.getMainLooper()){
@@ -61,15 +53,15 @@ class LoginActivity : AppCompatActivity() {
             getString(com.example.abcdialogue.R.string.sp_access_token), Context.MODE_PRIVATE)
         val token = sharedPref.getString(ACCESS_TOKEN,"")
         //如果token为空就跳转登陆获取
-        if(token.isNullOrEmpty()){
+        if (token.isNullOrEmpty()) {
             //"不存在Token：${token}跳转到登陆授权界面".toastInfo()
             var intent = Intent(this, InitSDK().javaClass)
             startActivity(intent)
             finish()
-        }else{
+        } else {
             //不为空直接跳转到微博页
             //"已经存在Token：${token}直接跳到微博".toastInfo()
-            Log.i("token has",token)
+            Log.i("token has", token)
             //InitSDK.TOKEN = "2.00llrezFRMpNJDd3d5f9f262Ln9WYC"
             InitSDK.TOKEN = token
             var intent = Intent(this, WeiBoActivity().javaClass)
@@ -100,11 +92,40 @@ class LoginActivity : AppCompatActivity() {
             open_weibo_anim.controller = controller
             lifecycleScope.launch(){
                 delay(2000)
-                next()
+                open_weibo_anim.visibility = View.GONE
+                wei_bo_btn.isEnabled = true
+                //next()
+                showBottomDialog()
             }
-            wei_bo_btn.isEnabled = false
+            Log.i("SingleTest:fromCallable",Thread.currentThread().name.toString())
+//            Single.fromCallable {
+//                Log.e("fromCallable","subscribeOn${Thread.currentThread().name.toString()}")
+//                7
+//            }.subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+//                .subscribe({ t ->
+//                    Log.e("fromCallable", "onSuccess${Thread.currentThread().name.toString()}")
+//                    Log.e("fromCallable",t.toString())
+//                },{ t ->
+//                    Log.e("fromCallable", "onError${Thread.currentThread().name.toString()}")
+//                    Log.e("fromCallable", t.toString())
+//                })
+//            Log.i("SingleTest:just",Thread.currentThread().name.toString())
+//            Single.defer {
+//                Log.e("just","subscribeOn${Thread.currentThread().name.toString()}")
+//                Single.just(7)
+//            }.subscribeOn(Schedulers.computation())
+//                .observeOn(Schedulers.io())
+//                .subscribe({ t ->
+//                    Log.e("just", "onSuccess${Thread.currentThread().name.toString()}")
+//                    Log.e("just",t.toString())
+//                },{ t ->
+//                    Log.e("just", "onError${Thread.currentThread().name.toString()}")
+//                    Log.e("just", t.toString())
+//                })
         }
         Log.i(TAG + MyApplication.CON, "onCreate"+this.window.toString())
+        lifecycle.addObserver(mPresenter)
     }
 
     private fun testRx() {
@@ -171,6 +192,9 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
     /***
      * 手机号码检测
      */
@@ -191,6 +215,11 @@ class LoginActivity : AppCompatActivity() {
         return res
     }
 
+    private fun showBottomDialog() {
+        MyBottomSheetDialogFragment.newInstance(123L)
+            .show(supportFragmentManager, "${MyBottomSheetDialogFragment.javaClass}")
+
+    }
     /**
      * 在点击允许或者拒绝后会执行这个方法
      */
@@ -199,7 +228,14 @@ class LoginActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
+        mutableMapOf<Long,>()
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("dasd",true)
     }
 
     companion object {

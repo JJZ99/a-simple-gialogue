@@ -44,9 +44,6 @@ class StartActivity : AppCompatActivity() {
         startActivity(intent);
         finish()
     }
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(newBase)
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,10 +58,10 @@ class StartActivity : AppCompatActivity() {
     //    Log.i(TAG + MyApplication.CON, "onCreate" + this.window.toString())
 
         //延时2秒发送一个消息给主进程,让主进程执行next()方法,跳到登陆界面
-        lifecycleScope.launch {
-            delay(2000)
-            next()
-        }
+//        lifecycleScope.launch {
+//            delay(2000)
+//            next()
+//        }
         handler.postDelayed(object : Runnable {
             override fun run() {
                 handler.sendEmptyMessage(0)

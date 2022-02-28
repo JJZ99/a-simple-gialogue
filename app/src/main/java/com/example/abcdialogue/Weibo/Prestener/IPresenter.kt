@@ -4,38 +4,38 @@ import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 
-class IPresenter(owner: LifecycleOwner) : DefaultLifecycleObserver {
+class IPresenter(owner: LifecycleOwner, val name: String) : DefaultLifecycleObserver {
     private val TAG = "MyDefaultLifecycleObserver"
 
      override fun onCreate(owner: LifecycleOwner) {
          super.onCreate(owner)
-         Log.i(TAG, "onCreate,${owner.lifecycle.currentState}")
+         Log.e(TAG, "onCreate,${name}")
      }
 
      override fun onDestroy(owner: LifecycleOwner) {
          super.onDestroy(owner)
-         Log.i(TAG, "onDestroy,${owner.lifecycle.currentState}")
+         Log.e(TAG, "onDestroy,${name}")
      }
 
      override fun onPause(owner: LifecycleOwner) {
          super.onPause(owner)
-         Log.i(TAG, "onPause,${owner.lifecycle.currentState}")
+         Log.e(TAG, "onPause,${name}")
      }
 
     override fun onResume(owner: LifecycleOwner) {
         super.onResume(owner)
-        Log.i(TAG, "onResume,${owner.lifecycle.currentState}")
+        Log.e(TAG, "onResume,${name}")
     }
 
     override fun onStart(owner: LifecycleOwner) {
         super.onStart(owner)
-        Log.i(TAG, "onStart,${owner.lifecycle.currentState}")
+        Log.e(TAG, "onStart,${name}")
 
     }
 
     override fun onStop(owner: LifecycleOwner) {
         super.onStop(owner)
-        Log.i(TAG, "onStop,${owner.lifecycle.currentState}")
+        Log.e(TAG, "onStop,${name}")
     }
 
 }

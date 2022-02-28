@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.abcdialogue.R
 import com.example.abcdialogue.Weibo.Adapter.OnDeleteImageListener
+import com.example.abcdialogue.Weibo.Util.FrescoUtil.loadImage
 import com.example.abcdialogue.Weibo.Util.Net.MyTransferee
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastError
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
@@ -25,18 +26,13 @@ import com.hitomi.tilibrary.style.progress.ProgressPieIndicator
 import com.hitomi.tilibrary.transfer.TransferConfig
 import com.hitomi.tilibrary.transfer.Transferee
 import com.vansz.glideimageloader.GlideImageLoader
-import io.reactivex.Observable
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.ObservableSource
-import io.reactivex.Observer
+import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import org.json.JSONObject
 
 /**
  * transferee工厂，生产transferee实例和设置长按的监听事件
@@ -164,7 +160,7 @@ object TransfereeFactory {
                                     //你可以简单的理解为在协程作用域中创建一个新的协程，然后执行挂起函数
                                     fragment.viewLifecycleOwner.lifecycleScope.launch {
                                         Log.i("线程bid", Thread.currentThread().id.toString())
-                                        //savePhoto(imageView,fragment.requireContext())
+                                      //  savePhoto(imageView,fragment.requireContext())
                                     }
                                     savePhotoUseRxjava(imageView, fragment.requireContext())
 
@@ -211,11 +207,11 @@ object TransfereeFactory {
      */
     private suspend fun savePhoto(imageView: ImageView?, context: Context) {
         //这里的coroutineScope是本来就有的
-//        coroutineScope  {
-//            val deferred1 = async  { loadImage (name1) }
-//            val deferred2 = async  { loadImage (name2) }
+        coroutineScope  {
+//            val deferred1 = async  { loadImage (imageView as? ) }
+//            val deferred2 = async  { loadImage (imageView) }
 //            combineImages (deferred1.await(), deferred2.await() )
-//        }
+        }
         //因为保存图片是磁盘或网络I/O操作，所以我们使用Dispatchers.IO调度器，在主线程之外的线程执行
         //用withContext 指定挂起
         withContext(Dispatchers.IO) {
@@ -238,6 +234,10 @@ object TransfereeFactory {
             }
             Log.i("线程cid", Thread.currentThread().id.toString())
         }
+    }
+
+    private fun combineImages(await: Unit, await1: Unit) {
+        TODO("Not yet implemented")
     }
 
     /**
@@ -368,23 +368,6 @@ object TransfereeFactory {
                     "onComplete".toastSuccess()
                 }
             })
-
-
-//        Single.fromCallable {
-//            try {
-//                ECEventService.logV3(event, JSONObject(params))
-//            } catch (e: Throwable) {
-//                ECExceptionMonitor.ensureNotReachHere(e)
-//                Log.w(TAG, "post event failed: $event", e)
-//            }
-//        }.subscribeOn(Schedulers.io())
-//            .subscribe({
-//
-//            },{
-//
-//            })
-
-
     }
 
 
