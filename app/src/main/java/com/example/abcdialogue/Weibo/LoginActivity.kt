@@ -228,7 +228,7 @@ class LoginActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        mutableMapOf<Long,>()
+//        mutableMapOf<Long,>()
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 

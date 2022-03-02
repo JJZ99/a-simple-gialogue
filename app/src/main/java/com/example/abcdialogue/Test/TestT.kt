@@ -35,7 +35,7 @@ object TestT {
                 t.post()
                 println("subscribe success")
             },{ t ->
-
+                println(t.toString())
             })
 //        var event = getCacheEvent<T>(clazz, type)
 //        initParam.invoke(event)
@@ -44,13 +44,15 @@ object TestT {
     }
     fun <T : BaseMetricsEventV2> getCacheEvent(clazz: Class<T>, type: Int): T {
 
+       // val
+        val con = clazz.getConstructor(String::class.java)
         when (type) {
             BASE -> {
                 var event = cachedBaseEvent.remove(key = clazz)
                 event?.let { it ->
                     return it as T
                 } ?: run {
-                    return clazz.newInstance()
+                    return con.newInstance("dasd")
                 }
             }
             EXTAR -> {
@@ -58,7 +60,7 @@ object TestT {
                 event?.let { it ->
                     return it as T
                 } ?: run {
-                    return clazz.newInstance()
+                    return con.newInstance("dasd")
                 }
             }
             POST -> {
@@ -66,10 +68,10 @@ object TestT {
                 event?.let { it ->
                     return it as T
                 } ?: run {
-                    return clazz.newInstance()
+                    return con.newInstance("dasd")
                 }
             }
-            else -> return clazz.newInstance()
+            else -> return con.newInstance("dasd")
         }
     }
 

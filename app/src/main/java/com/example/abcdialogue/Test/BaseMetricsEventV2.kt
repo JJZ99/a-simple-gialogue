@@ -10,8 +10,8 @@ abstract class BaseMetricsEventV2(private val event: String) : MetricsEvent {
     private val params = HashMap<String, String>()
 
     override fun post() {
-        appendParam(KEY_DATA_TYPE, VALUE_DATA_TYPE, ParamRule.DEFAULT) // all e commerce mobs will have this field
-        appendParam(KEY_EVENT_ORIGIN_FEATURE, VALUE_TEMAI, ParamRule.DEFAULT)
+//        appendParam(KEY_DATA_TYPE, VALUE_DATA_TYPE, ParamRule.DEFAULT) // all e commerce mobs will have this field
+//        appendParam(KEY_EVENT_ORIGIN_FEATURE, VALUE_TEMAI, ParamRule.DEFAULT)
         buildParams()
         params.putAll(extraParams)
         println("BaseMetricsEventV2.post")
@@ -19,8 +19,8 @@ abstract class BaseMetricsEventV2(private val event: String) : MetricsEvent {
     }
 
     fun getParams(): Map<String, String> = mutableMapOf<String, String>().also {
-        appendParam(KEY_DATA_TYPE, VALUE_DATA_TYPE, ParamRule.DEFAULT) // all e commerce mobs will have this field
-        appendParam(KEY_EVENT_ORIGIN_FEATURE, VALUE_TEMAI, ParamRule.DEFAULT)
+//        appendParam(KEY_DATA_TYPE, VALUE_DATA_TYPE, ParamRule.DEFAULT) // all e commerce mobs will have this field
+//        appendParam(KEY_EVENT_ORIGIN_FEATURE, VALUE_TEMAI, ParamRule.DEFAULT)
         buildParams()
         params.putAll(extraParams)
         it.putAll(params)
@@ -57,7 +57,7 @@ abstract class BaseMetricsEventV2(private val event: String) : MetricsEvent {
 
     fun appendStagingFlagParam(appendStaging: Boolean): BaseMetricsEventV2 {
         if (appendStaging) {
-            params[KEY_STAGING_FLAG] = "1"
+//            params[KEY_STAGING_FLAG] = "1"
         }
         return this
     }
