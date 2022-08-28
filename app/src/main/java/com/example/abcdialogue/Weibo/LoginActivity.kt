@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.abcdialogue.MyApplication
 import com.example.abcdialogue.Weibo.Prestener.IPresenter
 import com.example.abcdialogue.Weibo.Util.ToastUtil.toast
+import com.example.abcdialogue.Weibo.Util.ToastUtil.toastInfo
 import com.example.abcdialogue.Weibo.View.dialog.MyBottomSheetDialogFragment
 import com.facebook.common.util.UriUtil
 import com.facebook.drawee.backends.pipeline.Fresco
@@ -87,16 +88,19 @@ class LoginActivity : AppCompatActivity() {
       //  textView4.lineSpacingExtra
         wei_bo_btn.setOnClickListener {
 
-            open_weibo_anim_constrain.visibility = View.VISIBLE
-            open_weibo_anim.visibility = View.VISIBLE
-            open_weibo_anim.controller = controller
-            lifecycleScope.launch(){
-                delay(2000)
-                open_weibo_anim.visibility = View.GONE
-                wei_bo_btn.isEnabled = true
-                //next()
-                showBottomDialog()
-            }
+//            open_weibo_anim_constrain.visibility = View.VISIBLE
+//            open_weibo_anim.visibility = View.VISIBLE
+//            open_weibo_anim.controller = controller
+//            lifecycleScope.launch(){
+//                delay(2000)
+//                open_weibo_anim.visibility = View.GONE
+//                wei_bo_btn.isEnabled = true
+//                //next()
+//                showBottomDialog()
+//            }
+            "你点击了按钮".toastInfo()
+            textView4.isEnabled = false
+
             Log.i("SingleTest:fromCallable",Thread.currentThread().name.toString())
 //            Single.fromCallable {
 //                Log.e("fromCallable","subscribeOn${Thread.currentThread().name.toString()}")
@@ -123,6 +127,10 @@ class LoginActivity : AppCompatActivity() {
 //                    Log.e("just", "onError${Thread.currentThread().name.toString()}")
 //                    Log.e("just", t.toString())
 //                })
+        }
+        textView4.setOnClickListener {
+            "你点击了文本".toastInfo()
+            it.isEnabled.toastInfo()
         }
         Log.i(TAG + MyApplication.CON, "onCreate"+this.window.toString())
         lifecycle.addObserver(mPresenter)
