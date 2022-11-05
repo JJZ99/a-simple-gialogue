@@ -14,10 +14,6 @@ class ConfirmDialog(context: Context):Dialog(context) {
     var leftClickAction: (isChecked: Boolean, context: Context) -> Unit = { _, _ -> }//左边按钮的点击
     var rightClickAction: (isChecked: Boolean,context: Context) -> Unit = {  _ ,_ -> }//右边按钮的点击
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_confirm_dialog)
